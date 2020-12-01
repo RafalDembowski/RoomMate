@@ -23,10 +23,13 @@ namespace RoomMate.Entities.Rooms
         [Required]
         public int NumberOfGuests { get; set; }
         [Required]
+        [ForeignKey("Equipment")]
         public Guid EquipmentID { get; set; }
         [Required]
+        [ForeignKey("Address")]
         public Guid AddressID { get; set; }
         [Required]
+        [ForeignKey("User")]
         public Guid OwnerId { get; set; }
         public virtual User User { get; set; }
         public virtual Equipment Equipment { get; set; }

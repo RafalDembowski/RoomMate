@@ -179,6 +179,16 @@
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RoomMate.Data\RoomMate.Data.csproj">
+      <Project>{892df2d7-a236-45a5-8b28-1e0b00637666}</Project>
+      <Name>RoomMate.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RoomMate.Entities\RoomMate.Entities.csproj">
+      <Project>{30e8bc2b-cfe3-43ec-aa5b-c4040a78c6a3}</Project>
+      <Name>RoomMate.Entities</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

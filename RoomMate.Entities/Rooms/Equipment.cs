@@ -17,6 +17,7 @@ namespace RoomMate.Entities.Rooms
         public bool IsKitchen { get; set; }
         public bool IsWashingMachine { get; set; }
         [Required]
+        [ForeignKey("Room")]
         public Guid RoomID { get; set; }
         public virtual Room Room { get; set; }
     }

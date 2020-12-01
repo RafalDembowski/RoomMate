@@ -8,6 +8,8 @@ namespace RoomMate.Entities.Users
     {
         [Key]
         [Column(Order = 1)]
+        public int UserImageID { get; set; }
+        [ForeignKey("User")]
         public Guid UserID { get; set; }
         [Required]
         [MaxLength(256)]

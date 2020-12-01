@@ -23,6 +23,7 @@ namespace RoomMate.Entities.Rooms
         [Required]
         public decimal Lat { get; set; }
         [Required]
+        [ForeignKey("Room")]
         public Guid RoomID { get; set; }
         public virtual Room Room { get; set; }
     }
