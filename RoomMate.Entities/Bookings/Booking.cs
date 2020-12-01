@@ -17,15 +17,11 @@ namespace RoomMate.Entities.Bookings
         [Required]
         public DateTime OutDate { get; set; }
         [Required]
-        [ForeignKey("User")]
-        public Guid ClientID { get; set; }
-        [Required]
-        [ForeignKey("Room")]
-        public Guid RoomID { get; set; }
-        [Required]
         public int NumberOfGuests { get; set; }
         public float? TotalPrice { get; set; }
+        [Required]
         public virtual Room Room { get; set; }
+        [Required]
         public virtual User User { get; set; }
     }
 }

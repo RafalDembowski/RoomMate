@@ -63,3 +63,5 @@ C:\Portfolio\RoomMate\RoomMate.Data\obj\Debug\RoomMate.Data.csprojAssemblyRefere
 C:\Portfolio\RoomMate\RoomMate.Data\obj\Debug\RoomMate.Data.csproj.CopyComplete
 C:\Portfolio\RoomMate\RoomMate.Data\obj\Debug\RoomMate.Data.dll
 C:\Portfolio\RoomMate\RoomMate.Data\obj\Debug\RoomMate.Data.pdb
+C:\Portfolio\RoomMate\RoomMate.Data\obj\Debug\RoomMate.Data.csproj.GenerateResource.cache
+C:\Portfolio\RoomMate\RoomMate.Data\obj\Debug\RoomMate.Data.Migrations.create.resources

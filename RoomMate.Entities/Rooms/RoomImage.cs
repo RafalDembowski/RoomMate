@@ -14,8 +14,6 @@ namespace RoomMate.Entities.Rooms
         [MaxLength(256)]
         public string Path { get; set; }
         [Required]
-        [ForeignKey("Room")]
-        public Guid RoomID { get; set; }
         public virtual Room Room { get; set; }
     }
 }

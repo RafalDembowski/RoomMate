@@ -78,6 +78,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context\RoomMateDbContext.cs" />
+    <Compile Include="Migrations\202012011500319_create.cs" />
+    <Compile Include="Migrations\202012011500319_create.designer.cs">
+      <DependentUpon>202012011500319_create.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -94,6 +99,11 @@
       <Project>{30e8bc2b-cfe3-43ec-aa5b-c4040a78c6a3}</Project>
       <Name>RoomMate.Entities</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202012011500319_create.resx">
+      <DependentUpon>202012011500319_create.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
