@@ -26,5 +26,15 @@ namespace RoomMate.Controllers
         {
             return View();
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Register(User user)
+        {
+            if (ModelState.IsValid)
+            {
+
+            }
+            return View();
+        }
     }
 }

@@ -9,8 +9,8 @@ namespace RoomMate.Data.Repository
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
-        private RoomMateDbContext _context = null;
-        private DbSet<T> table = null;
+        protected RoomMateDbContext _context = null;
+        protected DbSet<T> table = null;
 
         public GenericRepository()
         {
