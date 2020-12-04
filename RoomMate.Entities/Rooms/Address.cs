@@ -17,6 +17,9 @@ namespace RoomMate.Entities.Rooms
         public string Street { get; set; }
         [Required]
         [MaxLength(50)]
+        public string PostCode { get; set; }
+        [Required]
+        [MaxLength(50)]
         public string Flat { get; set; }
         [Required]
         public decimal Lon { get; set; }

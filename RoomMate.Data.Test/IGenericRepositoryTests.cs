@@ -84,11 +84,16 @@ namespace RoomMate.Data.Test
                   }
               });
             //Delete user
-
             mockUserRepository
-                .Setup(m => m.Delete(It.IsAny<User>()))
-                .Callback((Object user) => users.Remove((User)user));
-            
+                .Setup(m => m.Delete(It.IsAny<Guid>()))
+                .Callback(
+                (object g) =>
+                {
+                    Guid id = (Guid)g;
+                    User userToDelete = (User)this.mockUserRepository.GetById(id);
+                    users.Remove(userToDelete);
+                });
+
             this.mockUserRepository = mockUserRepository.Object;
 
         }
@@ -156,7 +161,7 @@ namespace RoomMate.Data.Test
         [TestMethod]
         public void IGenericRepository_DeleteUser_Success()
         {
-            /*
+           
             Guid id = new Guid("8fa4048f-8b13-441c-b25d-728129b19e84");
 
             int userCount = this.mockUserRepository.GetAll().ToList().Count();
@@ -166,13 +171,6 @@ namespace RoomMate.Data.Test
             //verify that count has been increased
             userCount = this.mockUserRepository.GetAll().ToList().Count();
             Assert.AreEqual(1, userCount);
-            */
         }
-        /*
-            //Delete user
-            mockUserRepository.Setup(m => m.Delete(
-                It.IsAny<User>()))
-                .Callback((User user) => users.Remove(user));
-        */
     }
 }
