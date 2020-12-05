@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using RoomMate.Data.Context;
 using RoomMate.Data.Repository;
 using RoomMate.Entities.Users;
 
@@ -10,13 +11,15 @@ namespace RoomMate.Controllers
 {
     public class UserController : Controller
     {
-        private IGenericRepository<User> userRepository = null;
+        private IUserRepository userRepository = null;
 
         public UserController()
         {
-            this.userRepository = new GenericRepository<User>();
+            //?to mozna zmienic?
+            this.userRepository = new UserRepository(new RoomMateDbContext());
         }
-        public UserController(IGenericRepository<User> userRepository)
+
+        public UserController(IUserRepository userRepository)
         {
             this.userRepository = userRepository;
         }
@@ -32,7 +35,7 @@ namespace RoomMate.Controllers
         {
             if (ModelState.IsValid)
             {
-
+                var isEmailExist = userRepository.IsUserWithEmailExist(user.Email);
             }
             return View();
         }
