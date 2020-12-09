@@ -19,3 +19,6 @@ C:\Portfolio\RoomMate\RoomMate.Common.Test\obj\Debug\RoomMate.Common.Test.csproj
 C:\Portfolio\RoomMate\RoomMate.Common.Test\obj\Debug\RoomMate.Common.Test.csproj.CopyComplete
 C:\Portfolio\RoomMate\RoomMate.Common.Test\obj\Debug\RoomMate.Common.Test.dll
 C:\Portfolio\RoomMate\RoomMate.Common.Test\obj\Debug\RoomMate.Common.Test.pdb
+C:\Portfolio\RoomMate\RoomMate.Common.Test\bin\Debug\RoomMate.Common.dll
+C:\Portfolio\RoomMate\RoomMate.Common.Test\bin\Debug\RoomMate.Common.pdb
+C:\Portfolio\RoomMate\RoomMate.Common.Test\bin\Debug\RoomMate.Common.dll.config

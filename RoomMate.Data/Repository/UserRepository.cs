@@ -13,7 +13,11 @@ namespace RoomMate.Data.Repository
         public bool IsUserWithEmailExist(string email)
         {
             User user = _context.Users.FirstOrDefault(u => u.Email.ToLower().Equals(email.ToLower()));
-            return user != null;
+            if(user != null)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

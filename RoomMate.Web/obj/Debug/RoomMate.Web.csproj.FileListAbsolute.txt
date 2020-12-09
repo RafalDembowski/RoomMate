@@ -84,3 +84,8 @@ C:\Portfolio\RoomMate\RoomMate.Web\obj\Debug\RoomMate.Web.csprojAssemblyReferenc
 C:\Portfolio\RoomMate\RoomMate.Web\obj\Debug\RoomMate.Web.csproj.CopyComplete
 C:\Portfolio\RoomMate\RoomMate.Web\obj\Debug\RoomMate.dll
 C:\Portfolio\RoomMate\RoomMate.Web\obj\Debug\RoomMate.pdb
+C:\Portfolio\RoomMate\RoomMate.Web\bin\RoomMate.Common.dll
+C:\Portfolio\RoomMate\RoomMate.Web\bin\RoomMate.Common.pdb
+C:\Portfolio\RoomMate\RoomMate.Web\bin\RoomMate.Common.dll.config
+C:\Portfolio\RoomMate\RoomMate.Web\bin\EntityFramework.SqlServer.dll
+C:\Portfolio\RoomMate\RoomMate.Web\bin\EntityFramework.SqlServer.xml
