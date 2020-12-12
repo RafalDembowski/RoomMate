@@ -61,5 +61,10 @@ namespace RoomMate.Controllers
             }
             return View();
         }
+        [HttpGet]
+        public ActionResult Login()
+        {
+            return View();
+        }
     }
 }
