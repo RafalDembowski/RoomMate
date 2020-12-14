@@ -3,15 +3,15 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
-#Ignore file with private password
-PrivateSettings.config
-
 # User-specific files
 *.rsuser
 *.suo
 *.user
 *.userosscache
 *.sln.docstates
+
+#Ignore file with private passwords
+PrivateSettings.config
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

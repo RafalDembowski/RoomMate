@@ -8,6 +8,7 @@ using RoomMate.Data.Context;
 using RoomMate.Data.Repository;
 using RoomMate.Data.UnitOfWorks;
 using RoomMate.Entities.Users;
+using RoomMate.Entities.UsersViewModels;
 
 namespace RoomMate.Controllers
 {
@@ -18,7 +19,11 @@ namespace RoomMate.Controllers
         {
             unitOfWork = new UnitOfWork(new RoomMateDbContext());
         }
-
+        [HttpGet]
+        public ActionResult Index()
+        {
+            return View();
+        }
         [HttpGet]
         public ActionResult Registration()
         {
@@ -26,15 +31,18 @@ namespace RoomMate.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Registration(User user)
+        public ActionResult Registration(UserRegistrationViewModel userFromTheForm)
         {
             if (ModelState.IsValid)
             {
-                var isEmailExist = unitOfWork.UsersRepository.IsUserWithEmailExist(user.Email);
+                var isEmailExist = unitOfWork.UsersRepository.IsUserWithEmailExist(userFromTheForm.Email);
                 if (isEmailExist == false)
                 {
+                    User user = new User();
+                    user.Email = userFromTheForm.Email;
+                    user.UserName = userFromTheForm.UserName;
+                    user.PasswordHash = Crypto.CreateMD5(userFromTheForm.PasswordHash);
                     user.UserID = Guid.NewGuid();
-                    user.PasswordHash = Crypto.CreateMD5(user.PasswordHash);
                     user.FirsName = "";
                     user.LastName = "";
                     user.IsEmailVerified = false;
@@ -55,7 +63,7 @@ namespace RoomMate.Controllers
                 }
                 else
                 {
-                    ViewBag.error = "Email already exists";
+                    ViewBag.error = "Konto z podanym emailem zostało juz utworzone.";
                     return View();
                 }
             }
@@ -65,6 +73,37 @@ namespace RoomMate.Controllers
         public ActionResult Login()
         {
             return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Login(UserLoginViewModel userFromTheForm)
+        {
+            if (ModelState.IsValid)
+            {
+                var userPasswrodFromTheForm = Crypto.CreateMD5(userFromTheForm.PasswordHash);
+                var user = unitOfWork.UsersRepository
+                           .GetAll()
+                           .Where(u => u.Email.Equals(userFromTheForm.Email) && u.PasswordHash.Equals(userPasswrodFromTheForm)).ToList();
+
+                if (user.Count() > 0)
+                {
+                    Session["Email"] = user.FirstOrDefault().Email;
+                    Session["UserID"] = user.FirstOrDefault().UserID;
+
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ViewBag.Error = "Nie udało się zalogować.";
+                    return RedirectToAction("Login");
+                }
+            }
+            return View();
+        }
+        public ActionResult Logout()
+        {
+            Session.Clear();
+            return RedirectToAction("Login");
         }
     }
 }
