@@ -83,7 +83,9 @@ namespace RoomMate.Controllers
                 var userPasswrodFromTheForm = Crypto.CreateMD5(userFromTheForm.PasswordHash);
                 var user = unitOfWork.UsersRepository
                            .GetAll()
-                           .Where(u => u.Email.Equals(userFromTheForm.Email) && u.PasswordHash.Equals(userPasswrodFromTheForm)).ToList();
+                           .Where(u => u.Email.Equals(userFromTheForm.Email) 
+                                  && u.PasswordHash.Equals(userPasswrodFromTheForm) 
+                                  && u.IsEmailVerified == true).ToList();
 
                 if (user.Count() > 0)
                 {
@@ -94,8 +96,8 @@ namespace RoomMate.Controllers
                 }
                 else
                 {
-                    ViewBag.Error = "Nie udało się zalogować.";
-                    return RedirectToAction("Login");
+                    ViewBag.Error = "Konto nie istnieje lub nie zostało aktywowane.";
+                    return View();
                 }
             }
             return View();
@@ -104,6 +106,33 @@ namespace RoomMate.Controllers
         {
             Session.Clear();
             return RedirectToAction("Login");
+        }
+        [HttpGet]
+        public ActionResult VerifyAccount(string id)
+        {
+            ViewBag.ActivationStatus = false;
+            bool codeActivationCanBeGuid = Guid.TryParse(id, out var newGuid);
+
+            if (!String.IsNullOrEmpty(id) && codeActivationCanBeGuid == true)
+            {
+                
+                var user = unitOfWork.UsersRepository
+                           .GetAll()
+                           .Where(u => u.CodeActivation == new Guid(id))
+                           .FirstOrDefault();
+
+                if (user != null)
+                {
+                    System.Diagnostics.Debug.WriteLine("Tu też gituwa");
+                    user.IsEmailVerified = true;
+                    user.CodeActivation = Guid.Empty;
+                    unitOfWork.Complete();
+
+                    ViewBag.ActivationStatus = true;
+                }
+            }
+
+            return View();
         }
     }
 }

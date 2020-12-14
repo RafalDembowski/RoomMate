@@ -12,16 +12,19 @@
             <div class="card-header">
                 Login
             </div>
-            <span class="badge badge-danger">@ViewBag.error</span>
+            @if (ViewBag.error != null)
+            {
+                <span class="badge badge-danger">@ViewBag.error</span>
+            }
             <div class="card-body">
                 @using (Html.BeginForm("Login", "User", FormMethod.Post))
                 {
                     @Html.AntiForgeryToken()
-                <div class="form-group">
-                    @Html.LabelFor(m => m.Email)
-                    @Html.TextBoxFor(m => m.Email, "", new { @class = "form-control", @placeholder = "Email" })
-                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "badge badge-danger" })
-                </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Email)
+                        @Html.TextBoxFor(m => m.Email, "", new { @class = "form-control", @placeholder = "Email" })
+                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "badge badge-danger" })
+                    </div>
                     <div class="form-group">
                         @Html.LabelFor(m => m.PasswordHash)
                         @Html.PasswordFor(m => m.PasswordHash, new { @class = "form-control", @placeholder = "Password" })

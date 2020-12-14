@@ -1,0 +1,35 @@
+﻿@{
+    ViewBag.Title = "VerifyAccount";
+}
+
+<h2>VerifyAccount</h2>
+
+@if (ViewBag.ActivationStatus == true)
+{
+    <div class="form form-simple" style="padding-bottom:29px">
+        <div class="row">
+            <div class="desktop-txt">
+                <h1>Konto zostało aktywowane!</h1>
+            </div>
+
+            <div class="row">
+                <p>Dziękujemy za rejestracje i życzymy udanych rezerwacji!</p>
+            </div>
+
+            <div class="row">
+                <button class="btn-header" onclick="location.href='@Url.Action("Login", "User")'">Login</button>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="form form-simple">
+        <div class="row">
+            <div class="desktop-txt">
+                <h1>Coś poszło nie tak!</h1>
+            </div>
+            <p>Kod aktywacyjny nie istnieje lub został wykorzystany!</p>
+        </div>
+    </div>
+}
