@@ -98,7 +98,7 @@ namespace RoomMate.Controllers
                 }
                 else
                 {
-                    ViewBag.Error = "Konto nie istnieje lub nie zostało aktywowane.";
+                    ViewBag.Message = "Konto nie istnieje lub nie zostało aktywowane.";
                     return View();
                 }
             }
@@ -142,7 +142,6 @@ namespace RoomMate.Controllers
         [HttpPost]
         public ActionResult RemindPassword(User userFromTheForm)
         {
-            ViewBag.Message = "dupa";
             if (userFromTheForm != null)
             {
                 string emailFromRemindView = userFromTheForm.Email;
@@ -168,8 +167,6 @@ namespace RoomMate.Controllers
                 {
                     ViewBag.Message = "Email jest nie poprawny lub nie istnieje takie konto.";
                 }
-
-
             }
             else
             {
@@ -177,7 +174,42 @@ namespace RoomMate.Controllers
             }
             return View();
         }
+        [HttpGet]
+        public ActionResult ResetPassword(string id)
+        {
+            ViewBag.RestPasswordCodeStatus = false;
+            bool codeResetPasswordCanBeGuid = Guid.TryParse(id, out var newGuid);
 
+            if (!String.IsNullOrEmpty(id) && codeResetPasswordCanBeGuid == true)
+            {
+                var user = unitOfWork.UsersRepository
+                           .GetAll()
+                           .Where(u => u.CodeResetPassword == new Guid(id))
+                           .FirstOrDefault();
 
+                if (user != null)
+                {
+                    ViewBag.UserID = user.UserID;
+                    ViewBag.RestPasswordCodeStatus = true;
+                }
+            }
+
+            return View();
+        }
+        [HttpPost]
+        public ActionResult ResetPassword(User userFromTheForm)
+        {
+            if(userFromTheForm != null)
+            {
+                User user = unitOfWork.UsersRepository.GetById(userFromTheForm.UserID);
+                user.PasswordHash = Crypto.CreateMD5(userFromTheForm.PasswordHash);
+                user.CodeResetPassword = Guid.Empty;
+                unitOfWork.Complete();
+
+                ViewBag.Message = "Hasło zostało pomyślnie zmienione!";
+                return RedirectToAction("Login");
+            }
+            return View();
+        }
     }
 }
