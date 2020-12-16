@@ -58,12 +58,14 @@ namespace RoomMate.Controllers
 
                     EmailClient emailClient = new EmailClient();
                     emailClient.SendVerifyAccountCode(user.Email, link);
-                    
-                    return RedirectToAction("Index", "Home");
+
+                    ViewBag.Message = "Konto zostało utworzone, aktywuj je aby móc z niego korzystać.";
+
+                    return View();
                 }
                 else
                 {
-                    ViewBag.error = "Konto z podanym emailem zostało juz utworzone.";
+                    ViewBag.Message = "Konto z podanym emailem zostało juz utworzone.";
                     return View();
                 }
             }
@@ -123,7 +125,6 @@ namespace RoomMate.Controllers
 
                 if (user != null)
                 {
-                    System.Diagnostics.Debug.WriteLine("Tu też gituwa");
                     user.IsEmailVerified = true;
                     user.CodeActivation = Guid.Empty;
                     unitOfWork.Complete();
@@ -134,5 +135,49 @@ namespace RoomMate.Controllers
 
             return View();
         }
+        public ActionResult RemindPassword()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult RemindPassword(User userFromTheForm)
+        {
+            ViewBag.Message = "dupa";
+            if (userFromTheForm != null)
+            {
+                string emailFromRemindView = userFromTheForm.Email;
+                User user = unitOfWork.UsersRepository.GetUserByEmail(emailFromRemindView);
+
+                if(user != null)
+                {
+                    //set new code reset password
+                    user.CodeResetPassword = Guid.NewGuid();
+                    unitOfWork.Complete();
+
+                    //set link to reset password
+                    var verifyUrl = "/User/ResetPassword/" + user.CodeResetPassword;
+                    var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, verifyUrl);
+
+                    //send email with reset password code
+                    EmailClient emailClient = new EmailClient();
+                    emailClient.SendResetPasswordCode(user.Email, link);
+
+                    ViewBag.Message = "Link umożliwiający zmiane hasła został wysłany na podany adres e-mail.";
+                }
+                else
+                {
+                    ViewBag.Message = "Email jest nie poprawny lub nie istnieje takie konto.";
+                }
+
+
+            }
+            else
+            {
+                ViewBag.Message = "Musisz wypełnić te pole.";
+            }
+            return View();
+        }
+
+
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using RoomMate.Data.Context;
@@ -12,12 +13,30 @@ namespace RoomMate.Data.Repository
         public UserRepository(RoomMateDbContext mainContext) : base(mainContext) { }
         public bool IsUserWithEmailExist(string email)
         {
-            User user = _context.Users.FirstOrDefault(u => u.Email.ToLower().Equals(email.ToLower()));
+            User user = _context
+                        .Users
+                        .FirstOrDefault(u => u.Email.ToLower()
+                        .Equals(email.ToLower()));
+
             if(user != null)
             {
                 return true;
             }
             return false;
+        }
+
+        public User GetUserByEmail(string email)
+        {
+            User user = _context
+                        .Users
+                        .FirstOrDefault(u => u.Email.ToLower()
+                        .Equals(email.ToLower()));
+
+            if (user!=null)
+            {
+                return user; 
+            }
+            return null;
         }
     }
 }

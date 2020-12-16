@@ -11,5 +11,6 @@ namespace RoomMate.Data.Repository
     public interface IUserRepository : IGenericRepository<User>
     {
         bool IsUserWithEmailExist(string email);
+        User GetUserByEmail(string email);
     }
 }
