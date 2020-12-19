@@ -1,0 +1,58 @@
+﻿@{
+
+    if (Session["UserID"] == null)
+    {
+        Response.Redirect("~/");
+    }
+
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="~/Content/Css/style.css" />
+    <!--inculding icons-->
+    <script src="https://kit.fontawesome.com/b1173e0201.js"></script>
+    <!--inculding font-->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+    <!--including datepicker-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <!--including map-->
+    <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.1.1/build/ol.js"></script>
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList"></script>
+    <!--inclduing geo map -->
+    <link href="https://unpkg.com/ol-geocoder/dist/ol-geocoder.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.1.1/css/ol.css" type="text/css">
+    <script src="https://unpkg.com/ol-geocoder"></script>
+</head>
+
+<body>
+    <div class="all">
+        <section class="header-container-simple" style="margin:0;">
+            <div class="header header-white" style="margin: 0 50px 0 20px;">
+                <p class="logo">ROOM<br>MATE</p>
+                <div class="nav-user">
+                    <i class="far fa-user"></i>
+                    @if (Session["UserID"] != null)
+                    {
+                        <a href="@Url.Action(" Dashboard", "Profile" )">Profil</a>
+                        using (Html.BeginForm("Logout", "User", FormMethod.Post))
+                        {
+                            <a>Wyloguj się</a>
+                        }
+                    }
+                    else
+                    {
+                        <a href="@Url.Action(" Registration", "User" )">Zarejestruj się</a>
+                        <a href="@Url.Action(" Login", "User" )">Zaloguj się</a>
+                    }
+                </div>
+            </div>
+            @RenderBody()
+        </section>
+    </div>
+</body>
+</html>

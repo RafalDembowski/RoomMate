@@ -180,6 +180,8 @@
     <Content Include="Views\User\RemindPassword.cshtml" />
     <Content Include="Views\User\ResetPassword.cshtml" />
     <Content Include="Views\UserProfile\Dashboard.cshtml" />
+    <Content Include="Views\Shared\_UserProfileLayout.cshtml" />
+    <Content Include="Views\UserProfile\AddRoom.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\Image\" />

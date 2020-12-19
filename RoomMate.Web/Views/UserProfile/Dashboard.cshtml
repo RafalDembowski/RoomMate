@@ -1,7 +1,146 @@
 ﻿
 @{
     ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_UserProfileLayout.cshtml";
 }
 
-<h2>Dashboard</h2>
+<div class="main-header" style="height: 90.5vh;">
 
+    <div class="background-shadow"></div>
+    <div class="center-modal close-delete-modal">
+        <div class="modal" id="modal-delete">
+
+            <div class="modal-header" id="modal-header-delete">
+                <h2>Usuwanie</h2>
+                <a href="#" class="modal-dismiss close-delete-modal"><i class="text-dark fas fa-times p-2"></i></a>
+            </div>
+
+            <div class="modal-body">
+                <div class="modal-row-delete">
+                    <h2>Potwierdzenie</h2>
+                    <p>Na pewno chcesz usunąć te zakwaterowanie?</p>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button id="button-cancel" class="close-delete-modal">Anuluj</button>
+                @using (Html.BeginForm("Delete", "Profile"))
+                {
+                    <button id="button-delete">Usuń</button>
+                }
+            </div>
+
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="vertical-nav">
+            <div class="vertical-user-photo">
+                <img src="/../Content/IMAGE/profile_none.png" />
+                <p>
+
+                </p>
+            </div>
+            <ul>
+                <li class="active">
+                    <i class="fas fa-home"></i><a class="active" href="#">Menu</a>
+                </li>
+                <li>
+                    <i class="fas fa-plus"></i><a href="@Url.Action("AddRoom", "Profile")">Nowy nocleg</a>
+                </li>
+                <li>
+                    <i class="fas fa-suitcase"></i><a href="@Url.Action("Customers", "Profile")">Rezerwacje</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="profile-user-container">
+
+
+            <div class="profile-container">
+                <h2>Menu</h2>
+
+                <div class="profile-container-flex">
+                    <div class="profile-container-div profile-user">
+
+                        <div class="profile-heading">
+                            <h3>Konto użytkownika</h3>
+                            <i class="far fa-edit toClick" id="editUser"></i>
+                            <i class="far fa-times-circle toClick" id="cancelEditUser"></i>
+                        </div>
+                        <div class="profile-body">
+                            <div class="profile-body-img">
+                                <img src="/../Content/Image/profile_none.png" />
+                            </div>
+                            <div style="width:90%">
+                                <div class="profile-body-txt" id="displayUserInformation">
+
+                                    <div class="row">
+                                        <label>Imię:</label>  <p></p>
+                                    </div>
+
+                                    <div class="row">
+                                        <label>Nazwisko:</label>  <p></p>
+                                    </div>
+
+                                </div>
+
+                                    <div class="profile-body-txt" id="editUserInformation">
+
+                                        <div class="row">
+
+                                            <label>Imię:</label>  <p></p>
+                                        </div>
+
+                                        <div class="row">
+
+                                            <label>Nazwisko:</label>  <p></p>
+                                        </div>
+
+
+                                        <div style="display:block;">
+                                            <button class="profile-save-btn">Zapisz</button>
+                                        </div>
+
+                                    </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="profile-container-div profile-information">
+                        <div class="profile-information-img">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <h2></h2>
+                        <p>Liczba Twoich zakwaterowań</p>
+                    </div>
+
+                    <div class="profile-container-div profile-information">
+                        <div class="profile-information-img">
+                            <i class="fas fa-suitcase"></i>
+                        </div>
+                        <h2>0</h2>
+                        <p>Liczba zrealizowanych rezerwacji</p>
+                    </div>
+
+                </div>
+
+                <div class="profile-container-div profile-container-accommodation">
+                    <div class="profile-heading">
+                        <h3>Zakwaterowania:</h3>
+                        <a href="">
+                            <i class="far fa-plus-square toClick"></i>
+                        </a>
+                    </div>
+                        <div class="profile-container-accommodation-row">
+                            <p>Nie masz jeszcze stworzonego żadnego zakwaterowania.</p>
+                        </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>

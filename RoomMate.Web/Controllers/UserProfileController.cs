@@ -10,10 +10,10 @@ namespace RoomMate.Controllers
     {
         public ActionResult Dashboard()
         {
-            if (Session["UserID"] == null)
-            {
-                return RedirectToAction("Index", "Home");
-            }
+            return View();
+        }
+        public ActionResult AddRoom()
+        {
             return View();
         }
     }

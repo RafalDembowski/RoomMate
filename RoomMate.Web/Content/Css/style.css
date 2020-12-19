@@ -1,5 +1,5 @@
 ﻿* {
-    font-family: 'Public Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-weight: normal;
     margin: 0;
 }
@@ -1157,6 +1157,7 @@ img {
     .profile-container-flex {
         display: flex;
         justify-content: space-between;
+        max-width: 1100px;
     }
 
     .profile-container-accommodation {
