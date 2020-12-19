@@ -14,7 +14,7 @@
             </div>
             @if (ViewBag.Message != null)
             {
-                <span class="badge badge-danger">@ViewBag.error</span>
+                <span class="badge badge-danger">@ViewBag.Message</span>
             }
             <div class="card-body">
                 @using (Html.BeginForm("Login", "User", FormMethod.Post))

@@ -49,19 +49,24 @@ namespace RoomMate.Controllers
                     user.CodeActivation = Guid.NewGuid();
                     user.CodeResetPassword = Guid.Empty;
 
-                    unitOfWork.UsersRepository.Insert(user);
-                    unitOfWork.Complete();
-
                     //set link to activation account
                     var verifyUrl = "/User/VerifyAccount/" + user.CodeActivation;
                     var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, verifyUrl);
 
                     EmailClient emailClient = new EmailClient();
-                    emailClient.SendVerifyAccountCode(user.Email, link);
-
-                    ViewBag.Message = "Konto zostało utworzone, aktywuj je aby móc z niego korzystać.";
-
+                    bool registrationWasSuccessful = emailClient.SendVerifyAccountCode(user.Email, link);
+                    if (registrationWasSuccessful)
+                    {
+                        unitOfWork.UsersRepository.Insert(user);
+                        unitOfWork.Complete();
+                        ViewBag.Message = "Konto zostało utworzone, aktywuj je aby móc z niego korzystać.";
+                    }
+                    else
+                    {
+                       ViewBag.Message = "Wystąpił problem z rejestracją, proszę spróbować za jakiś czas. Jeśli problem będzie się powtarzał prosimy o kontakt z administracją.";
+                    }
                     return View();
+
                 }
                 else
                 {
@@ -151,7 +156,6 @@ namespace RoomMate.Controllers
                 {
                     //set new code reset password
                     user.CodeResetPassword = Guid.NewGuid();
-                    unitOfWork.Complete();
 
                     //set link to reset password
                     var verifyUrl = "/User/ResetPassword/" + user.CodeResetPassword;
@@ -159,9 +163,18 @@ namespace RoomMate.Controllers
 
                     //send email with reset password code
                     EmailClient emailClient = new EmailClient();
-                    emailClient.SendResetPasswordCode(user.Email, link);
+                    bool sendEmailWasSuccessful = emailClient.SendResetPasswordCode(user.Email, link);
 
-                    ViewBag.Message = "Link umożliwiający zmiane hasła został wysłany na podany adres e-mail.";
+                    if (sendEmailWasSuccessful)
+                    {
+                        unitOfWork.Complete();
+                        ViewBag.Message = "Link umożliwiający zmiane hasła został wysłany na podany adres e-mail.";
+                    }
+                    else
+                    {
+                        ViewBag.Message = "Wystąpił problem , proszę spróbować za jakiś czas. Jeśli problem będzie się powtarzał prosimy o kontakt z administracją.";
+                    }
+
                 }
                 else
                 {
@@ -178,6 +191,7 @@ namespace RoomMate.Controllers
         public ActionResult ResetPassword(string id)
         {
             ViewBag.RestPasswordCodeStatus = false;
+            ViewBag.Message = "Link jest nie aktualny lub został już wykorzystany.";
             bool codeResetPasswordCanBeGuid = Guid.TryParse(id, out var newGuid);
 
             if (!String.IsNullOrEmpty(id) && codeResetPasswordCanBeGuid == true)
@@ -192,14 +206,14 @@ namespace RoomMate.Controllers
                     ViewBag.UserID = user.UserID;
                     ViewBag.RestPasswordCodeStatus = true;
                 }
-            }
 
+            }
             return View();
         }
         [HttpPost]
         public ActionResult ResetPassword(User userFromTheForm)
         {
-            if(userFromTheForm != null)
+            if(!String.IsNullOrEmpty(userFromTheForm.PasswordHash) && userFromTheForm.PasswordHash.Length > 7)
             {
                 User user = unitOfWork.UsersRepository.GetById(userFromTheForm.UserID);
                 user.PasswordHash = Crypto.CreateMD5(userFromTheForm.PasswordHash);
@@ -207,8 +221,12 @@ namespace RoomMate.Controllers
                 unitOfWork.Complete();
 
                 ViewBag.Message = "Hasło zostało pomyślnie zmienione!";
-                return RedirectToAction("Login");
+                return View();
             }
+            ViewBag.UserID = userFromTheForm.UserID;
+            ViewBag.RestPasswordCodeStatus = true;
+            ViewBag.Error = "Hasło nie może być puste ani krótsze niż 8 znaków.";
+
             return View();
         }
     }

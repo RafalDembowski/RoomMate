@@ -32,27 +32,29 @@ namespace RoomMate.Common
                 Credentials = new NetworkCredential(domainEmailAdress.Address, domainEmailPassword)
             };
         }
-        public void SendVerifyAccountCode(string _userEmailAddress, string requestLink)
+        public bool SendVerifyAccountCode(string _userEmailAddress, string requestLink)
         {
             subjectEmail = "Welcome in RoomMate!";
             contentEmail = "<br><br>Twoje konto zostało poprawnie założone." +
                              "W celu aktywowania konta wejdź w poniższy link." +
                              "<br><br><a href='" + requestLink + "'>Aktywuj konto</a>";
-            SendEmail(_userEmailAddress);
-
+            
+            return SendEmail(_userEmailAddress);
         }
-        public void SendResetPasswordCode(string _userEmailAddress, string requestLink)
+        public bool SendResetPasswordCode(string _userEmailAddress, string requestLink)
         {
             subjectEmail = "Zresetuj hasło";
             contentEmail = "<br><br>W celu zresetowania hasła kliknij na niżej zamieszczony link." +
                              "Jeśli to nie Ty chciałeś zresetować hasło proszę o zignorowanie wiadomości." +
                              "<br><br><a href='" + requestLink + "'>Resetuj hasło</a>";
-            SendEmail(_userEmailAddress);
+
+            return SendEmail(_userEmailAddress);
         }
-        public void SendEmail(string _userEmailAddress)
+        public bool SendEmail(string _userEmailAddress)
         {
             
             userEmailAddress = new MailAddress(_userEmailAddress);
+            bool sendEmailWasSuccessful = false;
 
             using (var message = new MailMessage(domainEmailAdress, userEmailAddress)
             {
@@ -61,7 +63,16 @@ namespace RoomMate.Common
                 IsBodyHtml = true
             })
 
-            smtpClient.Send(message);
+            try 
+            { 
+                smtpClient.Send(message);
+                sendEmailWasSuccessful = true;
+            }
+            catch(SmtpException ex) 
+            { 
+               System.Diagnostics.Debug.WriteLine("Mail cannot be sent: "+ ex.Message);
+            }
+            return sendEmailWasSuccessful;
 
         }
 
