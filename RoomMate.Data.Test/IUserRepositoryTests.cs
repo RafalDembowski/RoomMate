@@ -45,6 +45,14 @@ namespace RoomMate.Data.Test
                     return false;
             });
 
+            mockUserRepository
+                .Setup(m => m.GetUserByEmail(
+                It.IsAny<String>())).Returns(
+                (String email) => users.Where(
+                u => u.Email.ToLower().
+                Equals(email.ToLower()))
+                .Single());
+
             this.mockUserRepository = mockUserRepository.Object;
 
         }
@@ -59,7 +67,17 @@ namespace RoomMate.Data.Test
             bool emailExistInData = this.mockUserRepository.IsUserWithEmailExist(testEmail);
 
             Assert.AreEqual(emailExistInData, true);
+        }
 
+        [TestMethod]
+        public void IUserRepository_GetUserByEmail_TakeUserFromData_Success()
+        {
+            String email = "SaraConor@gmail.com";
+            User testUser = (User)this.mockUserRepository.GetUserByEmail(email);
+
+            Assert.IsNotNull(testUser);
+            Assert.IsInstanceOfType(testUser, typeof(User));
+            Assert.AreEqual("Conor", testUser.LastName);
         }
     }
 }
