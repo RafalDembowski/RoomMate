@@ -68,8 +68,8 @@
         var city = $("#city").val();
         var street = $("#street").val();
         var house = $("#house").val();
-        var flat = $("#flat").val();
-        var geocode = 'https://nominatim.openstreetmap.org/?addressdetails=1&city=' + city + '&street=' + house + " " + flat + " " + street + '&format=json&limit=1'
+        var postCode = $("#postCode").val();
+        var geocode = 'https://nominatim.openstreetmap.org/?addressdetails=1&street=' + street + '+' + house + '&city=' + city + '&postalcode=' + postCode + '&format=json&limit=1'
         //get json
         $.ajaxSetup({ async: false });
         $.getJSON(geocode, function (data) {
@@ -110,7 +110,7 @@
                 ],
                 view: new ol.View({
                     center: ol.proj.fromLonLat([latlng[0], latlng[1]]),
-                    zoom: 14
+                    zoom: 18
                 })
             });
 

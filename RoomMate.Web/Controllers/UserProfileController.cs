@@ -32,9 +32,11 @@ namespace RoomMate.Controllers
         [HttpPost]
         public ActionResult AddRoom(UserProfileViewModel userProfileViewModel)
         {
+            System.Diagnostics.Debug.WriteLine("cos nie dziala ziombelku");
             if (ModelState.IsValid)
             {
-
+                System.Diagnostics.Debug.WriteLine("Testowe sprawdzanko");
+                /*to poprawić!!*/
             }
             return View();
         }

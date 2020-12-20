@@ -3,7 +3,13 @@
     ViewBag.Title = "AddRoom";
     Layout = "~/Views/Shared/_UserProfileLayout.cshtml";
 }
-
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+      integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+      crossorigin="" />
+<!-- Make sure you put this AFTER Leaflet's CSS -->
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+        integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+        crossorigin=""></script>
 <div class="main-header" style="height: 93vh;">
 
 
@@ -119,8 +125,8 @@
                             <p style="padding-top:10px">Przed zapisaniem musisz wybrać wyszukać swoją lokalizację.</p>
                             <div class="add-room-flex">
                                 <div class="address-txt-map">
+                                    @Html.ValidationMessageFor(model => model.address.City, "", new { @class = "text-error-room" })
                                     <p>
-                                        @Html.ValidationMessageFor(model => model.address.City, "", new { @class = "text-error-room" })
                                         @Html.EditorFor(model => model.address.City, new { htmlAttributes = new { @class = "add-room-input bold-txt", placeholder = "Wpisz nazwę miasta", id = "city" } })
                                     </p>
                                     @Html.ValidationMessageFor(model => model.address.Street, "", new { @class = "text-error-room" })
@@ -130,7 +136,7 @@
                                     @Html.EditorFor(model => model.address.Flat, new { htmlAttributes = new { @class = "add-room-input", placeholder = "Wpisz numer dom", id = "house" } })
 
                                     @Html.ValidationMessageFor(model => model.address.PostCode, "", new { @class = "text-error-room" })
-                                    @Html.EditorFor(model => model.address.PostCode, new { htmlAttributes = new { @class = "add-room-input", placeholder = "Wpisz kod pocztowy", id = "flat" } })
+                                    @Html.EditorFor(model => model.address.PostCode, new { htmlAttributes = new { @class = "add-room-input", placeholder = "Wpisz kod pocztowy", id = "postCode" } })
                                     <div class="profile-save-btn" id="searchCity">Wyszukaj</div>
 
                                 </div>
@@ -156,21 +162,23 @@
 </div>
 
 <script>
-    var map = new ol.Map({
+     var map = new ol.Map({
         target: 'map',
         layers: [
-            new ol.layer.Tile({
-                source: new ol.source.OSM()
-            })
+          new ol.layer.Tile({
+            source: new ol.source.OSM()
+          })
         ],
         view: new ol.View({
-            center: ol.proj.fromLonLat([37.41, 8.82]),
-            zoom: 0
+          center: ol.proj.fromLonLat([37.41, 8.82]),
+          zoom: 0
         })
-    });
+     });
 </script>
 
 <script src="~/Content/Scripts/ProfileUserScripts.js"></script>
+
+
 
 
 
