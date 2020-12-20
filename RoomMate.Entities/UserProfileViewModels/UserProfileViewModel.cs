@@ -18,6 +18,7 @@ namespace RoomMate.Entities.UserProfileViewModels
         public User user { get; set; }
         public List<Room> rooms { get; set; }
         public List<RoomImage> roomImages { get; set; }
+        public IEnumerable<HttpPostedFileBase> images { get; set; }
         public int amountRooms { get; set; }
         public Equipment equipment { get; set; }
         public Address address { get; set; }

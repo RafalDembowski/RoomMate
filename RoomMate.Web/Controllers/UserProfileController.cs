@@ -29,6 +29,11 @@ namespace RoomMate.Controllers
             prepareUserProfileViewModel();
             return View(userProfileViewModel);
         }
+        [HttpPost]
+        public ActionResult AddRoom(UserProfileViewModel userProfileViewModel)
+        {
+            return View();
+        }
         public ActionResult Customers()
         {
             prepareUserProfileViewModel();

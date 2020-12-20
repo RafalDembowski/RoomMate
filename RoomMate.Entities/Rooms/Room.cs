@@ -11,16 +11,16 @@ namespace RoomMate.Entities.Rooms
         [Key]
         [Column(Order = 0)]
         public Guid RoomID { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Nazwa pokoju jest wymagana.")]
         [MaxLength(256)]
         public string Name { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Wymagane jest podanie ceny pokoju za jedeną noc.")]
         public int Price { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Opis pokoju jest wymagany.")]
         public string Description { get; set; }
         [Required]
         public bool IsActive { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Wymagane jest podanie maksymalnej liczby gości.")]
         public int NumberOfGuests { get; set; }
         public virtual User User { get; set; }
         public virtual Equipment Equipment { get; set; }
