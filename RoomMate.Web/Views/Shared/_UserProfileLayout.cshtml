@@ -33,22 +33,10 @@
     <div class="all">
         <section class="header-container-simple" style="margin:0;">
             <div class="header header-white" style="margin: 0 50px 0 20px;">
-                <p class="logo">ROOM<br>MATE</p>
+                <p class="logo">ROOM<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MATE</p>
                 <div class="nav-user">
                     <i class="far fa-user"></i>
-                    @if (Session["UserID"] != null)
-                    {
-                        <a href="@Url.Action(" Dashboard", "Profile" )">Profil</a>
-                        using (Html.BeginForm("Logout", "User", FormMethod.Post))
-                        {
-                            <a>Wyloguj się</a>
-                        }
-                    }
-                    else
-                    {
-                        <a href="@Url.Action(" Registration", "User" )">Zarejestruj się</a>
-                        <a href="@Url.Action(" Login", "User" )">Zaloguj się</a>
-                    }
+                    <a href="@Url.Action("Logout","User")">Wyloguj się</a>
                 </div>
             </div>
             @RenderBody()

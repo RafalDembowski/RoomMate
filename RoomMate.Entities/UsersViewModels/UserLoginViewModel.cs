@@ -8,8 +8,10 @@ namespace RoomMate.Entities.UsersViewModels
 {
     public class UserLoginViewModel
     {
-        [Required(ErrorMessage = "Email jest wymagany.")]
-        public string Email { get; set; }
+        [Display(Name = "Identyfikator użytkownika")]
+        [Required(ErrorMessage = "Login lub e-mail jest wymagany.")]
+        public string EmailOrLogin { get; set; }
+        [Display(Name = "Hasło")]
         [Required(ErrorMessage = "Hasło jest wymagany.")]
         public string PasswordHash { get; set; }
     }

@@ -1,8 +1,203 @@
-﻿
+﻿@model RoomMate.Entities.UserProfileViewModels.UserProfileViewModel
 @{
     ViewBag.Title = "AddRoom";
     Layout = "~/Views/Shared/_UserProfileLayout.cshtml";
 }
 
-<h2>AddRoom</h2>
+<div class="main-header" style="height: 90.5vh;">
+
+
+    <div class="main-container">
+        <div class="vertical-nav">
+            <div class="vertical-user-photo">
+                <img src="/../Content/Image/profile_none.png" />
+                <p>
+                    @Html.DisplayFor(model => model.user.FirsName)
+                    @Html.DisplayFor(model => model.user.LastName)
+                </p>
+            </div>
+            <ul>
+                <li>
+                    <i class="fas fa-home"></i><a href="@Url.Action("Dashboard", "UserProfile")">Menu</a>
+                </li>
+                <li class="active">
+                    <i class="fas fa-plus"></i><a class="active" href="#">Nowy nocleg</a>
+                </li>
+                <li>
+                    <i class="fas fa-suitcase"></i><a href="@Url.Action("Customers", "UserProfile")">Rezerwacje</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="profile-user-container">
+
+
+            <div class="profile-container">
+
+                <h2>Dodaj nocleg</h2>
+
+                <div class="add-room-container">
+                    <div class="profile-container-div profile-add-room">
+                        <div class="profile-heading">
+                            <h3>
+                            </h3>
+                        </div>
+
+                        <div class="add-room-img">
+                            <img id="roomImg" />
+                            <img src="/../Content/Image/add-img.png" id="add-img-photo" />
+
+                        </div>
+
+                        <div class="add-room-txt-container">
+
+                            <div class="max-height-div">
+                                <p class="bold-txt">Opis zakwaterowania:</p>
+
+                            </div>
+
+                            <div>
+                                <p class="bold-txt">Wyposażenie zakwaterowania:</p>
+
+                                <div class="equipment-container-searching" style="height:100%;">
+
+                                </div>
+                            </div>
+
+                            <div class="max-height-div">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="profile-container-div profile-add-room-map">
+                        <div class="profile-heading">
+                            <h3>Lokalizacja</h3>
+
+                        </div>
+                        <p style="padding-top:10px">Przed zapisaniem musisz wybrać wyszukać swoją lokalizację.</p>
+                        <div class="add-room-flex">
+                            <div class="address-txt-map">
+
+                                <div class="profile-save-btn" id="searchCity">Wyszukaj</div>
+
+                            </div>
+                            <div class="address-map">
+                                <div id="map" class="map"></div>
+                                <div id="popup" class="ol-popup">
+                                    <div id="popup-content"></div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <button class="profile-save-btn" id="save-room">Zapisz</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+
+    var map = new ol.Map({
+        target: 'map',
+        layers: [
+            new ol.layer.Tile({
+                source: new ol.source.OSM()
+            })
+        ],
+        view: new ol.View({
+            center: ol.proj.fromLonLat([37.41, 8.82]),
+            zoom: 0
+        })
+    });
+
+    //get address from user
+    var latlng;
+    $("#searchCity").click(function () {
+        latlng = null;
+        var city = $("#city").val();
+        var street = $("#street").val();
+        var house = $("#house").val();
+        var flat = $("#flat").val();
+        var geocode = 'https://nominatim.openstreetmap.org/?addressdetails=1&city=' + city + '&street=' + house + " " + flat + " " + street + '&format=json&limit=1'
+        //get json
+        $.ajaxSetup({ async: false });
+        $.getJSON(geocode, function (data) {
+            latlng = [data[0].lon, data[0].lat]
+        });
+        //set new address
+        if (latlng != null) {
+            $('#save-room').prop('disabled', false);
+            //set values to json
+            var latlngJson = {
+                lat: latlng[0],
+                lng: latlng[1],
+            }
+
+            $.ajax({
+                type: "POST",
+                url: '/saveAddres',
+                data: latlngJson,
+                dataType: "json",
+                success: function (data) {
+                }
+            });
+
+            //
+            $("#map").remove();
+            $(".address-map").append('<div id="map" class="map"></div>');
+            $("#popup").remove();
+            $(".address-map").append('<div id="popup" class="ol-popup"></div>');
+            $("#popup").append('<div id="popup-content"></div>');
+            $("#popup").css("display", "block");
+
+            var map = new ol.Map({
+                target: 'map',
+                layers: [
+                    new ol.layer.Tile({
+                        source: new ol.source.OSM()
+                    })
+                ],
+                view: new ol.View({
+                    center: ol.proj.fromLonLat([latlng[0], latlng[1]]),
+                    zoom: 14
+                })
+            });
+
+            var layer = new ol.layer.Vector({
+                source: new ol.source.Vector({
+                    features: [
+                        new ol.Feature({
+                            geometry: new ol.geom.Point(ol.proj.fromLonLat([latlng[0], latlng[1]]))
+                        })
+                    ]
+                })
+            });
+            map.addLayer(layer);
+
+            //set marker
+            var container = document.getElementById('popup');
+            var content = document.getElementById('popup-content');
+            var overlay = new ol.Overlay({
+                element: container,
+                autoPan: true,
+                autoPanAnimation: {
+                    duration: 250
+                }
+            });
+            map.addOverlay(overlay);
+            content.innerHTML = '<p class="bold-txt">' + city + '</p><br />' + street + ' ' + house + ' ' + flat;
+            overlay.setPosition(ol.proj.fromLonLat([latlng[0], latlng[1]]));
+
+        }
+
+    });
+</script>
 

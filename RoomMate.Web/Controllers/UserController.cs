@@ -43,8 +43,8 @@ namespace RoomMate.Controllers
                     user.UserName = userFromTheForm.UserName;
                     user.PasswordHash = Crypto.CreateMD5(userFromTheForm.PasswordHash);
                     user.UserID = Guid.NewGuid();
-                    user.FirsName = "";
-                    user.LastName = "";
+                    user.FirsName = userFromTheForm.FirstName;
+                    user.LastName = userFromTheForm.LastName;
                     user.IsEmailVerified = false;
                     user.CodeActivation = Guid.NewGuid();
                     user.CodeResetPassword = Guid.Empty;
@@ -90,13 +90,13 @@ namespace RoomMate.Controllers
                 var userPasswrodFromTheForm = Crypto.CreateMD5(userFromTheForm.PasswordHash);
                 var user = unitOfWork.UsersRepository
                            .GetAll()
-                           .Where(u => u.Email.Equals(userFromTheForm.Email) 
+                           .Where(u => u.Email.ToLower().Equals(userFromTheForm.EmailOrLogin.ToLower()) 
+                                  || u.UserName.ToLower().Equals(userFromTheForm.EmailOrLogin.ToLower())
                                   && u.PasswordHash.Equals(userPasswrodFromTheForm) 
                                   && u.IsEmailVerified == true).ToList();
 
                 if (user.Count() > 0)
                 {
-                    Session["Email"] = user.FirstOrDefault().Email;
                     Session["UserID"] = user.FirstOrDefault().UserID;
 
                     return RedirectToAction("Index");

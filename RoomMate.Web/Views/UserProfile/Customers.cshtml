@@ -1,0 +1,55 @@
+﻿@model RoomMate.Entities.UserProfileViewModels.UserProfileViewModel
+@{
+    ViewBag.Title = "Customers";
+    Layout = "~/Views/Shared/_UserProfileLayout.cshtml";
+}
+
+<div class="main-header" style="height: 90.5vh;">
+
+
+    <div class="main-container">
+        <div class="vertical-nav">
+            <div class="vertical-user-photo">
+                <img src="/../Content/Image/profile_none.png" />
+                <p>
+                    @Html.DisplayFor(model => model.user.FirsName)
+                    @Html.DisplayFor(model => model.user.LastName)
+                </p>
+            </div>
+            <ul>
+                <li>
+                    <i class="fas fa-home"></i><a href="@Url.Action("Dashboard", "UserProfile")">Menu</a>
+                </li>
+                <li>
+                    <i class="fas fa-plus"></i><a href="@Url.Action("AddRoom", "UserProfile")">Nowy nocleg</a>
+                </li>
+                <li class="active">
+                    <i class="fas fa-suitcase"></i><a class="active" href="#">Rezerwacje</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="profile-user-container">
+
+
+            <div class="profile-container">
+
+                <h2>Rezerwacje</h2>
+
+                <div class="profile-container-div profile-container-accommodation">
+                    <div class="profile-heading">
+                        <h3>Twoje zrealizowane rezerwacje:</h3>
+                    </div>
+                    <div class="profile-container-accommodation-row">
+                        <p>Nie masz zrealizowanej żadnej rezerwacji.</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

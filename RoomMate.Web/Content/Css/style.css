@@ -468,7 +468,7 @@ img {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        width: 240px;
+        min-width: 120px;
     }
 
         .nav-user a {

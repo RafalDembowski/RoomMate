@@ -182,6 +182,7 @@
     <Content Include="Views\UserProfile\Dashboard.cshtml" />
     <Content Include="Views\Shared\_UserProfileLayout.cshtml" />
     <Content Include="Views\UserProfile\AddRoom.cshtml" />
+    <Content Include="Views\UserProfile\Customers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\Image\" />

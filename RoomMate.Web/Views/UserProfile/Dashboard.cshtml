@@ -1,4 +1,4 @@
-﻿
+﻿@model RoomMate.Entities.UserProfileViewModels.UserProfileViewModel
 @{
     ViewBag.Title = "Dashboard";
     Layout = "~/Views/Shared/_UserProfileLayout.cshtml";
@@ -38,7 +38,8 @@
             <div class="vertical-user-photo">
                 <img src="/../Content/IMAGE/profile_none.png" />
                 <p>
-
+                    @Html.DisplayFor(model => model.user.FirsName)
+                    @Html.DisplayFor(model => model.user.LastName)
                 </p>
             </div>
             <ul>
@@ -46,10 +47,10 @@
                     <i class="fas fa-home"></i><a class="active" href="#">Menu</a>
                 </li>
                 <li>
-                    <i class="fas fa-plus"></i><a href="@Url.Action("AddRoom", "Profile")">Nowy nocleg</a>
+                    <i class="fas fa-plus"></i><a href="@Url.Action("AddRoom", "UserProfile")">Nowy nocleg</a>
                 </li>
                 <li>
-                    <i class="fas fa-suitcase"></i><a href="@Url.Action("Customers", "Profile")">Rezerwacje</a>
+                    <i class="fas fa-suitcase"></i><a href="@Url.Action("Customers", "UserProfile")">Rezerwacje</a>
                 </li>
             </ul>
         </div>
@@ -76,11 +77,11 @@
                                 <div class="profile-body-txt" id="displayUserInformation">
 
                                     <div class="row">
-                                        <label>Imię:</label>  <p></p>
+                                        <label>Imię:</label>  <p>@Html.DisplayFor(model => model.user.FirsName)</p>
                                     </div>
 
                                     <div class="row">
-                                        <label>Nazwisko:</label>  <p></p>
+                                        <label>Nazwisko:</label>  <p>@Html.DisplayFor(model => model.user.LastName)</p>
                                     </div>
 
                                 </div>
@@ -88,12 +89,10 @@
                                     <div class="profile-body-txt" id="editUserInformation">
 
                                         <div class="row">
-
                                             <label>Imię:</label>  <p></p>
                                         </div>
 
                                         <div class="row">
-
                                             <label>Nazwisko:</label>  <p></p>
                                         </div>
 

@@ -15,7 +15,6 @@
                 @if (Session["UserID"] != null)
                 {
                     <p>User ID: @Session["UserID"].ToString()</p>
-                    <p>Email: @Session["Email"].ToString()</p>
                     <a href="@Url.Action("Logout","User")" class="btn btn-warning">Logout</a>
                 }
             </div>
