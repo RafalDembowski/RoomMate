@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/_UserProfileLayout.cshtml";
 }
 
-<div class="main-header" style="height: 90.5vh;">
+<div class="main-header" style="height: 93vh;">
 
 
     <div class="main-container">
@@ -40,9 +40,11 @@
                     @Html.ValidationSummary(true, "", new { @class = "text-error-room" })
                     <div class="add-room-container">
                         <div class="profile-container-div profile-add-room">
+                            <h3>
+                                @Html.ValidationMessageFor(model => model.room.Name, "", new { @class = "text-error-room" })
+                            </h3>
                             <div class="profile-heading">
                                 <h3>
-                                    @Html.ValidationMessageFor(model => model.room.Name, "", new { @class = "text-error-room" })
                                     @Html.EditorFor(model => model.room.Name, new { htmlAttributes = new { @class = "add-room-input-h3", placeholder = "Wpisz nazwa pokoju" } })
                                 </h3>
                             </div>
@@ -97,7 +99,7 @@
                                     <p class="bold-txt">Szczegóły zakwaterowania:</p>
                                     @Html.ValidationMessageFor(model => model.room.NumberOfGuests, "", new { @class = "text-error-room" })
                                     <div class="add-rom-row">
-                                        <label>Liczba gości</label>   <p> @Html.EditorFor(model => model.room.NumberOfGuests,  new { htmlAttributes = new { @class = "add-room-input", placeholder = "Wpisz liczbę gości" } })</p>
+                                        <label>Liczba gości</label>   <p> @Html.EditorFor(model => model.room.NumberOfGuests, new { htmlAttributes = new { @class = "add-room-input", placeholder = "Wpisz liczbę gości" } })</p>
                                     </div>
                                     @Html.ValidationMessageFor(model => model.room.Price, "", new { @class = "text-error-room" })
                                     <div class="add-rom-row">
@@ -118,8 +120,8 @@
                             <div class="add-room-flex">
                                 <div class="address-txt-map">
                                     <p>
-                                    @Html.ValidationMessageFor(model => model.address.City, "", new { @class = "text-error-room" })
-                                    @Html.EditorFor(model => model.address.City, new { htmlAttributes = new { @class = "add-room-input bold-txt", placeholder = "Wpisz nazwę miasta", id = "city" } })
+                                        @Html.ValidationMessageFor(model => model.address.City, "", new { @class = "text-error-room" })
+                                        @Html.EditorFor(model => model.address.City, new { htmlAttributes = new { @class = "add-room-input bold-txt", placeholder = "Wpisz nazwę miasta", id = "city" } })
                                     </p>
                                     @Html.ValidationMessageFor(model => model.address.Street, "", new { @class = "text-error-room" })
                                     @Html.EditorFor(model => model.address.Street, new { htmlAttributes = new { @class = "add-room-input", placeholder = "Wpisz ulice", id = "street" } })
@@ -127,8 +129,8 @@
                                     @Html.ValidationMessageFor(model => model.address.Flat, "", new { @class = "text-error-room" })
                                     @Html.EditorFor(model => model.address.Flat, new { htmlAttributes = new { @class = "add-room-input", placeholder = "Wpisz numer dom", id = "house" } })
 
-                                    @Html.ValidationMessageFor(model => model.address.PostCode , "", new { @class = "text-error-room" })
-                                    @Html.EditorFor(model => model.address.PostCode , new { htmlAttributes = new { @class = "add-room-input", placeholder = "Wpisz kod pocztowy", id = "flat" } })
+                                    @Html.ValidationMessageFor(model => model.address.PostCode, "", new { @class = "text-error-room" })
+                                    @Html.EditorFor(model => model.address.PostCode, new { htmlAttributes = new { @class = "add-room-input", placeholder = "Wpisz kod pocztowy", id = "flat" } })
                                     <div class="profile-save-btn" id="searchCity">Wyszukaj</div>
 
                                 </div>
@@ -154,7 +156,6 @@
 </div>
 
 <script>
-
     var map = new ol.Map({
         target: 'map',
         layers: [
@@ -167,87 +168,9 @@
             zoom: 0
         })
     });
-
-    //get address from user
-    var latlng;
-    $("#searchCity").click(function () {
-        latlng = null;
-        var city = $("#city").val();
-        var street = $("#street").val();
-        var house = $("#house").val();
-        var flat = $("#flat").val();
-        var geocode = 'https://nominatim.openstreetmap.org/?addressdetails=1&city=' + city + '&street=' + house + " " + flat + " " + street + '&format=json&limit=1'
-        //get json
-        $.ajaxSetup({ async: false });
-        $.getJSON(geocode, function (data) {
-            latlng = [data[0].lon, data[0].lat]
-        });
-        //set new address
-        if (latlng != null) {
-            $('#save-room').prop('disabled', false);
-            //set values to json
-            var latlngJson = {
-                lat: latlng[0],
-                lng: latlng[1],
-            }
-
-            $.ajax({
-                type: "POST",
-                url: '/saveAddres',
-                data: latlngJson,
-                dataType: "json",
-                success: function (data) {
-                }
-            });
-
-            //
-            $("#map").remove();
-            $(".address-map").append('<div id="map" class="map"></div>');
-            $("#popup").remove();
-            $(".address-map").append('<div id="popup" class="ol-popup"></div>');
-            $("#popup").append('<div id="popup-content"></div>');
-            $("#popup").css("display", "block");
-
-            var map = new ol.Map({
-                target: 'map',
-                layers: [
-                    new ol.layer.Tile({
-                        source: new ol.source.OSM()
-                    })
-                ],
-                view: new ol.View({
-                    center: ol.proj.fromLonLat([latlng[0], latlng[1]]),
-                    zoom: 14
-                })
-            });
-
-            var layer = new ol.layer.Vector({
-                source: new ol.source.Vector({
-                    features: [
-                        new ol.Feature({
-                            geometry: new ol.geom.Point(ol.proj.fromLonLat([latlng[0], latlng[1]]))
-                        })
-                    ]
-                })
-            });
-            map.addLayer(layer);
-
-            //set marker
-            var container = document.getElementById('popup');
-            var content = document.getElementById('popup-content');
-            var overlay = new ol.Overlay({
-                element: container,
-                autoPan: true,
-                autoPanAnimation: {
-                    duration: 250
-                }
-            });
-            map.addOverlay(overlay);
-            content.innerHTML = '<p class="bold-txt">' + city + '</p><br />' + street + ' ' + house + ' ' + flat;
-            overlay.setPosition(ol.proj.fromLonLat([latlng[0], latlng[1]]));
-
-        }
-
-    });
 </script>
+
+<script src="~/Content/Scripts/ProfileUserScripts.js"></script>
+
+
 

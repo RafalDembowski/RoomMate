@@ -32,6 +32,10 @@ namespace RoomMate.Controllers
         [HttpPost]
         public ActionResult AddRoom(UserProfileViewModel userProfileViewModel)
         {
+            if (ModelState.IsValid)
+            {
+
+            }
             return View();
         }
         public ActionResult Customers()
@@ -41,8 +45,11 @@ namespace RoomMate.Controllers
         }
         public void prepareUserProfileViewModel()
         {
-            User user = unitOfWork.UsersRepository.GetById((Guid)Session["UserID"]);
-            userProfileViewModel.user = user;
+            if (Session["UserID"] != null)
+            {
+                User user = unitOfWork.UsersRepository.GetById((Guid)Session["UserID"]);
+                userProfileViewModel.user = user;
+            }
         }
     }
 }
