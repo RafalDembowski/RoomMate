@@ -55,13 +55,16 @@
                                 </h3>
                             </div>
 
+                            <div>                                
+                                <p class="text-error-room" id="image-error" style="display:none">Błędny format plików.</p>
+                            </div>
+
                             <div class="add-room-img">
                                 <img id="roomImg" />
-                                <img src="/../Content/Image/add-img.png" id="add-img-photo" />     
-                                @*
+                                <img src="/../Content/Image/add-img.png" id="add-img-photo" />
                                 @Html.ValidationMessageFor(model => model.images, "", new { @class = "text-error-room" })
-                                @Html.TextBoxFor(model => Model.images, "", new { @type = "file", @multiple = "multiple", @id = "add-file", @onchange = "updateImage(this);" })
-                                *@
+                                @Html.TextBoxFor(model => Model.images, "", new { @type = "file", accept = "image/*", @multiple = "multiple", @id = "add-file" })
+
                             </div>
 
                             <div class="add-room-txt-container">
@@ -107,11 +110,11 @@
                                     <p class="bold-txt">Szczegóły zakwaterowania:</p>
                                     @Html.ValidationMessageFor(model => model.roomToEdit.NumberOfGuests, "", new { @class = "text-error-room" })
                                     <div class="add-rom-row">
-                                        <label>Liczba gości</label>   <p> @Html.EditorFor(model => model.roomToEdit.NumberOfGuests, new { htmlAttributes = new { @class = "add-room-input", placeholder = "Wpisz liczbę gości" } })</p>
+                                        <label>Liczba gości</label>   <p> @Html.EditorFor(model => model.roomToEdit.NumberOfGuests, new { htmlAttributes = new { min = 0, max = 15, @class = "add-room-input", placeholder = "Wpisz liczbę gości" } })</p>
                                     </div>
                                     @Html.ValidationMessageFor(model => model.roomToEdit.Price, "", new { @class = "text-error-room" })
                                     <div class="add-rom-row">
-                                        <label>Cena za noc:</label>  <p>@Html.EditorFor(model => model.roomToEdit.Price, new { htmlAttributes = new { @class = "add-room-input", placeholder = "Wpisz cene za jedną noc" } }) zł</p>
+                                        <label>Cena za noc:</label>  <p>@Html.EditorFor(model => model.roomToEdit.Price, new { htmlAttributes = new { min = 0 , @class = "add-room-input", placeholder = "Wpisz cene za jedną noc" } }) zł</p>
                                     </div>
                                 </div>
 

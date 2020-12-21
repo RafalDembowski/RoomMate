@@ -29,10 +29,11 @@
     });
     /*Add room*/
     //add image in room
+    
     $("#add-img-photo").click(function () {
         $("input[id='add-file']").click();
     });
-
+    
     var imagesPreview = function (input, placeToInsertImagePreview) {
 
         if (input.files) {
@@ -52,12 +53,29 @@
 
     };
 
+    function validateImages(input) {
+        const file = input.files[0];
+        const fileType = file['type'];
+        const validImageTypes = ['image/jpeg', 'image/png'];
+        if (!validImageTypes.includes(fileType))
+        {
+            return false;
+        }
+        return true;
+    }
     $('#add-file').on('change', function () {
 
-        var image = $(".add-room-img").children("img");
-        image.remove();
+        if (validateImages(this)) {
+            var image = $(".add-room-img").children("img");
+            image.remove();
+            imagesPreview(this, 'div.add-room-img');
+            $("#image-error").css('display', 'none');
+        }
+        else
+        {
+            $("#image-error").css('display', 'block');
+        }
 
-        imagesPreview(this, 'div.add-room-img');
     });
     //disable button before searching room address
     $('#save-room').prop('disabled', true);

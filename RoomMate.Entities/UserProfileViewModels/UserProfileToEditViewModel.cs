@@ -19,7 +19,7 @@ namespace RoomMate.Entities.UserProfileViewModels
         public User user { get; set; }
         public List<RoomToEditViewModel> roomsToEdit { get; set; }
         //public List<RoomImage> roomImages { get; set; }
-        //public IEnumerable<HttpPostedFileBase> images { get; set; }
+        public IEnumerable<HttpPostedFileBase> images { get; set; }
         public int amountRooms { get; set; }
         public EquipmentToEditViewModel equipmentToEdit { get; set; }
         public AddressToEditViewModel addressToEdit { get; set; }
