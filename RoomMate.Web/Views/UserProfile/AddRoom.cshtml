@@ -1,4 +1,4 @@
-﻿@model RoomMate.Entities.UserProfileViewModels.UserProfileViewModel
+﻿@model RoomMate.Entities.UserProfileViewModels.UserProfileToEditViewModel
 @{
     ViewBag.Title = "AddRoom";
     Layout = "~/Views/Shared/_UserProfileLayout.cshtml";
@@ -47,27 +47,29 @@
                     <div class="add-room-container">
                         <div class="profile-container-div profile-add-room">
                             <h3>
-                                @Html.ValidationMessageFor(model => model.room.Name, "", new { @class = "text-error-room" })
+                                @Html.ValidationMessageFor(model => model.roomToEdit.Name, "", new { @class = "text-error-room" })
                             </h3>
                             <div class="profile-heading">
                                 <h3>
-                                    @Html.EditorFor(model => model.room.Name, new { htmlAttributes = new { @class = "add-room-input-h3", placeholder = "Wpisz nazwa pokoju" } })
+                                    @Html.EditorFor(model => model.roomToEdit.Name, new { htmlAttributes = new { @class = "add-room-input-h3", placeholder = "Wpisz nazwa pokoju" } })
                                 </h3>
                             </div>
 
                             <div class="add-room-img">
                                 <img id="roomImg" />
-                                <img src="/../Content/Image/add-img.png" id="add-img-photo" />
+                                <img src="/../Content/Image/add-img.png" id="add-img-photo" />     
+                                @*
                                 @Html.ValidationMessageFor(model => model.images, "", new { @class = "text-error-room" })
                                 @Html.TextBoxFor(model => Model.images, "", new { @type = "file", @multiple = "multiple", @id = "add-file", @onchange = "updateImage(this);" })
+                                *@
                             </div>
 
                             <div class="add-room-txt-container">
 
                                 <div class="max-height-div">
                                     <p class="bold-txt">Opis zakwaterowania:</p>
-                                    @Html.ValidationMessageFor(model => model.room.Description, "", new { @class = "text-error-room" })
-                                    @Html.TextAreaFor(model => model.room.Description, new { @class = "add-room-txtarea", placeholder = "Wpisz tutaj opis swojego zakwaterowania." })
+                                    @Html.ValidationMessageFor(model => model.roomToEdit.Description, "", new { @class = "text-error-room" })
+                                    @Html.TextAreaFor(model => model.roomToEdit.Description, new { @class = "add-room-txtarea", placeholder = "Wpisz tutaj opis swojego zakwaterowania." })
                                 </div>
 
                                 <div>
@@ -75,27 +77,27 @@
 
                                     <div class="equipment-container-searching" style="height:100%;">
                                         <div class="equipment-item-add">
-                                            @Html.CheckBoxFor(model => Model.equipment.IsAirConditioning)
+                                            @Html.CheckBoxFor(model => Model.equipmentToEdit.IsAirConditioning)
                                             <p><i class="fas fa-fan"></i>Klimatyzacja</p>
                                         </div>
                                         <div class="equipment-item-add">
-                                            @Html.CheckBoxFor(model => Model.equipment.IsKitchen)
+                                            @Html.CheckBoxFor(model => Model.equipmentToEdit.IsKitchen)
                                             <p><i class="fas fa-utensils"></i>Kuchnia</p>
                                         </div>
                                         <div class="equipment-item-add">
-                                            @Html.CheckBoxFor(model => Model.equipment.IsParking)
+                                            @Html.CheckBoxFor(model => Model.equipmentToEdit.IsParking)
                                             <p><i class="fas fa-parking"></i> Parking</p>
                                         </div>
                                         <div class="equipment-item-add">
-                                            @Html.CheckBoxFor(model => Model.equipment.IsTelevision)
+                                            @Html.CheckBoxFor(model => Model.equipmentToEdit.IsTelevision)
                                             <p><i class="fas fa-tv"></i>Telewizja</p>
                                         </div>
                                         <div class="equipment-item-add">
-                                            @Html.CheckBoxFor(model => Model.equipment.IsWifi)
+                                            @Html.CheckBoxFor(model => Model.equipmentToEdit.IsWifi)
                                             <p><i class="fas fa-wifi"></i>Wi-fi</p>
                                         </div>
                                         <div class="equipment-item-add">
-                                            @Html.CheckBoxFor(model => Model.equipment.IsWashingMachine)
+                                            @Html.CheckBoxFor(model => Model.equipmentToEdit.IsWashingMachine)
                                             <p><i class="fas fa-tshirt"></i>Pralka</p>
                                         </div>
                                     </div>
@@ -103,13 +105,13 @@
 
                                 <div class="max-height-div">
                                     <p class="bold-txt">Szczegóły zakwaterowania:</p>
-                                    @Html.ValidationMessageFor(model => model.room.NumberOfGuests, "", new { @class = "text-error-room" })
+                                    @Html.ValidationMessageFor(model => model.roomToEdit.NumberOfGuests, "", new { @class = "text-error-room" })
                                     <div class="add-rom-row">
-                                        <label>Liczba gości</label>   <p> @Html.EditorFor(model => model.room.NumberOfGuests, new { htmlAttributes = new { @class = "add-room-input", placeholder = "Wpisz liczbę gości" } })</p>
+                                        <label>Liczba gości</label>   <p> @Html.EditorFor(model => model.roomToEdit.NumberOfGuests, new { htmlAttributes = new { @class = "add-room-input", placeholder = "Wpisz liczbę gości" } })</p>
                                     </div>
-                                    @Html.ValidationMessageFor(model => model.room.Price, "", new { @class = "text-error-room" })
+                                    @Html.ValidationMessageFor(model => model.roomToEdit.Price, "", new { @class = "text-error-room" })
                                     <div class="add-rom-row">
-                                        <label>Cena za noc:</label>  <p>@Html.EditorFor(model => model.room.Price, new { htmlAttributes = new { @class = "add-room-input", placeholder = "Wpisz cene za jedną noc" } }) zł</p>
+                                        <label>Cena za noc:</label>  <p>@Html.EditorFor(model => model.roomToEdit.Price, new { htmlAttributes = new { @class = "add-room-input", placeholder = "Wpisz cene za jedną noc" } }) zł</p>
                                     </div>
                                 </div>
 
@@ -125,18 +127,18 @@
                             <p style="padding-top:10px">Przed zapisaniem musisz wybrać wyszukać swoją lokalizację.</p>
                             <div class="add-room-flex">
                                 <div class="address-txt-map">
-                                    @Html.ValidationMessageFor(model => model.address.City, "", new { @class = "text-error-room" })
+                                    @Html.ValidationMessageFor(model => model.addressToEdit.City, "", new { @class = "text-error-room" })
                                     <p>
-                                        @Html.EditorFor(model => model.address.City, new { htmlAttributes = new { @class = "add-room-input bold-txt", placeholder = "Wpisz nazwę miasta", id = "city" } })
+                                        @Html.EditorFor(model => model.addressToEdit.City, new { htmlAttributes = new { @class = "add-room-input bold-txt", placeholder = "Wpisz nazwę miasta", id = "city" } })
                                     </p>
-                                    @Html.ValidationMessageFor(model => model.address.Street, "", new { @class = "text-error-room" })
-                                    @Html.EditorFor(model => model.address.Street, new { htmlAttributes = new { @class = "add-room-input", placeholder = "Wpisz ulice", id = "street" } })
+                                    @Html.ValidationMessageFor(model => model.addressToEdit.Street, "", new { @class = "text-error-room" })
+                                    @Html.EditorFor(model => model.addressToEdit.Street, new { htmlAttributes = new { @class = "add-room-input", placeholder = "Wpisz ulice", id = "street" } })
 
-                                    @Html.ValidationMessageFor(model => model.address.Flat, "", new { @class = "text-error-room" })
-                                    @Html.EditorFor(model => model.address.Flat, new { htmlAttributes = new { @class = "add-room-input", placeholder = "Wpisz numer dom", id = "house" } })
+                                    @Html.ValidationMessageFor(model => model.addressToEdit.Flat, "", new { @class = "text-error-room" })
+                                    @Html.EditorFor(model => model.addressToEdit.Flat, new { htmlAttributes = new { @class = "add-room-input", placeholder = "Wpisz numer dom", id = "house" } })
 
-                                    @Html.ValidationMessageFor(model => model.address.PostCode, "", new { @class = "text-error-room" })
-                                    @Html.EditorFor(model => model.address.PostCode, new { htmlAttributes = new { @class = "add-room-input", placeholder = "Wpisz kod pocztowy", id = "postCode" } })
+                                    @Html.ValidationMessageFor(model => model.addressToEdit.PostCode, "", new { @class = "text-error-room" })
+                                    @Html.EditorFor(model => model.addressToEdit.PostCode, new { htmlAttributes = new { @class = "add-room-input", placeholder = "Wpisz kod pocztowy", id = "postCode" } })
                                     <div class="profile-save-btn" id="searchCity">Wyszukaj</div>
 
                                 </div>

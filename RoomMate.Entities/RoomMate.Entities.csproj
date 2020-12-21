@@ -72,11 +72,14 @@
   <ItemGroup>
     <Compile Include="Bookings\Booking.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RoomsViewModels\AddressToEditViewModel.cs" />
+    <Compile Include="RoomsViewModels\EquipmentToEditViewModel.cs" />
+    <Compile Include="RoomsViewModels\RoomToEditViewModel.cs" />
     <Compile Include="Rooms\Address.cs" />
     <Compile Include="Rooms\Equipment.cs" />
     <Compile Include="Rooms\Room.cs" />
     <Compile Include="Rooms\RoomImage.cs" />
-    <Compile Include="UserProfileViewModels\UserProfileViewModel.cs" />
+    <Compile Include="UserProfileViewModels\UserProfileToEditViewModel.cs" />
     <Compile Include="UsersViewModels\UserLoginViewModel.cs" />
     <Compile Include="UsersViewModels\UserRegistrationViewModel.cs" />
     <Compile Include="Users\User.cs" />
@@ -91,6 +94,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

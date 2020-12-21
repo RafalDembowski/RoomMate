@@ -136,7 +136,7 @@
                 }
             });
             map.addOverlay(overlay);
-            content.innerHTML = '<p class="bold-txt">' + city + '</p><br />' + street + ' ' + house + ' ' + flat;
+            content.innerHTML = '<p class="bold-txt">' + city + '</p><br />' + street + ' ' + house;
             overlay.setPosition(ol.proj.fromLonLat([latlng[0], latlng[1]]));
 
         }

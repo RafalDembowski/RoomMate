@@ -13,44 +13,43 @@ namespace RoomMate.Controllers
     public class UserProfileController : Controller
     {
         private UnitOfWork unitOfWork;
-        private UserProfileViewModel userProfileViewModel;
+        private UserProfileToEditViewModel userProfileToeditViewModel;
         public UserProfileController()
         {
             unitOfWork = new UnitOfWork(new RoomMateDbContext());
-            userProfileViewModel = new UserProfileViewModel();
+            userProfileToeditViewModel = new UserProfileToEditViewModel();
         }
         public ActionResult Dashboard()
         {
             prepareUserProfileViewModel();
-            return View(userProfileViewModel);
+            return View(userProfileToeditViewModel);
         }
         public ActionResult AddRoom()
         {
             prepareUserProfileViewModel();
-            return View(userProfileViewModel);
+            return View(userProfileToeditViewModel);
         }
         [HttpPost]
-        public ActionResult AddRoom(UserProfileViewModel userProfileViewModel)
+        public ActionResult AddRoom(UserProfileToEditViewModel userProfileToeditViewModel)
         {
             System.Diagnostics.Debug.WriteLine("cos nie dziala ziombelku");
             if (ModelState.IsValid)
             {
                 System.Diagnostics.Debug.WriteLine("Testowe sprawdzanko");
-                /*to poprawić!!*/
             }
             return View();
         }
         public ActionResult Customers()
         {
             prepareUserProfileViewModel();
-            return View(userProfileViewModel);
+            return View(userProfileToeditViewModel);
         }
         public void prepareUserProfileViewModel()
         {
             if (Session["UserID"] != null)
             {
                 User user = unitOfWork.UsersRepository.GetById((Guid)Session["UserID"]);
-                userProfileViewModel.user = user;
+                userProfileToeditViewModel.user = user;
             }
         }
     }
