@@ -73,6 +73,9 @@
     <Compile Include="Crypto.cs" />
     <Compile Include="EmailClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SaveImageClients\ISaveImageClient.cs" />
+    <Compile Include="SaveImageClients\RoomSaveImageClient.cs" />
+    <Compile Include="SaveImageClients\SaveImageClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -83,6 +86,17 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RoomMate.Data\RoomMate.Data.csproj">
+      <Project>{892DF2D7-A236-45A5-8B28-1E0B00637666}</Project>
+      <Name>RoomMate.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RoomMate.Entities\RoomMate.Entities.csproj">
+      <Project>{30e8bc2b-cfe3-43ec-aa5b-c4040a78c6a3}</Project>
+      <Name>RoomMate.Entities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

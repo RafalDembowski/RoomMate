@@ -143,6 +143,10 @@
             });
             map.addLayer(layer);
 
+            //set value to hiddenfor
+            $("#SearchAddressLatitude").val(latlng[0]);
+            $("#SearchAddressLongitude").val(latlng[1]);
+
             //set marker
             var container = document.getElementById('popup');
             var content = document.getElementById('popup-content');

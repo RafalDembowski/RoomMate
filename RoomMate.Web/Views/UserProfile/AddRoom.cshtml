@@ -142,6 +142,10 @@
 
                                     @Html.ValidationMessageFor(model => model.addressToEdit.PostCode, "", new { @class = "text-error-room" })
                                     @Html.EditorFor(model => model.addressToEdit.PostCode, new { htmlAttributes = new { @class = "add-room-input", placeholder = "Wpisz kod pocztowy", id = "postCode" } })
+                                   
+                                    @Html.HiddenFor(model => model.addressToEdit.Lat, new { id = "SearchAddressLatitude" })
+                                    @Html.HiddenFor(model => model.addressToEdit.Lon, new { id = "SearchAddressLongitude" })
+
                                     <div class="profile-save-btn" id="searchCity">Wyszukaj</div>
 
                                 </div>

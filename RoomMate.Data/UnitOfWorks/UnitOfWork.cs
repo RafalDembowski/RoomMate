@@ -14,14 +14,16 @@ namespace RoomMate.Data.UnitOfWorks
         public IUserRepository UsersRepository { get; }
         public IGenericRepository<Room> RoomsRepository { get; }
         public IGenericRepository<Equipment> EquipmentRepository { get;  }
-        public IGenericRepository<Address> AddressRepository { get;  }
+        public IGenericRepository<Address> AddressesRepository { get;  }
+        public IGenericRepository<RoomImage> RoomImagesRepository { get;  }
         public UnitOfWork(RoomMateDbContext context)
         {
             _context = context;
             UsersRepository = new UserRepository(_context);
             RoomsRepository = new GenericRepository<Room>(_context);
             EquipmentRepository = new GenericRepository<Equipment>(_context);
-            AddressRepository = new GenericRepository<Address>(_context);
+            AddressesRepository = new GenericRepository<Address>(_context);
+            RoomImagesRepository = new GenericRepository<RoomImage>(_context);
         }
         public int Complete()
         {
