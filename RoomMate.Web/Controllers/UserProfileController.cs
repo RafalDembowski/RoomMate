@@ -117,13 +117,26 @@ namespace RoomMate.Controllers
             if (!String.IsNullOrEmpty(id) && codeActivationCanBeGuid == true)
             {
                 userProfileToDisplayView.user = getActiveUserID();
+                //get all rooms with join 
+                var rooms = unitOfWork.RoomsRepository.Get(
+                                                       filter: r => r.User.UserID == userProfileToDisplayView.user.UserID && r.IsActive == true && r.RoomID == new Guid(id),
+                                                       orderBy: null,
+                                                       includeProperties: "Address,Equipment"
+                                                       );
+                var roomResult = rooms.ToList();
+                userProfileToDisplayView.room = roomResult.FirstOrDefault();
+                //get all images with join
+                var images = unitOfWork.RoomImagesRepository.Get(
+                                                             filter: i => i.Room.RoomID == new Guid(id),
+                                                             orderBy: null,
+                                                             includeProperties: ""
+                                                             );
 
-
-                List<Room> rooms = new List<Room>();
+                userProfileToDisplayView.room.RoomImages = images.ToList();
 
                 if (userProfileToDisplayView.room != null)
                 {
-                    return View();
+                    return View(userProfileToDisplayView);
                 }
                 return RedirectToAction("Dashboard");
             }
@@ -132,6 +145,7 @@ namespace RoomMate.Controllers
                 return RedirectToAction("Dashboard");
             }
         }
+
         public ActionResult Customers()
         {
             userProfileToeditViewModel.user = getActiveUserID();

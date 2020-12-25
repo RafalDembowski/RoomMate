@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Web;
 
 namespace RoomMate.Data.Repository
@@ -48,5 +49,66 @@ namespace RoomMate.Data.Repository
         {
             _context.SaveChanges();
         }
+        public IEnumerable<T> Get(
+            Expression<Func<T, bool>> filter = null, 
+            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, 
+            string includeProperties = "")
+        {
+            IQueryable<T> query = table;
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            foreach (var includeProperty in includeProperties.Split
+                (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                query = query.Include(includeProperty);
+                System.Diagnostics.Debug.WriteLine(query.ToString());
+            }
+
+            if (orderBy != null)
+            {
+                return orderBy(query).ToList();
+            }
+            else
+            {
+                return query.ToList();
+            }
+        }
+        public virtual IQueryable<T1> Get<TResult, T1>(
+         Expression<Func<T, bool>> filter = null,
+         Expression<Func<T, TResult>> orderBy = null,
+         Func<IQueryable<T>, IQueryable<T1>> selector = null,
+         string includeProperties = "")
+        {
+            IQueryable<T> query = table;
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            foreach (var includeProperty in includeProperties.Split
+                (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                query = query.Include(includeProperty);
+            }
+            if (orderBy != null)
+            {
+                query = query.OrderBy(orderBy);
+            }
+
+            if (selector != null)
+            {
+                return selector(query);
+            }
+            else
+            {
+                return (IQueryable<T1>)query.ToList();
+            }
+        }
+
     }
 }

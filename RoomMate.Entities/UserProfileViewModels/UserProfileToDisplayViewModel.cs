@@ -11,7 +11,5 @@ namespace RoomMate.Entities.UserProfileViewModels
     {
         public User user { get; set; }
         public Room room { get; set; }
-        public Equipment equipment { get; set; }
-        public Address address { get; set; }
     }
 }
