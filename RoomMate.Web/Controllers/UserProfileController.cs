@@ -16,97 +16,135 @@ namespace RoomMate.Controllers
     {
         private UnitOfWork unitOfWork;
         private UserProfileToEditViewModel userProfileToeditViewModel;
+        private UserProfileToDisplayViewModel userProfileToDisplayView;
         public UserProfileController()
         {
             unitOfWork = new UnitOfWork(new RoomMateDbContext());
             userProfileToeditViewModel = new UserProfileToEditViewModel();
+            userProfileToDisplayView = new UserProfileToDisplayViewModel();
         }
         public ActionResult Dashboard()
         {
-            prepareUserProfileViewModel();
+            userProfileToeditViewModel.user = getActiveUserID();
             return View(userProfileToeditViewModel);
         }
         public ActionResult AddRoom()
         {
-            prepareUserProfileViewModel();
+            userProfileToeditViewModel.user = getActiveUserID();
             return View(userProfileToeditViewModel);
         }
         [HttpPost]
         public ActionResult AddRoom(UserProfileToEditViewModel _userProfileToeditViewModel)
         {
-            prepareUserProfileViewModel();
+            userProfileToeditViewModel.user = getActiveUserID();
 
-            if (ModelState.IsValid)
+            try
             {
-                //create room object
-                Room room = new Room();
-                room.RoomID = Guid.NewGuid();
-                room.Name = _userProfileToeditViewModel.roomToEdit.Name;
-                room.Price = _userProfileToeditViewModel.roomToEdit.Price;
-                room.Description = _userProfileToeditViewModel.roomToEdit.Description;
-                room.IsActive = true;
-                room.NumberOfGuests = _userProfileToeditViewModel.roomToEdit.NumberOfGuests;
-                room.User = userProfileToeditViewModel.user;
-
-                unitOfWork.RoomsRepository.Insert(room);
-
-                //create room images objetcs
-                List<RoomImage> roomImages = new List<RoomImage>();
-                RoomSaveImageClient roomSaveImageClient = new RoomSaveImageClient();
-                roomImages = roomSaveImageClient.saveRoomImageToDiskAndReturnListWithRoomImages(_userProfileToeditViewModel.images, room.RoomID, room.User.UserID , room);
-
-
-                if ((roomImages != null) && (!roomImages.Any()))
+            
+                if (ModelState.IsValid)
                 {
-                    foreach(var image in roomImages)
+                    //create room object
+                    Room room = new Room();
+                    room.RoomID = Guid.NewGuid();
+                    room.Name = _userProfileToeditViewModel.roomToEdit.Name;
+                    room.Price = _userProfileToeditViewModel.roomToEdit.Price;
+                    room.Description = _userProfileToeditViewModel.roomToEdit.Description;
+                    room.IsActive = true;
+                    room.NumberOfGuests = _userProfileToeditViewModel.roomToEdit.NumberOfGuests;
+                    room.User = userProfileToeditViewModel.user;
+
+                    //create room images objetcs
+                    List<RoomImage> roomImages = new List<RoomImage>();
+                    RoomSaveImageClient roomSaveImageClient = new RoomSaveImageClient();
+                    roomImages = roomSaveImageClient.saveRoomImageToDiskAndReturnListWithRoomImages(_userProfileToeditViewModel.images, room.RoomID, room.User.UserID, room);
+
+                    if (roomImages.Any() && roomImages != null)
                     {
-                        unitOfWork.RoomImagesRepository.Insert(image);
+                        foreach (var image in roomImages)
+                        {
+                            unitOfWork.RoomImagesRepository.Insert(image);
+                        }
                     }
+
+                    //create equipment object
+                    Equipment equipment = new Equipment();
+                    equipment.EquipmentID = Guid.NewGuid();
+                    equipment.IsWifi = _userProfileToeditViewModel.equipmentToEdit.IsWifi;
+                    equipment.IsAirConditioning = _userProfileToeditViewModel.equipmentToEdit.IsAirConditioning;
+                    equipment.IsParking = _userProfileToeditViewModel.equipmentToEdit.IsParking;
+                    equipment.IsTelevision = _userProfileToeditViewModel.equipmentToEdit.IsTelevision;
+                    equipment.IsKitchen = _userProfileToeditViewModel.equipmentToEdit.IsKitchen;
+                    equipment.IsWashingMachine = _userProfileToeditViewModel.equipmentToEdit.IsWashingMachine;
+
+                    unitOfWork.EquipmentRepository.Insert(equipment);
+
+                    //create address object
+                    Address address = new Address();
+                    address.AddressID = Guid.NewGuid();
+                    address.City = _userProfileToeditViewModel.addressToEdit.City;
+                    address.Street = _userProfileToeditViewModel.addressToEdit.Street;
+                    address.Flat = _userProfileToeditViewModel.addressToEdit.Flat;
+                    address.PostCode = _userProfileToeditViewModel.addressToEdit.PostCode;
+                    address.Lon = _userProfileToeditViewModel.addressToEdit.Lon;
+                    address.Lat = _userProfileToeditViewModel.addressToEdit.Lat;
+                   
+                    unitOfWork.AddressesRepository.Insert(address);
+
+                    
+                    room.Address = address;
+                    room.Equipment = equipment;
+                    unitOfWork.RoomsRepository.Insert(room);
+
+                    //save to db
+                    unitOfWork.Complete();
+
+                    return RedirectToAction("DisplayRoom", new { id = room.RoomID });
                 }
-
-                //create equipment object
-                Equipment equipment = new Equipment();
-                equipment.EquipmentID = Guid.NewGuid();
-                equipment.IsWifi = _userProfileToeditViewModel.equipmentToEdit.IsWifi;
-                equipment.IsAirConditioning = _userProfileToeditViewModel.equipmentToEdit.IsAirConditioning;
-                equipment.IsParking = _userProfileToeditViewModel.equipmentToEdit.IsParking;
-                equipment.IsTelevision = _userProfileToeditViewModel.equipmentToEdit.IsTelevision;
-                equipment.IsKitchen = _userProfileToeditViewModel.equipmentToEdit.IsKitchen;
-                equipment.IsWashingMachine = _userProfileToeditViewModel.equipmentToEdit.IsWashingMachine;
-                equipment.Room = room;
-
-                unitOfWork.EquipmentRepository.Insert(equipment);
-
-                //create address object
-                Address address = new Address();
-                address.AddressID = Guid.NewGuid();
-                address.City = _userProfileToeditViewModel.addressToEdit.City;
-                address.Street = _userProfileToeditViewModel.addressToEdit.Street;
-                address.PostCode = _userProfileToeditViewModel.addressToEdit.PostCode;
-                address.Lon = _userProfileToeditViewModel.addressToEdit.Lon;
-                address.Lat = _userProfileToeditViewModel.addressToEdit.Lat;
-                address.Room = room;
-
-                unitOfWork.AddressesRepository.Insert(address);
-
-                //save to db
-                unitOfWork.Complete();
-
+                return View();
+            
             }
-            return View();
+            catch(Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("Error: " + e.Message);
+                ViewBag.Error = "Wystąpił błąd, proszę powtórzyć jeszcze raz.";
+                return View();
+            }
+            
+        }
+        public ActionResult DisplayRoom(string id)
+        {
+            bool codeActivationCanBeGuid = Guid.TryParse(id, out var newGuid);
+            if (!String.IsNullOrEmpty(id) && codeActivationCanBeGuid == true)
+            {
+                userProfileToDisplayView.user = getActiveUserID();
+
+
+                List<Room> rooms = new List<Room>();
+
+                if (userProfileToDisplayView.room != null)
+                {
+                    return View();
+                }
+                return RedirectToAction("Dashboard");
+            }
+            else
+            {
+                return RedirectToAction("Dashboard");
+            }
         }
         public ActionResult Customers()
         {
-            prepareUserProfileViewModel();
+            userProfileToeditViewModel.user = getActiveUserID();
             return View(userProfileToeditViewModel);
         }
-        public void prepareUserProfileViewModel()
+        public User getActiveUserID()
         {
+            User user = new User();
             if (Session["UserID"] != null)
             {
-                User user = unitOfWork.UsersRepository.GetById((Guid)Session["UserID"]);
-                userProfileToeditViewModel.user = user;
+                user = unitOfWork.UsersRepository.GetById((Guid)Session["UserID"]);
             }
+            return user;
         }
     }
 }

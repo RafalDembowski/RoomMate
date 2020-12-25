@@ -24,14 +24,21 @@ namespace RoomMate.Common.SaveImageClients
             createDirectory(directoryPath);
             deleteFilesFromDirectory(directoryPath);
 
-            foreach (HttpPostedFileBase file in roomImages)
+            try
             {
-                if (file != null)
+                foreach (HttpPostedFileBase file in roomImages)
                 {
-                    string pathToImage = directoryPath + Path.GetFileName(file.FileName);
-                    file.SaveAs(HttpContext.Current.Server.MapPath(pathToImage));
-                    createRoomImageObjectAndAddToList(pathToImage, room);
+                    if (file != null)
+                    {
+                        string pathToImage = directoryPath + Path.GetFileName(file.FileName);
+                        file.SaveAs(HttpContext.Current.Server.MapPath(pathToImage));
+                        createRoomImageObjectAndAddToList(pathToImage, room);
+                    }
                 }
+            }
+            catch(Exception e)
+            {
+                throw e;
             }
 
             return roomImagesList;

@@ -15,7 +15,5 @@ namespace RoomMate.Entities.Users
         [Required]
         [MaxLength(256)]
         public string ImagePath { get; set; }
-        [Required]
-        public virtual User User { get; set; }
     }
 }

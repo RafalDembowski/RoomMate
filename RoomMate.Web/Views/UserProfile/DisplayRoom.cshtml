@@ -1,15 +1,16 @@
 ﻿@model RoomMate.Entities.UserProfileViewModels.UserProfileToEditViewModel
 @{
-    ViewBag.Title = "AddRoom";
+    ViewBag.Title = "DisplayRoom";
     Layout = "~/Views/Shared/_UserProfileLayout.cshtml";
 }
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
-      integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
-      crossorigin="" />
-<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+        integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+        crossorigin="" />
+        <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
         integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
         crossorigin=""></script>
 <div class="main-header" style="height: 93vh;">
+
 
     <div class="main-container">
         <div class="vertical-nav">
@@ -35,13 +36,9 @@
 
         <div class="profile-user-container">
 
+
             <div class="profile-container">
-                @if (ViewBag.Error != null)
-                {
-                    <div>
-                        <p class="text-error-room">@ViewBag.Error</p>
-                    </div>
-                }
+
                 <h2>Dodaj nocleg</h2>
                 @using (Html.BeginForm("AddRoom", "UserProfile", FormMethod.Post, new { enctype = "multipart/form-data" }))
                 {
@@ -57,7 +54,7 @@
                                 </h3>
                             </div>
 
-                            <div>
+                            <div>                                
                                 <p class="text-error-room" id="image-error" style="display:none">Błędny format plików.</p>
                             </div>
 
@@ -116,7 +113,7 @@
                                     </div>
                                     @Html.ValidationMessageFor(model => model.roomToEdit.Price, "", new { @class = "text-error-room" })
                                     <div class="add-rom-row">
-                                        <label>Cena za noc:</label>  <p>@Html.EditorFor(model => model.roomToEdit.Price, new { htmlAttributes = new { min = 0, @class = "add-room-input", placeholder = "Wpisz cene za jedną noc" } }) zł</p>
+                                        <label>Cena za noc:</label>  <p>@Html.EditorFor(model => model.roomToEdit.Price, new { htmlAttributes = new { min = 0 , @class = "add-room-input", placeholder = "Wpisz cene za jedną noc" } }) zł</p>
                                     </div>
                                 </div>
 
@@ -144,7 +141,7 @@
 
                                     @Html.ValidationMessageFor(model => model.addressToEdit.PostCode, "", new { @class = "text-error-room" })
                                     @Html.EditorFor(model => model.addressToEdit.PostCode, new { htmlAttributes = new { @class = "add-room-input", placeholder = "Wpisz kod pocztowy", id = "postCode" } })
-
+                                   
                                     @Html.HiddenFor(model => model.addressToEdit.Lat, new { id = "SearchAddressLatitude" })
                                     @Html.HiddenFor(model => model.addressToEdit.Lon, new { id = "SearchAddressLongitude" })
 

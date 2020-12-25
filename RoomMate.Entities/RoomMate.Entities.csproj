@@ -79,6 +79,7 @@
     <Compile Include="Rooms\Equipment.cs" />
     <Compile Include="Rooms\Room.cs" />
     <Compile Include="Rooms\RoomImage.cs" />
+    <Compile Include="UserProfileViewModels\UserProfileToDisplayViewModel.cs" />
     <Compile Include="UserProfileViewModels\UserProfileToEditViewModel.cs" />
     <Compile Include="UsersViewModels\UserLoginViewModel.cs" />
     <Compile Include="UsersViewModels\UserRegistrationViewModel.cs" />

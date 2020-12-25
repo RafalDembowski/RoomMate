@@ -16,7 +16,5 @@ namespace RoomMate.Entities.Rooms
         public bool IsTelevision { get; set; }
         public bool IsKitchen { get; set; }
         public bool IsWashingMachine { get; set; }
-        [Required]
-        public virtual Room Room { get; set; }
     }
 }

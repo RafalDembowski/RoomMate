@@ -78,17 +78,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context\RoomMateDbContext.cs" />
-    <Compile Include="Migrations\202012042202504_add_address_postCode.cs" />
-    <Compile Include="Migrations\202012042202504_add_address_postCode.designer.cs">
-      <DependentUpon>202012042202504_add_address_postCode.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Repository\GenericRepository.cs" />
-    <Compile Include="Repository\IGenericRepository.cs" />
-    <Compile Include="Migrations\202012011500319_create.cs" />
-    <Compile Include="Migrations\202012011500319_create.designer.cs">
-      <DependentUpon>202012011500319_create.cs</DependentUpon>
+    <Compile Include="Migrations\202012251317154_init.cs" />
+    <Compile Include="Migrations\202012251317154_init.designer.cs">
+      <DependentUpon>202012251317154_init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Repository\GenericRepository.cs" />
+    <Compile Include="Repository\IGenericRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\IUserRepository.cs" />
     <Compile Include="Repository\UserRepository.cs" />
@@ -111,11 +107,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202012011500319_create.resx">
-      <DependentUpon>202012011500319_create.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202012042202504_add_address_postCode.resx">
-      <DependentUpon>202012042202504_add_address_postCode.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202012251317154_init.resx">
+      <DependentUpon>202012251317154_init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

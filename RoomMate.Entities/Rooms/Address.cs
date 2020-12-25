@@ -25,7 +25,5 @@ namespace RoomMate.Entities.Rooms
         public decimal Lon { get; set; }
         [Required]
         public decimal Lat { get; set; }
-        [Required]
-        public virtual Room Room { get; set; }
     }
 }

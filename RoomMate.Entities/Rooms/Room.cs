@@ -26,6 +26,5 @@ namespace RoomMate.Entities.Rooms
         public virtual Equipment Equipment { get; set; }
         public virtual Address Address { get; set; }
         public virtual ICollection<RoomImage> RoomImages { get; set; }
-
     }
 }
