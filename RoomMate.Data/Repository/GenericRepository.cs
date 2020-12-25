@@ -65,7 +65,6 @@ namespace RoomMate.Data.Repository
                 (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
             {
                 query = query.Include(includeProperty);
-                System.Diagnostics.Debug.WriteLine(query.ToString());
             }
 
             if (orderBy != null)

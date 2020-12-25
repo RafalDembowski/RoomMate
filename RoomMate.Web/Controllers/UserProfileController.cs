@@ -117,22 +117,8 @@ namespace RoomMate.Controllers
             if (!String.IsNullOrEmpty(id) && codeActivationCanBeGuid == true)
             {
                 userProfileToDisplayView.user = getActiveUserID();
-                //get all rooms with join 
-                var rooms = unitOfWork.RoomsRepository.Get(
-                                                       filter: r => r.User.UserID == userProfileToDisplayView.user.UserID && r.IsActive == true && r.RoomID == new Guid(id),
-                                                       orderBy: null,
-                                                       includeProperties: "Address,Equipment"
-                                                       );
-                var roomResult = rooms.ToList();
-                userProfileToDisplayView.room = roomResult.FirstOrDefault();
-                //get all images with join
-                var images = unitOfWork.RoomImagesRepository.Get(
-                                                             filter: i => i.Room.RoomID == new Guid(id),
-                                                             orderBy: null,
-                                                             includeProperties: ""
-                                                             );
-
-                userProfileToDisplayView.room.RoomImages = images.ToList();
+                userProfileToDisplayView.room = getActiveRoomByID(id);
+                userProfileToDisplayView.room.RoomImages = getRoomImageByRoomID(id);
 
                 if (userProfileToDisplayView.room != null)
                 {
@@ -145,7 +131,31 @@ namespace RoomMate.Controllers
                 return RedirectToAction("Dashboard");
             }
         }
+        [HttpPost]
+        public ActionResult DisplayRoom(UserProfileToDisplayViewModel userProfileToDisplayView)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    System.Diagnostics.Debug.WriteLine("Jestem tutaj");
+                    unitOfWork.RoomsRepository.Update(userProfileToDisplayView.room);
+                    unitOfWork.AddressesRepository.Update(userProfileToDisplayView.room.Address);
+                    unitOfWork.EquipmentRepository.Update(userProfileToDisplayView.room.Equipment);
+                    unitOfWork.Complete();
+                    //zrobić edycje zdjęć!
 
+                    return RedirectToAction("DisplayRoom", new { id = userProfileToDisplayView.room.RoomID });
+                }
+                return RedirectToAction("DisplayRoom", new { id = userProfileToDisplayView.room.RoomID });
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("Error: " + e.Message);
+                ViewBag.Error = "Wystąpił błąd, proszę powtórzyć jeszcze raz.";
+                return RedirectToAction("DisplayRoom", new { id = userProfileToDisplayView.room.RoomID });
+            }
+        }
         public ActionResult Customers()
         {
             userProfileToeditViewModel.user = getActiveUserID();
@@ -159,6 +169,27 @@ namespace RoomMate.Controllers
                 user = unitOfWork.UsersRepository.GetById((Guid)Session["UserID"]);
             }
             return user;
+        }
+        public Room getActiveRoomByID(string id)
+        {
+            Room room = new Room();
+            var rooms = unitOfWork.RoomsRepository.Get(
+                                                      filter: r => r.User.UserID == userProfileToDisplayView.user.UserID && r.IsActive == true && r.RoomID == new Guid(id),
+                                                      orderBy: null,
+                                                      includeProperties: "Address,Equipment"
+                                                      );
+            var roomResult = rooms.ToList();
+            room = roomResult.FirstOrDefault();
+            return room;
+        }
+        public List<RoomImage> getRoomImageByRoomID(string id)
+        {
+            var images = unitOfWork.RoomImagesRepository.Get(
+                                             filter: i => i.Room.RoomID == new Guid(id),
+                                             orderBy: null,
+                                             includeProperties: ""
+                                             );
+            return images.ToList();
         }
     }
 }

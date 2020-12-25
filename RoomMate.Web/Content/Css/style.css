@@ -1563,4 +1563,7 @@ img {
         margin-top: 25px;
         margin-right: -15px;
     }
+    .editRoom{
+        display: none;
+    }
 }
