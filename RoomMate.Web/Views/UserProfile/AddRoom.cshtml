@@ -66,7 +66,6 @@
                                 <img src="/../Content/Image/add-img.png" id="add-img-photo" />
                                 @Html.ValidationMessageFor(model => model.images, "", new { @class = "text-error-room" })
                                 @Html.TextBoxFor(model => Model.images, "", new { @type = "file", accept = "image/*", @multiple = "multiple", @id = "add-file" })
-
                             </div>
 
                             <div class="add-room-txt-container">
@@ -129,7 +128,7 @@
                                 <h3>Lokalizacja</h3>
 
                             </div>
-                            <p style="padding-top:10px">Przed zapisaniem musisz wybrać wyszukać swoją lokalizację.</p>
+                            <p style="padding-top:10px">Przed zapisaniem musisz wybrać i wyszukać swoją lokalizację.</p>
                             <div class="add-room-flex">
                                 <div class="address-txt-map">
                                     @Html.ValidationMessageFor(model => model.addressToEdit.City, "", new { @class = "text-error-room" })

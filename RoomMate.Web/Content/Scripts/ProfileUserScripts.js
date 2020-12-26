@@ -27,10 +27,15 @@
         $(".background-shadow").css('display', 'none')
         $(".center-modal").css('display', 'none');
     });
-    /*Edit room*/
+    /*open edit room*/
     $("#updateRoom").click(function () {
         $(".editRoom").show();
         $(".displayRoom").hide();
+    });
+/*close edit room*/
+    $("#cancelUpdateRoom").click(function () {
+        $(".editRoom").hide();
+        $(".displayRoom").show();
     });
     /*Add room*/
     //add image in room

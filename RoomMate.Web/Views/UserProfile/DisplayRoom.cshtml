@@ -25,8 +25,8 @@
                 <li>
                     <i class="fas fa-home"></i><a href="@Url.Action("Dashboard", "UserProfile")">Menu</a>
                 </li>
-                <li class="active">
-                    <i class="fas fa-plus"></i><a class="active" href="@Url.Action("AddRoom", "UserProfile")">Nowy nocleg</a>
+                <li>
+                    <i class="fas fa-plus"></i><a href="@Url.Action("AddRoom", "UserProfile")">Nowy nocleg</a>
                 </li>
                 <li>
                     <i class="fas fa-suitcase"></i><a href="@Url.Action("Customers", "UserProfile")">Rezerwacje</a>
@@ -58,14 +58,23 @@
                             <div class="profile-heading">
                                 <h3 class="displayRoom">@Html.DisplayFor(model => model.room.Name)</h3>
                                 <h3 class="editRoom">@Html.EditorFor(model => model.room.Name, new { htmlAttributes = new { @class = "add-room-input-h3", placeholder = "Wpisz nazwa pokoju" } })</h3>
-                                <i class="far fa-edit toClick" id="updateRoom"></i>
+                                <i class="far fa-edit toClick displayRoom" id="updateRoom"></i>
+                                <i class="far fa-times-circle toClick editRoom" id="cancelUpdateRoom"></i>
                             </div>
                             @Html.HiddenFor(model => model.room.IsActive)
                             @Html.HiddenFor(model => model.room.RoomID)
                             @Html.HiddenFor(model => model.room.Equipment.EquipmentID)
                             @Html.HiddenFor(model => model.room.Address.AddressID)
 
-                            <div class="add-room-img">
+                            <div>
+                                <p class="text-error-room" id="image-error" style="display:none">Błędny format plików.</p>
+                            </div>
+
+
+                            <div class="add-room-img editRoom">
+                                <img src="/../Content/Image/add-img.png" id="add-img-photo" />
+                                @Html.ValidationMessageFor(model => model.images, "", new { @class = "text-error-room" })
+                                @Html.TextBoxFor(model => model.images, "", new { @type = "file", accept = "image/*", @multiple = "multiple", @id = "add-file", })
                                 @if (Model.room.RoomImages != null && Model.room.RoomImages.Any())
                                 {
                                     foreach (var image in Model.room.RoomImages)
@@ -80,6 +89,20 @@
 
                             </div>
 
+                            <div class="add-room-img-displayRoom displayRoom">
+                                @if (Model.room.RoomImages != null && Model.room.RoomImages.Any())
+                                {
+                                    foreach (var image in Model.room.RoomImages)
+                                    {
+                                        <img src="@Url.Content(image.Path)">
+                                    }
+                                }
+                                else
+                                {
+                                    <img src="~/Content/Image/no-image.png">
+                                }
+                            </div>
+
                             <div class="add-room-txt-container">
 
                                 <div class="max-height-div">
@@ -91,26 +114,14 @@
                                     <p class="editRoom">@Html.TextAreaFor(model => model.room.Description, new { @class = "add-room-txtarea", placeholder = "Wpisz tutaj opis swojego zakwaterowania." })</p>
                                 </div>
 
-                                <div class="max-height-div">
+                                <div>
                                     <p class="bold-txt">Wyposażenie zakwaterowania:</p>
 
-                                    <div class="equipment-container-searching displayRoom">
-                                        @if (Model.room.Equipment.IsWifi)
-                                        {
-                                            <div class="equipment-item">
-                                                <p><i class="fas fa-wifi"></i>WIFI</p>
-                                            </div>
-                                        }
+                                    <div class="equipment-container-searching displayRoom" style="height:100%;">
                                         @if (Model.room.Equipment.IsAirConditioning)
                                         {
                                             <div class="equipment-item">
                                                 <p><i class="fas fa-fan"></i>Klimatyzacja</p>
-                                            </div>
-                                        }
-                                        @if (Model.room.Equipment.IsParking)
-                                        {
-                                            <div class="equipment-item">
-                                                <p><i class="fas fa-parking"></i>Parking</p>
                                             </div>
                                         }
                                         @if (Model.room.Equipment.IsKitchen)
@@ -119,10 +130,23 @@
                                                 <p><i class="fas fa-utensils"></i>Kuchnia</p>
                                             </div>
                                         }
+                                        @if (Model.room.Equipment.IsParking)
+                                        {
+                                            <div class="equipment-item">
+                                                <p><i class="fas fa-parking"></i>Parking</p>
+                                            </div>
+                                        }
+
                                         @if (Model.room.Equipment.IsTelevision)
                                         {
                                             <div class="equipment-item">
                                                 <p><i class="fas fa-tv"></i>Telewizja</p>
+                                            </div>
+                                        }
+                                        @if (Model.room.Equipment.IsWifi)
+                                        {
+                                            <div class="equipment-item">
+                                                <p><i class="fas fa-wifi"></i>WIFI</p>
                                             </div>
                                         }
                                         @if (Model.room.Equipment.IsWashingMachine)
@@ -132,30 +156,32 @@
                                             </div>
                                         }
                                     </div>
-                                    <div class="equipment-container-searching editRoom" style="height:100%;">
-                                        <div class="equipment-item-add">
-                                            @Html.CheckBoxFor(model => Model.room.Equipment.IsAirConditioning)
-                                            <p><i class="fas fa-fan"></i>Klimatyzacja</p>
-                                        </div>
-                                        <div class="equipment-item-add">
-                                            @Html.CheckBoxFor(model => Model.room.Equipment.IsKitchen)
-                                            <p><i class="fas fa-utensils"></i>Kuchnia</p>
-                                        </div>
-                                        <div class="equipment-item-add">
-                                            @Html.CheckBoxFor(model => Model.room.Equipment.IsParking)
-                                            <p><i class="fas fa-parking"></i> Parking</p>
-                                        </div>
-                                        <div class="equipment-item-add">
-                                            @Html.CheckBoxFor(model => Model.room.Equipment.IsTelevision)
-                                            <p><i class="fas fa-tv"></i>Telewizja</p>
-                                        </div>
-                                        <div class="equipment-item-add">
-                                            @Html.CheckBoxFor(model => Model.room.Equipment.IsWifi)
-                                            <p><i class="fas fa-wifi"></i>Wi-fi</p>
-                                        </div>
-                                        <div class="equipment-item-add">
-                                            @Html.CheckBoxFor(model => Model.room.Equipment.IsWashingMachine)
-                                            <p><i class="fas fa-tshirt"></i>Pralka</p>
+                                    <div class="editRoom">
+                                        <div class="equipment-container-searching" style="height:100%;">
+                                            <div class="equipment-item-add">
+                                                @Html.CheckBoxFor(model => Model.room.Equipment.IsAirConditioning)
+                                                <p><i class="fas fa-fan"></i>Klimatyzacja</p>
+                                            </div>
+                                            <div class="equipment-item-add">
+                                                @Html.CheckBoxFor(model => Model.room.Equipment.IsKitchen)
+                                                <p><i class="fas fa-utensils"></i>Kuchnia</p>
+                                            </div>
+                                            <div class="equipment-item-add">
+                                                @Html.CheckBoxFor(model => Model.room.Equipment.IsParking)
+                                                <p><i class="fas fa-parking"></i> Parking</p>
+                                            </div>
+                                            <div class="equipment-item-add">
+                                                @Html.CheckBoxFor(model => Model.room.Equipment.IsTelevision)
+                                                <p><i class="fas fa-tv"></i>Telewizja</p>
+                                            </div>
+                                            <div class="equipment-item-add">
+                                                @Html.CheckBoxFor(model => Model.room.Equipment.IsWifi)
+                                                <p><i class="fas fa-wifi"></i>Wi-fi</p>
+                                            </div>
+                                            <div class="equipment-item-add">
+                                                @Html.CheckBoxFor(model => Model.room.Equipment.IsWashingMachine)
+                                                <p><i class="fas fa-tshirt"></i>Pralka</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -186,6 +212,7 @@
                                     Lokalizacja
                                 </h3>
                             </div>
+                            <p class="editRoom" style="padding-top:10px">Przed zapisaniem musisz wybrać i wyszukać swoją lokalizację.</p>
                             <div class="add-room-flex">
                                 <div class="address-txt-map displayRoom">
                                     <p class="bold-txt" id="address-part-one">
@@ -194,10 +221,12 @@
                                     <p id="address-part-two">
                                         @Html.DisplayFor(model => model.room.Address.Street)
                                         @Html.DisplayFor(model => model.room.Address.Flat)
+                                        <br />
                                         @Html.DisplayFor(model => model.room.Address.PostCode)
                                     </p>
                                 </div>
-                                <div class="address-txt-map editRoom">
+                                <div class="editRoom">
+                                <div class="address-txt-map">
                                     @Html.ValidationMessageFor(model => model.room.Address.City, "", new { @class = "text-error-room" })
                                     <p>
                                         @Html.EditorFor(model => model.room.Address.City, new { htmlAttributes = new { @class = "add-room-input bold-txt", placeholder = "Wpisz nazwę miasta", id = "city" } })
@@ -212,6 +241,7 @@
                                     @Html.EditorFor(model => model.room.Address.PostCode, new { htmlAttributes = new { @class = "add-room-input", placeholder = "Wpisz kod pocztowy", id = "postCode" } })
 
                                     <div class="profile-save-btn" id="searchCity">Wyszukaj</div>
+                                </div>
                                 </div>
                                 <div class="address-map">
                                     @Html.HiddenFor(model => model.room.Address.Lat, new { id = "SearchAddressLatitude" })

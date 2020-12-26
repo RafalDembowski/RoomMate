@@ -1,4 +1,4 @@
-﻿@model RoomMate.Entities.UserProfileViewModels.UserProfileToEditViewModel
+﻿@model RoomMate.Entities.UserProfileViewModels.UserProfileToDisplayViewModel
 @{
     ViewBag.Title = "Dashboard";
     Layout = "~/Views/Shared/_UserProfileLayout.cshtml";
@@ -86,22 +86,22 @@
 
                                 </div>
 
-                                    <div class="profile-body-txt" id="editUserInformation">
+                                <div class="profile-body-txt" id="editUserInformation">
 
-                                        <div class="row">
-                                            <label>Imię:</label>  <p></p>
-                                        </div>
-
-                                        <div class="row">
-                                            <label>Nazwisko:</label>  <p></p>
-                                        </div>
-
-
-                                        <div style="display:block;">
-                                            <button class="profile-save-btn">Zapisz</button>
-                                        </div>
-
+                                    <div class="row">
+                                        <label>Imię:</label>  <p></p>
                                     </div>
+
+                                    <div class="row">
+                                        <label>Nazwisko:</label>  <p></p>
+                                    </div>
+
+
+                                    <div style="display:block;">
+                                        <button class="profile-save-btn">Zapisz</button>
+                                    </div>
+
+                                </div>
                             </div>
 
                         </div>
@@ -111,7 +111,7 @@
                         <div class="profile-information-img">
                             <i class="fas fa-home"></i>
                         </div>
-                        <h2></h2>
+                        <h2>@Model.rooms.Count</h2>
                         <p>Liczba Twoich zakwaterowań</p>
                     </div>
 
@@ -128,14 +128,58 @@
                 <div class="profile-container-div profile-container-accommodation">
                     <div class="profile-heading">
                         <h3>Zakwaterowania:</h3>
-                        <a href="">
+                        <a href="@Url.Action("AddRoom", "UserProfile")">
                             <i class="far fa-plus-square toClick"></i>
                         </a>
                     </div>
+                    @if (Model.rooms.Count == 0)
+                    {
                         <div class="profile-container-accommodation-row">
                             <p>Nie masz jeszcze stworzonego żadnego zakwaterowania.</p>
                         </div>
+                    }
+                    else
+                    {
+                        foreach (var item in Model.rooms)
+                        {
+                            <div class="profile-container-accommodation-row">
+                                <div style="min-width: 750px;">
+                                    <div>
+                                        <div class="profile-container-accommodation-img">
+                                            @{ var roomImage = Model.roomImages.Where(x => x.Room.RoomID == item.RoomID).FirstOrDefault();}
+                                            @if (roomImage != null) {
+                                            <img src="@Url.Content(roomImage.Path)">
+                                            }
+                                            else
+                                            {
+                                            <img src="~/Content/Image/no-image.png">
+                                            }
+                                        </div>
+                                    </div>
+
+                                    <div class="profile-container-accommodation-description">
+                                        <p class="bold-txt">@Html.DisplayFor(model => item.Name)</p>
+                                        <p>
+                                            @Html.DisplayFor(model => item.Address.City)
+                                            @Html.DisplayFor(model => item.Address.Street)
+                                            @Html.DisplayFor(model => item.Address.Flat)
+                                            @Html.DisplayFor(model => item.Address.PostCode)
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="profile-container-accommodation-icon">
+
+                                    <a href="@Url.Action("DisplayRoom", "UserProfile", new { id = item.RoomID })">
+                                        <i class="far fa-question-circle toClick"></i>
+                                    </a>
+
+                                    <i class="far fa-trash-alt toClick delete-modal" id="@item.RoomID "></i>
+                                </div>
+                            </div>
+                        }
+                    }
                 </div>
+
 
             </div>
 
@@ -143,3 +187,5 @@
     </div>
 
 </div>
+
+<script src="~/Content/Scripts/ProfileUserScripts.js"></script>

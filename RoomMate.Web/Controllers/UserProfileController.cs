@@ -25,8 +25,10 @@ namespace RoomMate.Controllers
         }
         public ActionResult Dashboard()
         {
-            userProfileToeditViewModel.user = getActiveUserID();
-            return View(userProfileToeditViewModel);
+            userProfileToDisplayView.user = getActiveUserID();
+            userProfileToDisplayView.rooms = getAllActiveRooms();
+            userProfileToDisplayView.roomImages = unitOfWork.RoomImagesRepository.GetAll().ToList();
+            return View(userProfileToDisplayView);
         }
         public ActionResult AddRoom()
         {
@@ -54,18 +56,8 @@ namespace RoomMate.Controllers
                     room.User = userProfileToeditViewModel.user;
 
                     //create room images objetcs
-                    List<RoomImage> roomImages = new List<RoomImage>();
-                    RoomSaveImageClient roomSaveImageClient = new RoomSaveImageClient();
-                    roomImages = roomSaveImageClient.saveRoomImageToDiskAndReturnListWithRoomImages(_userProfileToeditViewModel.images, room.RoomID, room.User.UserID, room);
-
-                    if (roomImages.Any() && roomImages != null)
-                    {
-                        foreach (var image in roomImages)
-                        {
-                            unitOfWork.RoomImagesRepository.Insert(image);
-                        }
-                    }
-
+                    addNewRoomImagesToDataBase(_userProfileToeditViewModel.images, room.RoomID, room.User.UserID, room);
+                    
                     //create equipment object
                     Equipment equipment = new Equipment();
                     equipment.EquipmentID = Guid.NewGuid();
@@ -131,6 +123,7 @@ namespace RoomMate.Controllers
                 return RedirectToAction("Dashboard");
             }
         }
+        //Update room 
         [HttpPost]
         public ActionResult DisplayRoom(UserProfileToDisplayViewModel userProfileToDisplayView)
         {
@@ -138,12 +131,15 @@ namespace RoomMate.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    System.Diagnostics.Debug.WriteLine("Jestem tutaj");
+                    userProfileToDisplayView.user = getActiveUserID();
                     unitOfWork.RoomsRepository.Update(userProfileToDisplayView.room);
                     unitOfWork.AddressesRepository.Update(userProfileToDisplayView.room.Address);
                     unitOfWork.EquipmentRepository.Update(userProfileToDisplayView.room.Equipment);
+                    //delete old images
+                    deleteOldRoomImagesFromDataBase(userProfileToDisplayView.room.RoomID);
+                    //add new images 
+                    addNewRoomImagesToDataBase(userProfileToDisplayView.images, userProfileToDisplayView.room.RoomID, userProfileToDisplayView.user.UserID, userProfileToDisplayView.room);
                     unitOfWork.Complete();
-                    //zrobić edycje zdjęć!
 
                     return RedirectToAction("DisplayRoom", new { id = userProfileToDisplayView.room.RoomID });
                 }
@@ -170,16 +166,20 @@ namespace RoomMate.Controllers
             }
             return user;
         }
+        public List<Room> getAllActiveRooms()
+        {
+            var rooms = unitOfWork.RoomsRepository.Get(
+                                          filter: r => r.User.UserID == userProfileToDisplayView.user.UserID && r.IsActive == true,
+                                          orderBy: null,
+                                          includeProperties: "Address,Equipment"
+                                          );
+            return rooms.ToList();
+        }
         public Room getActiveRoomByID(string id)
         {
             Room room = new Room();
-            var rooms = unitOfWork.RoomsRepository.Get(
-                                                      filter: r => r.User.UserID == userProfileToDisplayView.user.UserID && r.IsActive == true && r.RoomID == new Guid(id),
-                                                      orderBy: null,
-                                                      includeProperties: "Address,Equipment"
-                                                      );
-            var roomResult = rooms.ToList();
-            room = roomResult.FirstOrDefault();
+            var roomResult = getAllActiveRooms();
+            room = roomResult.Where(r => r.RoomID == new Guid(id)).FirstOrDefault();
             return room;
         }
         public List<RoomImage> getRoomImageByRoomID(string id)
@@ -187,9 +187,34 @@ namespace RoomMate.Controllers
             var images = unitOfWork.RoomImagesRepository.Get(
                                              filter: i => i.Room.RoomID == new Guid(id),
                                              orderBy: null,
-                                             includeProperties: ""
+                                             includeProperties: "Room"
                                              );
             return images.ToList();
+        }
+        public void deleteOldRoomImagesFromDataBase(Guid id)
+        {
+            var oldRoomImages = getRoomImageByRoomID(id.ToString());
+            if (oldRoomImages.Any() && oldRoomImages != null)
+            {
+                foreach (var oldImage in oldRoomImages)
+                {
+                    unitOfWork.RoomImagesRepository.Delete(oldImage.ImageRoomID);
+                }
+            }
+        }
+        public void addNewRoomImagesToDataBase(IEnumerable<HttpPostedFileBase> images, Guid roomID, Guid userID, Room room  )
+        {
+            List<RoomImage> roomImages = new List<RoomImage>();
+            RoomSaveImageClient roomSaveImageClient = new RoomSaveImageClient();
+            roomImages = roomSaveImageClient.saveRoomImageToDiskAndReturnListWithRoomImages(images , roomID, userID, room);
+
+            if (roomImages.Any() && roomImages != null)
+            {
+                foreach (var image in roomImages)
+                {
+                    unitOfWork.RoomImagesRepository.Insert(image);
+                }
+            }
         }
     }
 }

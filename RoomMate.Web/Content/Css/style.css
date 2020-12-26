@@ -1169,7 +1169,6 @@ img {
         display: flex;
         justify-content: space-between;
         margin-top: 20px;
-        padding-bottom: 20px;
     }
 
     .profile-container-accomodation-row:not(:last-child) {
@@ -1200,7 +1199,7 @@ img {
     .profile-container-accommodation-icon {
         display: flex;
         justify-content: space-between;
-        min-width: 110px;
+        min-width: 70px;
     }
 
     .profile-container-customer-icon {
@@ -1231,23 +1230,23 @@ img {
         height: auto;
     }
 
-    .add-room-img {
+    .add-room-img, .add-room-img-displayRoom {
         display: flex;
         flex-wrap: wrap;
         margin: 15px 0 15px 0;
     }
 
-        .add-room-img > div {
+        .add-room-img > div, .add-room-img-displayRoom > div {
             flex: 1 0 21%;
         }
 
-        .add-room-img img {
+        .add-room-img img, .add-room-img-displayRoom img {
             height: 90px;
             width: 120px;
             margin-top: 10px;
         }
 
-            .add-room-img img:not(:first-child) {
+            .add-room-img img:not(:first-child), .add-room-img-displayRoom img:not(:first-child) {
                 margin-left: 10px;
             }
 
@@ -1336,7 +1335,7 @@ img {
     }
 
     .add-room-txtarea {
-        width: 100%;
+        width: 95%;
         min-height: 150px;
     }
 
@@ -1563,7 +1562,8 @@ img {
         margin-top: 25px;
         margin-right: -15px;
     }
-    .editRoom{
+    .editRoom, #cancelUpdateRoom {
         display: none;
     }
+
 }

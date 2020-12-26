@@ -82,6 +82,10 @@
     <Compile Include="Migrations\202012251317154_init.designer.cs">
       <DependentUpon>202012251317154_init.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202012261301122_changedPrecisionDecimalLonAndLat.cs" />
+    <Compile Include="Migrations\202012261301122_changedPrecisionDecimalLonAndLat.designer.cs">
+      <DependentUpon>202012261301122_changedPrecisionDecimalLonAndLat.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Repository\GenericRepository.cs" />
     <Compile Include="Repository\IGenericRepository.cs" />
@@ -109,6 +113,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202012251317154_init.resx">
       <DependentUpon>202012251317154_init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012261301122_changedPrecisionDecimalLonAndLat.resx">
+      <DependentUpon>202012261301122_changedPrecisionDecimalLonAndLat.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

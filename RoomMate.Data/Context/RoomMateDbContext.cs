@@ -21,7 +21,9 @@ namespace RoomMate.Data.Context
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-
+            modelBuilder.Entity<Address>().Property(Addresses => Addresses.Lat).HasPrecision(9, 6);
+            modelBuilder.Entity<Address>().Property(Addresses => Addresses.Lon).HasPrecision(8, 6);
+            base.OnModelCreating(modelBuilder);
         }
 
     }

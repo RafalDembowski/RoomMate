@@ -10,15 +10,9 @@ namespace RoomMate.Entities.UserProfileViewModels
 {
     public class UserProfileToEditViewModel
     {
-        /*only for test*/
-        public UserProfileToEditViewModel()
-        {
-            amountRooms = 0;
-        }
         public RoomToEditViewModel roomToEdit { get; set; }
         public User user { get; set; }
         public IEnumerable<HttpPostedFileBase> images { get; set; }
-        public int amountRooms { get; set; }
         public EquipmentToEditViewModel equipmentToEdit { get; set; }
         public AddressToEditViewModel addressToEdit { get; set; }
     }
