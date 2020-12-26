@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/_UserProfileLayout.cshtml";
 }
 
-<div class="main-header" style="height: 90.5vh;">
+<div class="main-header" style="height: 100%;">
 
     <div class="background-shadow"></div>
     <div class="center-modal close-delete-modal">
@@ -24,7 +24,7 @@
 
             <div class="modal-footer">
                 <button id="button-cancel" class="close-delete-modal">Anuluj</button>
-                @using (Html.BeginForm("Delete", "Profile"))
+                @using (Html.BeginForm("Delete", "UserProfile"))
                 {
                     <button id="button-delete">Usuń</button>
                 }
@@ -59,6 +59,12 @@
 
 
             <div class="profile-container">
+                @if (ViewBag.Error != null)
+                {
+                    <div>
+                        <p class="text-error-room">@ViewBag.Error</p>
+                    </div>
+                }
                 <h2>Menu</h2>
 
                 <div class="profile-container-flex">
@@ -73,36 +79,55 @@
                             <div class="profile-body-img">
                                 <img src="/../Content/Image/profile_none.png" />
                             </div>
+
                             <div style="width:90%">
                                 <div class="profile-body-txt" id="displayUserInformation">
-
+                                    <div class="row">
+                                        <label>Login:</label>  <p>@Html.DisplayFor(model => model.user.UserName)</p>
+                                    </div>
                                     <div class="row">
                                         <label>Imię:</label>  <p>@Html.DisplayFor(model => model.user.FirsName)</p>
                                     </div>
-
                                     <div class="row">
                                         <label>Nazwisko:</label>  <p>@Html.DisplayFor(model => model.user.LastName)</p>
                                     </div>
-
-                                </div>
-
-                                <div class="profile-body-txt" id="editUserInformation">
-
                                     <div class="row">
-                                        <label>Imię:</label>  <p></p>
-                                    </div>
-
-                                    <div class="row">
-                                        <label>Nazwisko:</label>  <p></p>
-                                    </div>
-
-
-                                    <div style="display:block;">
-                                        <button class="profile-save-btn">Zapisz</button>
+                                        <label>Email:</label>  <p>@Html.DisplayFor(model => model.user.Email)</p>
                                     </div>
 
                                 </div>
+                                @using (Html.BeginForm("Dashboard", "UserProfile", FormMethod.Post))
+                                {
+                            <div class="profile-body-txt" id="editUserInformation">
+                                @Html.HiddenFor(model => model.user.UserID)
+                                @Html.HiddenFor(model => model.user.PasswordHash)
+                                @Html.HiddenFor(model => model.user.IsEmailVerified)
+
+                                @Html.ValidationMessageFor(model => model.user.FirsName, "", new { @class = "text-error" })
+                                @Html.ValidationMessageFor(model => model.user.LastName, "", new { @class = "text-error" })
+                                <div class="row">
+                                    <label>Login:</label>  <p>@Html.EditorFor(model => model.user.UserName, new { htmlAttributes = new { @class = "edit-user-input" } })</p>
+                                </div>
+                                <div class="row">
+                                    <label>Imię:</label>  <p>@Html.EditorFor(model => model.user.FirsName, new { htmlAttributes = new { @class = "edit-user-input" } })</p>
+                                </div>
+                                <div class="row">
+                                    <label>Nazwisko:</label>  <p>@Html.EditorFor(model => model.user.LastName, new { htmlAttributes = new { @class = "edit-user-input" } })</p>
+                                </div>
+
+                                <div class="row">
+                                    <label>Email:</label>  <p>@Html.EditorFor(model => model.user.Email, new { htmlAttributes = new { @class = "edit-user-input" } })</p>
+                                </div>
+
+
+
+                                <div style="display:block;">
+                                    <button class="profile-save-btn">Zapisz</button>
+                                </div>
+
                             </div>
+                                }
+                                </div>
 
                         </div>
                     </div>
@@ -147,12 +172,13 @@
                                     <div>
                                         <div class="profile-container-accommodation-img">
                                             @{ var roomImage = Model.roomImages.Where(x => x.Room.RoomID == item.RoomID).FirstOrDefault();}
-                                            @if (roomImage != null) {
-                                            <img src="@Url.Content(roomImage.Path)">
+                                            @if (roomImage != null)
+                                            {
+                                                <img src="@Url.Content(roomImage.Path)">
                                             }
                                             else
                                             {
-                                            <img src="~/Content/Image/no-image.png">
+                                                <img src="~/Content/Image/no-image.png">
                                             }
                                         </div>
                                     </div>

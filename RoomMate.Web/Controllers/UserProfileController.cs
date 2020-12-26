@@ -30,6 +30,41 @@ namespace RoomMate.Controllers
             userProfileToDisplayView.roomImages = unitOfWork.RoomImagesRepository.GetAll().ToList();
             return View(userProfileToDisplayView);
         }
+        [HttpPost]
+        public ActionResult Dashboard(UserProfileToDisplayViewModel userProfileToDisplayView)
+        {
+            try
+            {
+                unitOfWork.UsersRepository.Update(userProfileToDisplayView.user);
+                unitOfWork.Complete();
+            }
+            catch(Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("Error: " + e.Message);
+                ViewBag.Error = "Wystąpił błąd, proszę powtórzyć jeszcze raz.";
+                return RedirectToAction("Dashboard", "UserProfile");
+            }
+            return RedirectToAction("Dashboard", "UserProfile");
+        }
+        //delete room
+        [HttpPost, ActionName("Delete")]
+        public ActionResult Dashboard(string id)
+        {
+            try
+            {
+               var room = unitOfWork.RoomsRepository.GetById(new Guid(id));
+               room.IsActive = false;
+               unitOfWork.RoomsRepository.Update(room);
+               unitOfWork.Complete();
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("Error: " + e.Message);
+                ViewBag.Error = "Wystąpił błąd, proszę powtórzyć jeszcze raz.";
+                return RedirectToAction("Dashboard", "UserProfile");
+            }
+            return RedirectToAction("Dashboard", "UserProfile");
+        }
         public ActionResult AddRoom()
         {
             userProfileToeditViewModel.user = getActiveUserID();

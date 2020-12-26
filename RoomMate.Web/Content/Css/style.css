@@ -1054,6 +1054,7 @@ img {
         .vertical-user-photo p {
             margin: 10px 0 25px 0;
             font-weight: bold;
+            text-align: center;
         }
 
     .profile-container {
@@ -1075,7 +1076,7 @@ img {
 
     .profile-user {
         width: 450px;
-        height: 220px;
+        min-height: 220px;
         padding: 15px;
     }
 
@@ -1319,7 +1320,6 @@ img {
         background-color: transparent;
         border-radius: 6px;
         border: solid #E5E5E5 1px;
-        padding: 0 10px 0 10px;
         font-size: 16px;
         text-align: right;
     }
