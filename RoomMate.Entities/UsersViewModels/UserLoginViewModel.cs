@@ -12,7 +12,7 @@ namespace RoomMate.Entities.UsersViewModels
         [Required(ErrorMessage = "Login lub e-mail jest wymagany.")]
         public string EmailOrLogin { get; set; }
         [Display(Name = "Hasło")]
-        [Required(ErrorMessage = "Hasło jest wymagany.")]
+        [Required(ErrorMessage = "Hasło jest wymagane.")]
         public string PasswordHash { get; set; }
     }
 }

@@ -63,14 +63,14 @@ namespace RoomMate.Controllers
                     }
                     else
                     {
-                       ViewBag.Message = "Wystąpił problem z rejestracją, proszę spróbować za jakiś czas. Jeśli problem będzie się powtarzał prosimy o kontakt z administracją.";
+                       ViewBag.Error = "Wystąpił problem z rejestracją, proszę spróbować za jakiś czas. Jeśli problem będzie się powtarzał prosimy o kontakt z administracją.";
                     }
                     return View();
 
                 }
                 else
                 {
-                    ViewBag.Message = "Konto z podanym emailem zostało juz utworzone.";
+                    ViewBag.Error = "Konto z podanym emailem zostało juz utworzone.";
                     return View();
                 }
             }
@@ -120,7 +120,7 @@ namespace RoomMate.Controllers
             ViewBag.ActivationStatus = false;
             bool codeActivationCanBeGuid = Guid.TryParse(id, out var newGuid);
 
-            if (!String.IsNullOrEmpty(id) && codeActivationCanBeGuid == true)
+            if (!String.IsNullOrEmpty(id) && codeActivationCanBeGuid == true && !id.Equals("00000000-0000-0000-0000-000000000000"))
             {
                 
                 var user = unitOfWork.UsersRepository
@@ -172,13 +172,13 @@ namespace RoomMate.Controllers
                     }
                     else
                     {
-                        ViewBag.Message = "Wystąpił problem , proszę spróbować za jakiś czas. Jeśli problem będzie się powtarzał prosimy o kontakt z administracją.";
+                        ViewBag.Error = "Wystąpił problem , proszę spróbować za jakiś czas. Jeśli problem będzie się powtarzał prosimy o kontakt z administracją.";
                     }
 
                 }
                 else
                 {
-                    ViewBag.Message = "Email jest nie poprawny lub nie istnieje takie konto.";
+                    ViewBag.Error = "Email jest nie poprawny lub nie istnieje takie konto.";
                 }
             }
             else
@@ -194,7 +194,7 @@ namespace RoomMate.Controllers
             ViewBag.Message = "Link jest nie aktualny lub został już wykorzystany.";
             bool codeResetPasswordCanBeGuid = Guid.TryParse(id, out var newGuid);
 
-            if (!String.IsNullOrEmpty(id) && codeResetPasswordCanBeGuid == true)
+            if (!String.IsNullOrEmpty(id) && codeResetPasswordCanBeGuid == true && !id.Equals("00000000-0000-0000-0000-000000000000"))
             {
                 var user = unitOfWork.UsersRepository
                            .GetAll()

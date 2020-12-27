@@ -1,40 +1,41 @@
 ﻿@model RoomMate.Entities.UsersViewModels.UserLoginViewModel
 @{
-    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+    ViewBag.Title = "Panel Logowania";
 }
 
-<h2>Login</h2>
+<div class="main-header user-login-panel">
 
-
-<div class="row justify-content-md-center">
-    <div class="col-md-4">
-        <div class="card">
-            <div class="card-header">
-                Login
-            </div>
-            @if (ViewBag.Message != null)
-            {
-                <span class="badge badge-danger">@ViewBag.Message</span>
-            }
-            <div class="card-body">
-                @using (Html.BeginForm("Login", "User", FormMethod.Post))
-                {
-                    @Html.AntiForgeryToken()
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.EmailOrLogin)
-                        @Html.TextBoxFor(m => m.EmailOrLogin, "", new { @class = "form-control", @placeholder = "Email lub login" })
-                        @Html.ValidationMessageFor(m => m.EmailOrLogin, "", new { @class = "badge badge-danger" })
-                    </div>
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.PasswordHash)
-                        @Html.PasswordFor(m => m.PasswordHash, new { @class = "form-control", @placeholder = "Hasło" })
-                        @Html.ValidationMessageFor(m => m.PasswordHash, "", new { @class = "badge badge-danger" })
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" name="submit" class="btn btn-primary" value="Login" />
-                    </div>
-                }
-            </div>
+    <div class="main-header">
+        <div class="txt-header-simple">
+            <h1>ZALOGUJ SIĘ</h1>
         </div>
+        @using (Html.BeginForm("Login", "User", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+    <div class="form form-simple form-login">
+        <div class="desktop-txt">
+            <h1>ZALOGUJ SIĘ</h1>
+        </div>
+        @if (ViewBag.Message != null)
+        {
+            <span class="text-error">@ViewBag.Message</span>
+        }
+        @Html.ValidationMessageFor(m => m.EmailOrLogin, "", new { @class = "text-error" })
+        <div class="row">
+            @Html.LabelFor(m => m.EmailOrLogin)
+            @Html.TextBoxFor(m => m.EmailOrLogin, "", new { @class = "input-header", @placeholder = "Email lub login" })
+        </div>
+        @Html.ValidationMessageFor(m => m.PasswordHash, "", new { @class = "text-error" })
+        <div class="row">
+            @Html.LabelFor(m => m.PasswordHash)
+            @Html.PasswordFor(m => m.PasswordHash, new { @class = "input-header", @placeholder = "Hasło" })
+        </div>
+        <div class="row-login">
+            <a href="@Url.Action("RemindPassword","User")"><p>Zapomniałeś hasła?</p></a>
+            <button class="btn-header">Zaloguj</button>
+        </div>
+    </div>
+        }
     </div>
 </div>

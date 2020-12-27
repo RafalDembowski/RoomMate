@@ -171,8 +171,31 @@ img {
     }
 
     .nav-user {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
     }
 
+    .nav-user-userProfile {
+        min-width: 120px;
+    }
+
+    .nav-user-user {
+        min-width: 230px;
+    }
+
+    .nav-user a {
+        text-decoration: none;
+        color: #FDE9DF;
+    }
+
+        .nav-user a:hover {
+            color: black;
+        }
+
+    .nav-user i {
+        color: #FDE9DF;
+    }
     .desktop-txt {
         display: none;
     }
@@ -464,25 +487,6 @@ img {
 }
 
 @media (min-width: 500px) {
-    .nav-user {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        min-width: 120px;
-    }
-
-        .nav-user a {
-            text-decoration: none;
-            color: #FDE9DF;
-        }
-
-            .nav-user a:hover {
-                color: black;
-            }
-
-        .nav-user i {
-            color: #FDE9DF;
-        }
 
     .nav-searching i {
         position: absolute;
@@ -500,12 +504,12 @@ img {
 
 @media (min-width: 576px) {
     .logo {
-        font-size: 30px;
+        font-size: 24px;
     }
 
     .btn-header, .input-profile {
-        height: 71px;
-        font-size: 25px;
+        height: 32px;
+        font-size: 17px;
     }
 }
 
@@ -527,7 +531,7 @@ img {
     }
 
         .row-login p {
-            padding-top: 20px;
+            padding-top: 13px;
         }
 
     .form-simple a {
@@ -546,11 +550,15 @@ img {
 
     .header-white {
         background-color: white;
-        padding-bottom: 15px;
+        padding-top: 10px;
+        padding-bottom: 6px;
     }
 
     .logo {
         color: #090909;
+    }
+    .desktop-txt h1 {
+        font-size: 35px;
     }
 
     .header-container, .header-container-simple {
@@ -588,8 +596,9 @@ img {
     }
 
     .header-container-simple {
+        margin: 0 50px 0 50px;
         padding: 0;
-        margin: 2% 5% 5% 5%
+        height: 95vh;
     }
 
     .txt-header {
@@ -606,7 +615,6 @@ img {
     }
 
         .desktop-txt h1 {
-            font-size: 45px;
             color: #090909;
         }
 
@@ -630,7 +638,7 @@ img {
     .form {
         width: 305px;
         background-color: white;
-        padding: 65px 50px 65px 50px;
+        padding: 30px 35px 65px 35px;
         z-index: 999;
     }
 
@@ -661,11 +669,9 @@ img {
 
     .btn-header {
         border-radius: 6px;
-        height: 40px;
         width: 44%;
         float: right;
         cursor: pointer;
-        font-size: 21px;
         font-weight: normal;
     }
     /*rooms-offers*/
@@ -877,15 +883,6 @@ img {
         background-size: 100%;
     }
 
-    .logo {
-        font-size: 24px;
-    }
-
-    .header-white {
-        padding-top: 10px;
-        padding-bottom: 6px;
-    }
-
     .header-container, .container {
         padding: 35px 5% 0 5%;
     }
@@ -909,10 +906,6 @@ img {
         padding-left: 15px;
     }
 
-    .desktop-txt h1 {
-        font-size: 35px
-    }
-
     .txt-header {
         position: relative;
         top: 25px;
@@ -922,12 +915,6 @@ img {
         padding-top: 15px;
     }
 
-    .btn-header {
-        font-weight: normal;
-        height: 40px;
-        width: 44%;
-        font-size: 21px;
-    }
 
     .form {
         position: relative;
@@ -1117,7 +1104,7 @@ img {
         }
 
     .row label {
-        color: #707070;
+        color: black;
     }
 
     .profile-information {

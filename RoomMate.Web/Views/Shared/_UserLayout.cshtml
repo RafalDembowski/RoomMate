@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - RoomMate</title>
+    @Styles.Render("~/Content/Css/style.css")
+    <!--inculding icons-->
+    <script src="https://kit.fontawesome.com/b1173e0201.js"></script>
+    <!--inculding font-->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+
+
+</head>
+
+<body>
+    <div class="all">
+        <section class="header-container-simple">
+            <div class="header header-white">
+                <p class="logo">ROOM<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MATE</p>
+                <div class="nav-user nav-user-user">
+                    <i class="far fa-user"></i>
+                    @if (Session["UserID"] != null)
+                    {
+                        <a href="@Url.Action("Dashboard", "UserProfile")">Profil</a>
+                        <a href="@Url.Action("Logout","User")">Wyloguj się</a>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("Registration", "User")">Zarejestruj się</a>
+                        <a href="@Url.Action("Login", "User")">Zaloguj się</a>
+                    }
+                </div>
+            </div>
+            @RenderBody()
+        </section>
+    </div>
+</body>
+</html>

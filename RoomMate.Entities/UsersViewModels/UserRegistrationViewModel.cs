@@ -14,11 +14,11 @@ namespace RoomMate.Entities.UsersViewModels
         public string UserName { get; set; }
         [Display(Name = "Imię")]
 
-        [Required(ErrorMessage = "Imię jest wymagany.")]
+        [Required(ErrorMessage = "Imię jest wymagane.")]
         public string FirstName { get; set; }
         [Display(Name = "Nazwisko")]
 
-        [Required(ErrorMessage = "Nazwisko jest wymagany.")]
+        [Required(ErrorMessage = "Nazwisko jest wymagane")]
         public string LastName { get; set; }
         [Display(Name = "Adres email")]
 
