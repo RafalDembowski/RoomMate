@@ -25,7 +25,7 @@ namespace RoomMate.Controllers
         }
         public ActionResult Dashboard()
         {
-            userProfileToDisplayView.user = getActiveUserID();
+            userProfileToDisplayView.user = getActiveUser();
             userProfileToDisplayView.rooms = getAllActiveRooms();
             userProfileToDisplayView.roomImages = unitOfWork.RoomImagesRepository.GetAll().ToList();
             return View(userProfileToDisplayView);
@@ -35,6 +35,16 @@ namespace RoomMate.Controllers
         {
             try
             {
+                UserSaveImageClient userSaveImageClient = new UserSaveImageClient();
+                var userImage = userSaveImageClient.saveUserImageToDiskAndReturnCreatedObject(userProfileToDisplayView.images, userProfileToDisplayView.user.UserID);
+                bool updateImageSuccesful = updateUserImageNameAndPath(userImage, userProfileToDisplayView.user.UserImage);
+
+                if (!updateImageSuccesful && userImage != null)
+                {
+                    unitOfWork.UserImageRepository.Insert(userImage);
+                    userProfileToDisplayView.user.UserImage = userImage;
+                }
+
                 unitOfWork.UsersRepository.Update(userProfileToDisplayView.user);
                 unitOfWork.Complete();
             }
@@ -67,13 +77,13 @@ namespace RoomMate.Controllers
         }
         public ActionResult AddRoom()
         {
-            userProfileToeditViewModel.user = getActiveUserID();
+            userProfileToeditViewModel.user = getActiveUser();
             return View(userProfileToeditViewModel);
         }
         [HttpPost]
         public ActionResult AddRoom(UserProfileToEditViewModel _userProfileToeditViewModel)
         {
-            userProfileToeditViewModel.user = getActiveUserID();
+            userProfileToeditViewModel.user = getActiveUser();
 
             try
             {
@@ -143,7 +153,7 @@ namespace RoomMate.Controllers
             bool codeActivationCanBeGuid = Guid.TryParse(id, out var newGuid);
             if (!String.IsNullOrEmpty(id) && codeActivationCanBeGuid == true)
             {
-                userProfileToDisplayView.user = getActiveUserID();
+                userProfileToDisplayView.user = getActiveUser();
                 userProfileToDisplayView.room = getActiveRoomByID(id);
                 userProfileToDisplayView.room.RoomImages = getRoomImageByRoomID(id);
 
@@ -166,7 +176,7 @@ namespace RoomMate.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    userProfileToDisplayView.user = getActiveUserID();
+                    userProfileToDisplayView.user = getActiveUser();
                     unitOfWork.RoomsRepository.Update(userProfileToDisplayView.room);
                     unitOfWork.AddressesRepository.Update(userProfileToDisplayView.room.Address);
                     unitOfWork.EquipmentRepository.Update(userProfileToDisplayView.room.Equipment);
@@ -189,15 +199,21 @@ namespace RoomMate.Controllers
         }
         public ActionResult Customers()
         {
-            userProfileToeditViewModel.user = getActiveUserID();
+            userProfileToeditViewModel.user = getActiveUser();
             return View(userProfileToeditViewModel);
         }
-        public User getActiveUserID()
+        public User getActiveUser()
         {
             User user = new User();
             if (Session["UserID"] != null)
             {
-                user = unitOfWork.UsersRepository.GetById((Guid)Session["UserID"]);
+                string userID = Session["UserID"].ToString();
+                var users = unitOfWork.UsersRepository.Get(
+                                          filter: U => U.UserID == new Guid(userID),
+                                          orderBy: null,
+                                          includeProperties: "UserImage"
+                                          );
+                user = users.ToList().FirstOrDefault();
             }
             return user;
         }
@@ -225,6 +241,22 @@ namespace RoomMate.Controllers
                                              includeProperties: "Room"
                                              );
             return images.ToList();
+        }
+        public bool updateUserImageNameAndPath(UserImage newUserImage, UserImage oldUserImage)
+        {
+            if(newUserImage != null)
+            {
+                System.Diagnostics.Debug.WriteLine("zrodlo pliku przed: " + oldUserImage.UserImageID);
+                System.Diagnostics.Debug.WriteLine("nazwa pliku przed: " + oldUserImage.ImagePath);
+                oldUserImage.ImageName = newUserImage.ImageName;
+                oldUserImage.ImagePath = newUserImage.ImagePath;
+                System.Diagnostics.Debug.WriteLine("--------------------------------------------");
+                System.Diagnostics.Debug.WriteLine("zrodlo pliku po: " + oldUserImage.UserImageID);
+                System.Diagnostics.Debug.WriteLine("nazwa pliku po: " + oldUserImage.ImagePath);
+                unitOfWork.UserImageRepository.Update(oldUserImage);
+                return true;
+            }
+            return false;
         }
         public void deleteOldRoomImagesFromDataBase(Guid id)
         {

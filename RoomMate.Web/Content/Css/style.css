@@ -1365,11 +1365,12 @@ img {
     #add-file, #roomImg {
         display: none;
     }
-
-    #add-img-photo {
+    .add-img-photo-style {
         width: 120px;
         height: 90px;
         margin: 10px 0 0 0;
+    }
+    #add-img-photo {
     }
 
     .ol-popup {

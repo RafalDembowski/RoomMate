@@ -15,7 +15,14 @@
     <div class="main-container">
         <div class="vertical-nav">
             <div class="vertical-user-photo">
-                <img src="/../Content/Image/profile_none.png" />
+                @if (Model.user.UserImage != null)
+                {
+                    <img src="@Url.Content(Model.user.UserImage.ImagePath)"/>
+                }
+                else
+                {
+                    <img src="/../Content/Image/profile_none.png"/>
+                }
                 <p>
                     @Html.DisplayFor(model => model.user.FirsName)
                     @Html.DisplayFor(model => model.user.LastName)
@@ -72,7 +79,7 @@
 
 
                             <div class="add-room-img editRoom">
-                                <img src="/../Content/Image/add-img.png" id="add-img-photo" />
+                                <img src="/../Content/Image/add-img.png" id="add-img-photo" class="add-img-photo-style" />
                                 @Html.ValidationMessageFor(model => model.images, "", new { @class = "text-error-room" })
                                 @Html.TextBoxFor(model => model.images, "", new { @type = "file", accept = "image/*", @multiple = "multiple", @id = "add-file", })
                                 @if (Model.room.RoomImages != null && Model.room.RoomImages.Any())

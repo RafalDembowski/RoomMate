@@ -76,6 +76,7 @@
     <Compile Include="SaveImageClients\ISaveImageClient.cs" />
     <Compile Include="SaveImageClients\RoomSaveImageClient.cs" />
     <Compile Include="SaveImageClients\SaveImageClient.cs" />
+    <Compile Include="SaveImageClients\UserSaveImageClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

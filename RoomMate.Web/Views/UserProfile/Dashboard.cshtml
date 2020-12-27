@@ -36,7 +36,14 @@
     <div class="main-container">
         <div class="vertical-nav">
             <div class="vertical-user-photo">
-                <img src="/../Content/IMAGE/profile_none.png" />
+                @if (Model.user.UserImage != null)
+                {
+                    <img src="@Url.Content(Model.user.UserImage.ImagePath)"/>
+                }
+                else
+                {
+                    <img src="/../Content/Image/profile_none.png"/>
+                }
                 <p>
                     @Html.DisplayFor(model => model.user.FirsName)
                     @Html.DisplayFor(model => model.user.LastName)
@@ -75,61 +82,72 @@
                             <i class="far fa-edit toClick" id="editUser"></i>
                             <i class="far fa-times-circle toClick" id="cancelEditUser"></i>
                         </div>
-                        <div class="profile-body">
-                            <div class="profile-body-img">
-                                <img src="/../Content/Image/profile_none.png" />
+                        @using (Html.BeginForm("Dashboard", "UserProfile", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+                            <div class="profile-body">
+                                <div class="profile-body-img">
+                                    @Html.HiddenFor(model => model.user.UserImage.UserImageID)
+                                    @if (Model.user.UserImage != null)
+                                    {
+                                        <img src="@Url.Content(Model.user.UserImage.ImagePath)" id="add-img-photo">
+                                    }
+                                    else
+                                    {
+                                        <img src="/../Content/Image/profile_none.png" id="add-img-photo" />
+                                    }
+                                    @Html.TextBoxFor(model => Model.images, "", new { @type = "file", accept = "image/*", @id = "add-file" })
+                                </div>
+
+                                <div style="width:90%">
+                                    <div class="profile-body-txt" id="displayUserInformation">
+                                        <div class="row">
+                                            <label>Login:</label>  <p>@Html.DisplayFor(model => model.user.UserName)</p>
+                                        </div>
+                                        <div class="row">
+                                            <label>Imię:</label>  <p>@Html.DisplayFor(model => model.user.FirsName)</p>
+                                        </div>
+                                        <div class="row">
+                                            <label>Nazwisko:</label>  <p>@Html.DisplayFor(model => model.user.LastName)</p>
+                                        </div>
+                                        <div class="row">
+                                            <label>Email:</label>  <p>@Html.DisplayFor(model => model.user.Email)</p>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="profile-body-txt" id="editUserInformation">
+                                        @Html.HiddenFor(model => model.user.UserID)
+                                        @Html.HiddenFor(model => model.user.PasswordHash)
+                                        @Html.HiddenFor(model => model.user.IsEmailVerified)
+
+                                        @Html.ValidationMessageFor(model => model.user.FirsName, "", new { @class = "text-error" })
+                                        @Html.ValidationMessageFor(model => model.user.LastName, "", new { @class = "text-error" })
+                                        <div class="row">
+                                            <label>Login:</label>  <p>@Html.EditorFor(model => model.user.UserName, new { htmlAttributes = new { @class = "edit-user-input" } })</p>
+                                        </div>
+                                        <div class="row">
+                                            <label>Imię:</label>  <p>@Html.EditorFor(model => model.user.FirsName, new { htmlAttributes = new { @class = "edit-user-input" } })</p>
+                                        </div>
+                                        <div class="row">
+                                            <label>Nazwisko:</label>  <p>@Html.EditorFor(model => model.user.LastName, new { htmlAttributes = new { @class = "edit-user-input" } })</p>
+                                        </div>
+
+                                        <div class="row">
+                                            <label>Email:</label>  <p>@Html.EditorFor(model => model.user.Email, new { htmlAttributes = new { @class = "edit-user-input" } })</p>
+                                        </div>
+
+
+
+                                        <div style="display:block;">
+                                            <button class="profile-save-btn">Zapisz</button>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
                             </div>
-
-                            <div style="width:90%">
-                                <div class="profile-body-txt" id="displayUserInformation">
-                                    <div class="row">
-                                        <label>Login:</label>  <p>@Html.DisplayFor(model => model.user.UserName)</p>
-                                    </div>
-                                    <div class="row">
-                                        <label>Imię:</label>  <p>@Html.DisplayFor(model => model.user.FirsName)</p>
-                                    </div>
-                                    <div class="row">
-                                        <label>Nazwisko:</label>  <p>@Html.DisplayFor(model => model.user.LastName)</p>
-                                    </div>
-                                    <div class="row">
-                                        <label>Email:</label>  <p>@Html.DisplayFor(model => model.user.Email)</p>
-                                    </div>
-
-                                </div>
-                                @using (Html.BeginForm("Dashboard", "UserProfile", FormMethod.Post))
-                                {
-                            <div class="profile-body-txt" id="editUserInformation">
-                                @Html.HiddenFor(model => model.user.UserID)
-                                @Html.HiddenFor(model => model.user.PasswordHash)
-                                @Html.HiddenFor(model => model.user.IsEmailVerified)
-
-                                @Html.ValidationMessageFor(model => model.user.FirsName, "", new { @class = "text-error" })
-                                @Html.ValidationMessageFor(model => model.user.LastName, "", new { @class = "text-error" })
-                                <div class="row">
-                                    <label>Login:</label>  <p>@Html.EditorFor(model => model.user.UserName, new { htmlAttributes = new { @class = "edit-user-input" } })</p>
-                                </div>
-                                <div class="row">
-                                    <label>Imię:</label>  <p>@Html.EditorFor(model => model.user.FirsName, new { htmlAttributes = new { @class = "edit-user-input" } })</p>
-                                </div>
-                                <div class="row">
-                                    <label>Nazwisko:</label>  <p>@Html.EditorFor(model => model.user.LastName, new { htmlAttributes = new { @class = "edit-user-input" } })</p>
-                                </div>
-
-                                <div class="row">
-                                    <label>Email:</label>  <p>@Html.EditorFor(model => model.user.Email, new { htmlAttributes = new { @class = "edit-user-input" } })</p>
-                                </div>
-
-
-
-                                <div style="display:block;">
-                                    <button class="profile-save-btn">Zapisz</button>
-                                </div>
-
-                            </div>
-                                }
-                                </div>
-
-                        </div>
+                        }
                     </div>
 
                     <div class="profile-container-div profile-information">

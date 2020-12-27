@@ -38,13 +38,14 @@ namespace RoomMate.Common.SaveImageClients
             }
             catch(Exception e)
             {
+                System.Diagnostics.Debug.WriteLine("Error: " + e.Message);
                 throw e;
             }
 
             return roomImagesList;
         }
 
-        public void createRoomImageObjectAndAddToList(string pathToImage, Room room)
+        private void createRoomImageObjectAndAddToList(string pathToImage, Room room)
         {
             roomImage = new RoomImage();
 
