@@ -246,13 +246,8 @@ namespace RoomMate.Controllers
         {
             if(newUserImage != null)
             {
-                System.Diagnostics.Debug.WriteLine("zrodlo pliku przed: " + oldUserImage.UserImageID);
-                System.Diagnostics.Debug.WriteLine("nazwa pliku przed: " + oldUserImage.ImagePath);
                 oldUserImage.ImageName = newUserImage.ImageName;
                 oldUserImage.ImagePath = newUserImage.ImagePath;
-                System.Diagnostics.Debug.WriteLine("--------------------------------------------");
-                System.Diagnostics.Debug.WriteLine("zrodlo pliku po: " + oldUserImage.UserImageID);
-                System.Diagnostics.Debug.WriteLine("nazwa pliku po: " + oldUserImage.ImagePath);
                 unitOfWork.UserImageRepository.Update(oldUserImage);
                 return true;
             }

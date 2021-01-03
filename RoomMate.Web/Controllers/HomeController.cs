@@ -1,32 +1,98 @@
-﻿using System;
+﻿using RoomMate.Data.Context;
+using RoomMate.Data.UnitOfWorks;
+using RoomMate.Entities.HomeViewModels;
+using RoomMate.Entities.Rooms;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using RoomMate.Data.Context;
 
 namespace RoomMate.Controllers
 {
     public class HomeController : Controller
     {
-
+        private UnitOfWork unitOfWork;
+        private HomeViewModel homeViewModel;
+        public HomeController()
+        {
+            unitOfWork = new UnitOfWork(new RoomMateDbContext());
+            homeViewModel = new HomeViewModel();
+        }
         public ActionResult Index()
         {
-           return View();
-        }
+            //take random cities
+            string[] randomCities = getRandomCity();
+            //take list of random rooms 
+            homeViewModel.firstCityRandomRooms = getRandomRoomByCity(randomCities[0]);
+            homeViewModel.secondCityRandomRooms = getRandomRoomByCity(randomCities[1]);
+            homeViewModel.randomRooms = getRandomRooms();
+            //take images for room
+            var listWithAllRooms = homeViewModel.firstCityRandomRooms
+                                   .Concat(homeViewModel.secondCityRandomRooms)
+                                   .Concat(homeViewModel.randomRooms).ToList();
+            homeViewModel.randomRoomsImages = getFirstImageForRandomRooms(listWithAllRooms);
 
-        public ActionResult About()
+            return View(homeViewModel);
+        }
+        public List<Room> shuffleRooms(List<Room> rooms)
         {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
+            var shuffledRooms = rooms
+                    .OrderBy(a => Guid.NewGuid())
+                    .Take(4)
+                    .ToList();
+            return shuffledRooms;
         }
-
-        public ActionResult Contact()
+        public List<Room> getRandomRooms()
         {
-            ViewBag.Message = "Your contact page.";
+            var rooms = unitOfWork.RoomsRepository.Get(filter: r => r.IsActive == true,
+                                                       orderBy: null,
+                                                       includeProperties: "Address,Equipment"
+                                                       ).ToList();
 
-            return View();
+            var shuffledRooms = shuffleRooms(rooms);
+
+            return shuffledRooms;
         }
+        public List<RoomImage> getFirstImageForRandomRooms(List<Room> shuffledRooms)
+        {
+            List<RoomImage> roomImages = new List<RoomImage>();
+
+            foreach(var room in shuffledRooms)
+            {
+                var images = unitOfWork.RoomImagesRepository.Get(
+                                        filter: i => i.Room.RoomID == room.RoomID,
+                                        orderBy: null,
+                                        includeProperties: ""
+                                        ).FirstOrDefault();
+                roomImages.Add(images);
+            }
+            return roomImages;
+        }
+        public string[] getRandomCity()
+        {
+            var addresses = unitOfWork.AddressesRepository.GetAll().ToList();
+            var shuffledAddresses = addresses
+                                    .OrderBy(a => Guid.NewGuid())
+                                    .ToList();
+            var addressesDistinct = shuffledAddresses.Select(a => a.City).Distinct().ToArray();
+
+            return addressesDistinct;
+        }
+        public List<Room> getRandomRoomByCity(string city)
+        {
+            var rooms = unitOfWork.RoomsRepository.Get(filter: r => r.IsActive == true 
+                                           && r.Address.City.Equals(city),
+                                           orderBy: null,
+                                           includeProperties: "Address,Equipment"
+                                           ).ToList();
+
+            var shuffledRooms = shuffleRooms(rooms);
+
+            return shuffledRooms;
+        }
+
+
+
     }
 }

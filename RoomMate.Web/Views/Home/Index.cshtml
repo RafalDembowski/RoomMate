@@ -1,31 +1,106 @@
-﻿@{
-    ViewBag.Title = "Home Page";
+﻿@model RoomMate.Entities.HomeViewModels.HomeViewModel
+
+@{
+    ViewBag.Title = "Strona główna";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+<div class="img-tablet-desktop">
+    <div class="main-header">
+        <div class="txt-header">
+            <h3>- Zarezerwuj nocleg już dziś!</h3>
+            <h1>Znajdź bądź wynajmij pokój</h1>
+        </div>
+        <div class="form home-page">
+
+            <div class="row">
+            </div>
+            <div class="calendar-flex">
+                <div class="row row-flex">
+                </div>
+                <div class="row row-flex">
+                </div>
+            </div>
+            <div class="row">
+            </div>
+            <div class="row">
+                <button class="btn-header">Wyszukaj</button>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
-</div>
+<section class="room-offers">
+    <h3>Znajdź pokoje na całym świecie!</h3>
+    <div class="flex-rooms">
+        @foreach (var room in Model.randomRooms)
+        {
+            <a href="@Url.Action("Room", "Home", new { id = room.RoomID })">
+                <div class="room">
+                    <div class="room-img">
+                        @{ var roomImage = Model.randomRoomsImages.Where(x => x.Room.RoomID == room.RoomID).FirstOrDefault(); }
+                        <img src="@Url.Content(roomImage.Path)">
+                    </div>
+                    <div class="room-dsc">
+                        <h4>@Html.DisplayFor(m => room.Name)</h4>
+                        <p> @Html.DisplayFor(m => room.Address.City)</p>
+                    </div>
+                </div>
+            </a>
+        }
+        @if (Model.firstCityRandomRooms.Count >= 4)
+        {
+            <!--first city-->
+            <div class="city">
+                <div class="city-img">
+                </div>
+                <div class="city-dsc">
+                    <p>- Zarezerwuj nocleg już dziś!</p>
+                    <h4>@Model.firstCityRandomRooms.First().Address.City stoi otworem!</h4>
+                </div>
+            </div>
+            foreach (var room in Model.firstCityRandomRooms)
+            {
+                <a href="@Url.Action("Room", "Home", new { id = room.RoomID })">
+                    <div class="room">
+                        <div class="room-img">
+                            @{ var roomImage = Model.randomRoomsImages.Where(x => x.Room.RoomID == room.RoomID).FirstOrDefault(); }
+                            <img src="@Url.Content(roomImage.Path)">
+                        </div>
+                        <div class="room-dsc">
+                            <h4>@Html.DisplayFor(modelItem => room.Name)</h4>
+                            <p> @Html.DisplayFor(modelItem => room.Address.City)<p>
+                        </div>
+                    </div>
+                </a>
+            }
+        }
+        @if (Model.secondCityRandomRooms.Count >= 4)
+        {
+            <!--second city-->
+            <div class="city">
+                <div class="city-img-second">
+                </div>
+                <div class="city-dsc">
+                    <p>- Zarezerwuj nocleg już dziś!</p>
+                    <h4>@Model.secondCityRandomRooms.First().Address.City stoi otworem!</h4>
+                </div>
+            </div>
+            foreach (var room in Model.secondCityRandomRooms)
+            {
+                <a href="@Url.Action("Room", "Home", new { id = room.RoomID })">
+                    <div class="room">
+                        <div class="room-img">
+                            @{var roomImage = Model.randomRoomsImages.Where(x => x.Room.RoomID == room.RoomID).FirstOrDefault(); }
+                            <img src="@Url.Content(roomImage.Path)">
+                        </div>
+                        <div class="room-dsc">
+                            <h4>@Html.DisplayFor(modelItem => room.Name)</h4>
+                            <p> @Html.DisplayFor(modelItem => room.Address.City)<p>
+                        </div>
+                    </div>
+                </a>
+            }
+        }
+        </div>
+</section>

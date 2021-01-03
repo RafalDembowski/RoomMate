@@ -71,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bookings\Booking.cs" />
+    <Compile Include="HomeViewModels\HomeViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoomsViewModels\AddressToEditViewModel.cs" />
     <Compile Include="RoomsViewModels\EquipmentToEditViewModel.cs" />

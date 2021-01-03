@@ -210,6 +210,10 @@ img {
     .row {
         margin-bottom: 24px;
     }
+        .row p {
+            word-break: break-word;
+            padding-left: 15px;
+        }
 
     .input-header, .input-profile {
         width: 100%;
