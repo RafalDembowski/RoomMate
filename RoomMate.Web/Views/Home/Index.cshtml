@@ -35,7 +35,7 @@
     <div class="flex-rooms">
         @foreach (var room in Model.randomRooms)
         {
-            <a href="@Url.Action("Room", "Home", new { id = room.RoomID })">
+            <a href="@Url.Action("DisplayRoom", "Room", new { id = room.RoomID })">
                 <div class="room">
                     <div class="room-img">
                         @{ var roomImage = Model.randomRoomsImages.Where(x => x.Room.RoomID == room.RoomID).FirstOrDefault(); }
