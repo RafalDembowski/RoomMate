@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@model RoomMate.Entities.RoomControllerViewModels.RoomViewModel
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -10,6 +12,8 @@
     <!--inculding font-->
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+    <!--including jquery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
 
 </head>
@@ -19,6 +23,14 @@
         <section class="header-container-simple">
             <div class="header header-white">
                 <p class="logo">ROOM<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MATE</p>
+
+                @using (Html.BeginForm("SearchRoom", "Room", FormMethod.Post))
+                {
+                    <div class="nav-searching">
+                        <i class="fas fa-search"></i>
+                        @Html.EditorFor(m => m.searchCity, new { htmlAttributes = new { @class = "input-header", placeholder = "Gdzie chcesz wyjechać?" } })
+                    </div>
+                }
 
                 <div class="nav-user nav-user-user">
                     <i class="far fa-user"></i>

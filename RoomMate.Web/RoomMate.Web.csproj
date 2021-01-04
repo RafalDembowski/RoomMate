@@ -186,6 +186,8 @@
     <Content Include="Views\Shared\_UserLayout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Room\DisplayRoom.cshtml" />
+    <Content Include="Views\Room\SearchRoom.cshtml" />
+    <Content Include="Views\Shared\_RoomMateLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\Image\" />

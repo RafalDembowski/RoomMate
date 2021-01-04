@@ -1,6 +1,6 @@
 ﻿using RoomMate.Data.Context;
 using RoomMate.Data.UnitOfWorks;
-using RoomMate.Entities.HomeViewModels;
+using RoomMate.Entities.HomeControllerViewModels;
 using RoomMate.Entities.Rooms;
 using System;
 using System.Collections.Generic;

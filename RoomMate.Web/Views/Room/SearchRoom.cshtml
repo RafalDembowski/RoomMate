@@ -1,0 +1,201 @@
+﻿@model RoomMate.Entities.RoomControllerViewModels.RoomViewModel
+
+@{
+    ViewBag.Title = "Wyszukaj nocleg";
+    Layout = "~/Views/Shared/_RoomMateLayout.cshtml";
+
+}
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+      integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+      crossorigin="" />
+<!-- Make sure you put this AFTER Leaflet's CSS -->
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+        integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+        crossorigin=""></script>
+<link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+
+<div class="container-search-rooms">
+
+    <div class="map-fixed">
+        <div id="map" class="map"></div>
+    </div>
+
+    <div class="gallery-images-searching" id="rooms-div">
+        @foreach (var item in Model.rooms)
+        {
+            <a href="@Url.Action("DisplayRoom", "Room", new { id=item.RoomID })">
+                <section class="room-offert-searching">
+                    <div class="hidden-lat-lon">
+                        @Html.HiddenFor(model => item.Address.Lat, new { id = item.RoomID })
+                        @Html.HiddenFor(model => item.Address.Lon, new { id = item.RoomID })
+                    </div>
+                    <div class="gallery-images-searching">
+                        @{ var roomImage = Model.roomImages.Where(x => x.Room.RoomID == item.RoomID).FirstOrDefault();}
+                        @if (roomImage != null)
+                        {
+                            <img src="@Url.Content(roomImage.Path)">
+                        }
+                        else
+                        {
+                            <img src="~/Content/Image/no-image.png">
+                        }
+                    </div>
+                    <div class="margin-div">
+                        <div class="room-dsc-searching">
+
+                            @Html.HiddenFor(model => item.RoomID, new { @class = "id-room" })
+
+                            <div>
+                                <h3 class="name-room" id="name-room-searching">@Html.DisplayFor(modelItem => item.Name)</h3>
+                                <p>@Html.DisplayFor(modelItem => item.Address.City)</p>
+                            </div>
+
+                            <h3 class="price-for-room" id="price-room-searching">@Html.DisplayFor(modelItem => item.Price) zł/dzień</h3>
+
+                        </div>
+
+                        <div class="equipment-container-room-searching">
+                            @if (item.Equipment.IsWifi)
+                            {
+                                <div class="equipment-item">
+                                    <p><i class="fas fa-wifi"></i>WIFI</p>
+                                </div>
+                            }
+                            @if (item.Equipment.IsAirConditioning)
+                            {
+                                <div class="equipment-item">
+                                    <p><i class="fas fa-fan"></i>Klimatyzacja</p>
+                                </div>
+                            }
+                            @if (item.Equipment.IsParking)
+                            {
+                                <div class="equipment-item">
+                                    <p><i class="fas fa-parking"></i> Parking</p>
+                                </div>
+                            }
+                            @if (item.Equipment.IsKitchen)
+                            {
+                                <div class="equipment-item">
+                                    <p><i class="fas fa-utensils"></i> Kuchnia</p>
+                                </div>
+                            }
+                            @if (item.Equipment.IsTelevision)
+                            {
+                                <div class="equipment-item">
+                                    <p><i class="fas fa-tv"></i>Telewizja</p>
+                                </div>
+                            }
+                            @if (item.Equipment.IsWashingMachine)
+                            {
+                                <div class="equipment-item">
+                                    <p><i class="fas fa-tshirt"></i>Pralka</p>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </section>
+            </a>
+
+
+        }
+    </div>
+</div>
+
+<script>
+    var latlng;
+
+    $(document).ready(function () {
+
+        var city = $("#searchCity").val();
+        var geocode = 'https://nominatim.openstreetmap.org/?addressdetails=1&city=' + city + '&format=json&limit=1'
+
+        $.ajaxSetup({ async: false });
+        $.getJSON(geocode, function (data) {
+            latlng = [data[0].lon, data[0].lat]
+        });
+
+        var markers = [];
+        var splitMarkersArray;
+        var markersNumber;
+        var idRooms = [];
+        var nameRooms = [];
+        var priceForRooms = [];
+
+        $(".hidden-lat-lon :input").each(function (e) {
+            markers.push(this.value);
+        });
+
+        $('.name-room').each(function () {
+            nameRooms.push($(this).text());
+        });
+
+        $('.price-for-room').each(function () {
+            priceForRooms.push($(this).text());
+        });
+
+        $('.id-room').each(function () {
+            idRooms.push(this.value);
+        });
+
+
+        Object.defineProperty(Array.prototype, 'chunk', {
+            value: function (chunkSize) {
+                var R = [];
+                for (var i = 0; i < this.length; i += chunkSize)
+                    R.push(this.slice(i, i + chunkSize));
+                return R;
+            }
+        });
+
+        markersNumber = markers.map(i => Number(i));
+        splitMarkersArray = markersNumber.chunk(2);
+        var map = new L.Map('map');
+
+        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
+            maxZoom: 18
+        }).addTo(map);
+        map.attributionControl.setPrefix(''); // Don't show the 'Powered by Leaflet' text.
+
+        var city = new L.LatLng(splitMarkersArray[0][1], splitMarkersArray[0][0]);
+        map.setView(city, 14);
+
+        //Loop through the markers array
+        for (var i = 0; i < splitMarkersArray.length; i++) {
+
+            var lon = splitMarkersArray[i][0];
+            var lat = splitMarkersArray[i][1];
+
+            var link = "'https://localhost:44354/Room/DisplayRoom/" + idRooms[i] + "'";
+
+            console.log(link);
+            var popupText = "<b>" + nameRooms[i] + "</b><br/>" + priceForRooms[i] + "<br/><a href=" + link + ">Zobacz pokój</a>";
+
+            var markerLocation = new L.LatLng(lat, lon);
+            var marker = new L.Marker(markerLocation);
+            map.addLayer(marker);
+            marker.bindPopup(popupText);
+        }
+    });
+
+</script>
+
+<script>
+
+    window.onscroll = function () { myFunction() };
+
+    var navbar = document.getElementById("map");
+
+    var fixed = navbar.offsetTop;
+
+    function myFunction() {
+        if (window.pageYOffset >= fixed) {
+            navbar.classList.add("fixed")
+        } else {
+            navbar.classList.remove("fixed");
+        }
+    }
+
+
+</script>

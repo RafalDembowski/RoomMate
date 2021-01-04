@@ -1,4 +1,4 @@
-﻿@model RoomMate.Entities.HomeViewModels.HomeViewModel
+﻿@model RoomMate.Entities.HomeControllerViewModels.HomeViewModel
 
 @{
     ViewBag.Title = "Strona główna";
@@ -11,23 +11,28 @@
             <h3>- Zarezerwuj nocleg już dziś!</h3>
             <h1>Znajdź bądź wynajmij pokój</h1>
         </div>
-        <div class="form home-page">
 
-            <div class="row">
-            </div>
-            <div class="calendar-flex">
-                <div class="row row-flex">
+        @using (Html.BeginForm("SearchRoom", "Room", FormMethod.Post))
+        {
+            <div class="form home-page">
+
+                <div class="row">
+                    @Html.EditorFor(model => model.searchCity , new { htmlAttributes = new { @class = "input-header", placeholder = "Gdzie?" } })
                 </div>
-                <div class="row row-flex">
+                <div class="calendar-flex">
+                    <div class="row row-flex">
+                    </div>
+                    <div class="row row-flex">
+                    </div>
+                </div>
+                <div class="row">
+                </div>
+                <div class="row">
+                    <button class="btn-header">Wyszukaj</button>
                 </div>
             </div>
-            <div class="row">
-            </div>
-            <div class="row">
-                <button class="btn-header">Wyszukaj</button>
-            </div>
+        }
         </div>
-    </div>
 </div>
 
 <section class="room-offers">
@@ -38,8 +43,15 @@
             <a href="@Url.Action("DisplayRoom", "Room", new { id = room.RoomID })">
                 <div class="room">
                     <div class="room-img">
-                        @{ var roomImage = Model.randomRoomsImages.Where(x => x.Room.RoomID == room.RoomID).FirstOrDefault(); }
-                        <img src="@Url.Content(roomImage.Path)">
+                        @{ var roomImage = Model.randomRoomsImages.Where(x => x.Room.RoomID == room.RoomID).FirstOrDefault();}
+                        @if (roomImage != null)
+                        {
+                            <img src="@Url.Content(roomImage.Path)">
+                        }
+                        else
+                        {
+                            <img src="~/Content/Image/no-image.png">
+                        }
                     </div>
                     <div class="room-dsc">
                         <h4>@Html.DisplayFor(m => room.Name)</h4>
@@ -61,7 +73,7 @@
             </div>
             foreach (var room in Model.firstCityRandomRooms)
             {
-                <a href="@Url.Action("Room", "Home", new { id = room.RoomID })">
+                <a href="@Url.Action("DisplayRoom", "Room", new { id = room.RoomID })">
                     <div class="room">
                         <div class="room-img">
                             @{ var roomImage = Model.randomRoomsImages.Where(x => x.Room.RoomID == room.RoomID).FirstOrDefault(); }
@@ -88,7 +100,7 @@
             </div>
             foreach (var room in Model.secondCityRandomRooms)
             {
-                <a href="@Url.Action("Room", "Home", new { id = room.RoomID })">
+                <a href="@Url.Action("DisplayRoom", "Room", new { id = room.RoomID })">
                     <div class="room">
                         <div class="room-img">
                             @{var roomImage = Model.randomRoomsImages.Where(x => x.Room.RoomID == room.RoomID).FirstOrDefault(); }

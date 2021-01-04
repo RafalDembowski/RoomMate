@@ -1,8 +1,8 @@
-﻿@model RoomMate.Entities.Rooms.Room
+﻿@model RoomMate.Entities.RoomControllerViewModels.RoomViewModel
 
 @{
-    ViewBag.Title = Model.Name;
-    Layout = "~/Views/Shared/_UserLayout.cshtml";
+    ViewBag.Title = Model.room.Name;
+    Layout = "~/Views/Shared/_RoomMateLayout.cshtml";
 }
 
 <section class="room-offert">
@@ -10,11 +10,18 @@
     <div class="gallery-images">
 
         <div class="current-image">
-            
+            <img src="@Url.Content(Model.roomImages.First().Path)">
         </div>
         <div class="row-gallery">
+            @foreach (var item in Model.roomImages.Skip(1))
+            {
 
+                <div class="column">
+                    <img src="@Url.Content(item.Path)" onclick="openModal();currentSlide(1)" class="hover-shadow">
+                </div>
+            }
         </div>
+
     </div>
 
     <div class="desktop-dsc">
@@ -22,14 +29,14 @@
 
             <div class="container-booking">
                 <div class="room-name">
-                    <h1>@Html.DisplayFor(model => model.Name)</h1>
-                    <h1 id="price">@Html.DisplayFor(model => model.Price) zł/dzień</h1>
+                    <h1>@Html.DisplayFor(model => model.room.Name)</h1>
+                    <h1 id="price">@Html.DisplayFor(model => model.room.Price) zł/dzień</h1>
                 </div>
 
                 <div class="room-dsc">
                     <h4>Opis</h4>
                     <p id="booking-dsc">
-                        @Html.DisplayFor(model => model.Description)
+                        @Html.DisplayFor(model => model.room.Description)
                     </p>
                 </div>
 
@@ -38,37 +45,37 @@
                 <div class="room-dsc">
                     <h4>Wyposażenie</h4>
                     <div class="equipment-container">
-                        @if (Model.Equipment.IsWifi)
+                        @if (Model.room.Equipment.IsWifi)
                         {
                             <div class="equipment-item">
                                 <p><i class="fas fa-wifi"></i>WIFI</p>
                             </div>
                         }
-                        @if (Model.Equipment.IsAirConditioning)
+                        @if (Model.room.Equipment.IsAirConditioning)
                         {
                             <div class="equipment-item">
                                 <p><i class="fas fa-fan"></i>Klimatyzacja</p>
                             </div>
                         }
-                        @if (Model.Equipment.IsParking)
+                        @if (Model.room.Equipment.IsParking)
                         {
                             <div class="equipment-item">
                                 <p><i class="fas fa-parking"></i>Parking</p>
                             </div>
                         }
-                        @if (Model.Equipment.IsKitchen)
+                        @if (Model.room.Equipment.IsKitchen)
                         {
                             <div class="equipment-item">
                                 <p><i class="fas fa-utensils"></i>Kuchnia</p>
                             </div>
                         }
-                        @if (Model.Equipment.IsTelevision)
+                        @if (Model.room.Equipment.IsTelevision)
                         {
                             <div class="equipment-item">
                                 <p><i class="fas fa-tv"></i>Telewizja</p>
                             </div>
                         }
-                        @if (Model.Equipment.IsWashingMachine)
+                        @if (Model.room.Equipment.IsWashingMachine)
                         {
                             <div class="equipment-item">
                                 <p><i class="fas fa-tshirt"></i>Pralka</p>
@@ -77,7 +84,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="line"></div>
 
             <div class="room-dsc">
@@ -90,41 +97,41 @@
 
                 <div class="comment-container">
 
-                <div class="line"></div>
+                    <div class="line"></div>
 
 
-                <div class="reviews-container">
+                    <div class="reviews-container">
 
-                    <div class="avatar-container">
-                        <img src="avatar.png" class="avatar">
-                        <div>
-                            <p id="avatar-name">Artur</p>
-                            <p id="avatar-Data">December</p>
+                        <div class="avatar-container">
+                            <img src="avatar.png" class="avatar">
+                            <div>
+                                <p id="avatar-name">Artur</p>
+                                <p id="avatar-Data">December</p>
+                            </div>
                         </div>
+                        <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i></div>
                     </div>
-                    <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i></div>
+                    <p id="comment">The place is at a superb location in very nice and clean building, Nansi gave me perfect directions to the apartment so it was really easy to find. The building is very Parisian, nice & clean, the apartment is very tiny but very nice and stylish. Would reccomend it.</p>
                 </div>
-                <p id="comment">The place is at a superb location in very nice and clean building, Nansi gave me perfect directions to the apartment so it was really easy to find. The building is very Parisian, nice & clean, the apartment is very tiny but very nice and stylish. Would reccomend it.</p>
+
             </div>
-           
-        </div>
             @if (Session["UserID"] != null)
             {
 
-                    <div class="second-column-dsc">
-                        <div class="row-room-booking">
+                <div class="second-column-dsc">
+                    <div class="row-room-booking">
 
-                        </div>
-                        <div class="row-room-booking">
-
-                        </div>
-                        <div class="row-room-booking">
-
-                        </div>
-                        <div class="row-room-booking">
-                            <button class="btn-header room-booking-btn">Zarezerwuj</button>
-                        </div>
                     </div>
+                    <div class="row-room-booking">
+
+                    </div>
+                    <div class="row-room-booking">
+
+                    </div>
+                    <div class="row-room-booking">
+                        <button class="btn-header room-booking-btn">Zarezerwuj</button>
+                    </div>
+                </div>
             }
             else
             {
@@ -132,6 +139,6 @@
 
                 </div>
             }
-            </div>
-</div>
+        </div>
+    </div>
 </section>

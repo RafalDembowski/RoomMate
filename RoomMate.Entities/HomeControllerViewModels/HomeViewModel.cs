@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace RoomMate.Entities.HomeViewModels
+namespace RoomMate.Entities.HomeControllerViewModels
 {
     public class HomeViewModel
     {
@@ -12,6 +12,7 @@ namespace RoomMate.Entities.HomeViewModels
         public List<Room> firstCityRandomRooms { get; set; }
         public List<Room> secondCityRandomRooms { get; set; }
         public List<RoomImage> randomRoomsImages { get; set; }
-
+        /*to search room*/
+        public string searchCity { get; set; }
     }
 }
