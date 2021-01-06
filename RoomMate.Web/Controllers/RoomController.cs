@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using PagedList;
 
 namespace RoomMate.Controllers
 {
@@ -49,11 +50,12 @@ namespace RoomMate.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        [HttpPost]
-        public ActionResult SearchRoom(string searchCity)
+        [HttpGet]
+        public ActionResult SearchRoom(string searchCity, int? page)
         {
             if (searchCity != null || !String.IsNullOrEmpty(searchCity))
             {
+
                 roomViewModel.rooms = unitOfWork.RoomsRepository.Get(
                                                                  filter: r => r.Address.City == searchCity && r.IsActive == true,
                                                                  orderBy: null,
@@ -62,7 +64,12 @@ namespace RoomMate.Controllers
 
                 roomViewModel.roomImages = getFirstImageForRooms(roomViewModel.rooms);
 
-                if (roomViewModel.rooms != null && roomViewModel.roomImages != null && roomViewModel.rooms.Any()   && roomViewModel.roomImages.Any())
+                int pageSize = 4;
+                int pageNumber = (page ?? 1);
+                roomViewModel.searchCity = searchCity;
+                ViewBag.OnePageOfRooms = roomViewModel.rooms.ToPagedList(pageNumber, pageSize);
+
+                if (roomViewModel.rooms != null && roomViewModel.roomImages != null && roomViewModel.rooms.Any() && roomViewModel.roomImages.Any()) 
                 {
                     return View(roomViewModel);
                 }
@@ -71,14 +78,14 @@ namespace RoomMate.Controllers
                     return RedirectToAction("Index", "Home");
                 }
             }
-            return RedirectToAction("Index", "Home");
-
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         public List<RoomImage> getFirstImageForRooms(List<Room> rooms)
         {
-            System.Diagnostics.Debug.WriteLine("ilość " + rooms.Count());
-
             List<RoomImage> roomImages = new List<RoomImage>();
 
             foreach (var room in rooms)

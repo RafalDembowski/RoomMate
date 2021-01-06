@@ -1,4 +1,7 @@
 ﻿@model RoomMate.Entities.UserProfileViewModels.UserProfileToDisplayViewModel
+@using PagedList.Mvc;
+@using PagedList
+
 @{
     ViewBag.Title = "Dashboard";
     Layout = "~/Views/Shared/_UserProfileLayout.cshtml";
@@ -169,6 +172,7 @@
                 </div>
 
                 <div class="profile-container-div profile-container-accommodation">
+
                     <div class="profile-heading">
                         <h3>Zakwaterowania:</h3>
                         <a href="@Url.Action("AddRoom", "UserProfile")">
@@ -183,13 +187,13 @@
                     }
                     else
                     {
-                        foreach (var item in Model.rooms)
+                        foreach (var room in ViewBag.OnePageOfRooms)
                         {
                             <div class="profile-container-accommodation-row">
                                 <div style="min-width: 750px;">
                                     <div>
                                         <div class="profile-container-accommodation-img">
-                                            @{ var roomImage = Model.roomImages.Where(x => x.Room.RoomID == item.RoomID).FirstOrDefault();}
+                                            @{ var roomImage = Model.roomImages.Where(x => x.Room.RoomID == @room.RoomID).FirstOrDefault();}
                                             @if (roomImage != null)
                                             {
                                                 <img src="@Url.Content(roomImage.Path)">
@@ -202,27 +206,32 @@
                                     </div>
 
                                     <div class="profile-container-accommodation-description">
-                                        <p class="bold-txt">@Html.DisplayFor(model => item.Name)</p>
+                                        <p class="bold-txt">@room.Name</p>
                                         <p>
-                                            @Html.DisplayFor(model => item.Address.City)
-                                            @Html.DisplayFor(model => item.Address.Street)
-                                            @Html.DisplayFor(model => item.Address.Flat)
-                                            @Html.DisplayFor(model => item.Address.PostCode)
+                                            @room.Address.City
+                                            @room.Address.Street
+                                            @room.Address.Flat
+                                            @room.Address.PostCode
                                         </p>
                                     </div>
                                 </div>
                                 <div class="profile-container-accommodation-icon">
 
-                                    <a href="@Url.Action("DisplayRoom", "UserProfile", new { id = item.RoomID })">
+                                    <a href="@Url.Action("DisplayRoom", "UserProfile", new { id = @room.RoomID })">
                                         <i class="far fa-question-circle toClick"></i>
                                     </a>
 
-                                    <i class="far fa-trash-alt toClick delete-modal" id="@item.RoomID "></i>
+                                    <i class="far fa-trash-alt toClick delete-modal" id="@room.RoomID "></i>
                                 </div>
                             </div>
                         }
+                        <div>
+                            Strona @(ViewBag.OnePageOfRooms.PageCount < ViewBag.OnePageOfRooms.PageNumber ? 0 : ViewBag.OnePageOfRooms.PageNumber) z @ViewBag.OnePageOfRooms.PageCount
+                            @Html.PagedListPager((IPagedList)ViewBag.OnePageOfRooms, page => Url.Action("Dashboard", new { page }))
+                        </div>
                     }
                 </div>
+
 
 
             </div>

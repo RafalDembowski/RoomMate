@@ -809,12 +809,6 @@ img {
         justify-content: space-between;
     }
 
-    .map-fixed {
-        height: 100vh;
-        width: 50%;
-        margin-top: 17px;
-    }
-
     .room-offert-searching {
         margin-top: 17px;
         display: flex;
@@ -822,7 +816,7 @@ img {
     }
 
     .map {
-        height: 100vh;
+        height: 91vh;
         width: 95vh;
     }
 
@@ -833,6 +827,9 @@ img {
 
     .gallery-images-searching {
         width: 48%;
+        display: flex;
+        flex-flow: column;
+        justify-content: inherit;
     }
 
         .gallery-images-searching img {
@@ -855,7 +852,6 @@ img {
         height: 60px;
         display: flex;
         flex-direction: column;
-        flex-flow: wrap;
     }
 
         .equipment-container-searching > div {

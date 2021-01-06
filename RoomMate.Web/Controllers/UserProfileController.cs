@@ -9,6 +9,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using RoomMate.Entities.Rooms;
+using PagedList;
 
 namespace RoomMate.Controllers
 {
@@ -23,11 +24,16 @@ namespace RoomMate.Controllers
             userProfileToeditViewModel = new UserProfileToEditViewModel();
             userProfileToDisplayView = new UserProfileToDisplayViewModel();
         }
-        public ActionResult Dashboard()
+        public ActionResult Dashboard(int? page)
         {
             userProfileToDisplayView.user = getActiveUser();
             userProfileToDisplayView.rooms = getAllActiveRooms();
             userProfileToDisplayView.roomImages = unitOfWork.RoomImagesRepository.GetAll().ToList();
+
+            int pageSize = 4;
+            int pageNumber = (page ?? 1);
+            ViewBag.OnePageOfRooms = userProfileToDisplayView.rooms.ToPagedList(pageNumber, pageSize);
+
             return View(userProfileToDisplayView);
         }
         [HttpPost]

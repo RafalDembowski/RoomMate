@@ -1,4 +1,6 @@
 ﻿@model RoomMate.Entities.RoomControllerViewModels.RoomViewModel
+@using PagedList.Mvc;
+@using PagedList
 
 @{
     ViewBag.Title = "Wyszukaj nocleg";
@@ -15,6 +17,8 @@
         crossorigin=""></script>
 <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
 
+@Html.HiddenFor(model => model.searchCity)
+
 <div class="container-search-rooms">
 
     <div class="map-fixed">
@@ -22,83 +26,90 @@
     </div>
 
     <div class="gallery-images-searching" id="rooms-div">
-        @foreach (var item in Model.rooms)
-        {
-            <a href="@Url.Action("DisplayRoom", "Room", new { id=item.RoomID })">
-                <section class="room-offert-searching">
-                    <div class="hidden-lat-lon">
-                        @Html.HiddenFor(model => item.Address.Lat, new { id = item.RoomID })
-                        @Html.HiddenFor(model => item.Address.Lon, new { id = item.RoomID })
-                    </div>
-                    <div class="gallery-images-searching">
-                        @{ var roomImage = Model.roomImages.Where(x => x.Room.RoomID == item.RoomID).FirstOrDefault();}
-                        @if (roomImage != null)
-                        {
-                            <img src="@Url.Content(roomImage.Path)">
-                        }
-                        else
-                        {
-                            <img src="~/Content/Image/no-image.png">
-                        }
-                    </div>
-                    <div class="margin-div">
-                        <div class="room-dsc-searching">
+        <div>
+            @foreach (var item in ViewBag.OnePageOfRooms)
+            {
+                <a href="@Url.Action("DisplayRoom", "Room", new { id= @item.RoomID })">
+                    <section class="room-offert-searching">
+                        <div class="hidden-lat-lon">
+                            <input type="hidden" id="@item.RoomID" value="@item.Address.Lat" />
+                            <input type="hidden" id="@item.RoomID" value="@item.Address.Lon" />
+                        </div>
+                        <div class="gallery-images-searching">
+                            @{ var roomImage = Model.roomImages.Where(x => x.Room.RoomID == @item.RoomID).FirstOrDefault();}
+                            @if (roomImage != null)
+                            {
+                                <img src="@Url.Content(roomImage.Path)">
+                            }
+                            else
+                            {
+                                <img src="~/Content/Image/no-image.png">
+                            }
+                        </div>
+                        <div class="margin-div">
+                            <div class="room-dsc-searching">
 
-                            @Html.HiddenFor(model => item.RoomID, new { @class = "id-room" })
+                                <input type="hidden" class="id-room" value="@item.RoomID" />
 
-                            <div>
-                                <h3 class="name-room" id="name-room-searching">@Html.DisplayFor(modelItem => item.Name)</h3>
-                                <p>@Html.DisplayFor(modelItem => item.Address.City)</p>
+                                <div>
+                                    <h3 class="name-room" id="name-room-searching">@item.Name</h3>
+                                    <p>@item.Address.City</p>
+                                </div>
+
+                                <h3 class="price-for-room" id="price-room-searching">@item.Price zł/dzień</h3>
+
                             </div>
 
-                            <h3 class="price-for-room" id="price-room-searching">@Html.DisplayFor(modelItem => item.Price) zł/dzień</h3>
-
+                            <div class="equipment-container-room-searching">
+                                @if (@item.Equipment.IsWifi)
+                                {
+                                    <div class="equipment-item">
+                                        <p><i class="fas fa-wifi"></i>WIFI</p>
+                                    </div>
+                                }
+                                @if (@item.Equipment.IsAirConditioning)
+                                {
+                                    <div class="equipment-item">
+                                        <p><i class="fas fa-fan"></i>Klimatyzacja</p>
+                                    </div>
+                                }
+                                @if (@item.Equipment.IsParking)
+                                {
+                                    <div class="equipment-item">
+                                        <p><i class="fas fa-parking"></i> Parking</p>
+                                    </div>
+                                }
+                                @if (@item.Equipment.IsKitchen)
+                                {
+                                    <div class="equipment-item">
+                                        <p><i class="fas fa-utensils"></i> Kuchnia</p>
+                                    </div>
+                                }
+                                @if (@item.Equipment.IsTelevision)
+                                {
+                                    <div class="equipment-item">
+                                        <p><i class="fas fa-tv"></i>Telewizja</p>
+                                    </div>
+                                }
+                                @if (@item.Equipment.IsWashingMachine)
+                                {
+                                    <div class="equipment-item">
+                                        <p><i class="fas fa-tshirt"></i>Pralka</p>
+                                    </div>
+                                }
+                            </div>
                         </div>
-
-                        <div class="equipment-container-room-searching">
-                            @if (item.Equipment.IsWifi)
-                            {
-                                <div class="equipment-item">
-                                    <p><i class="fas fa-wifi"></i>WIFI</p>
-                                </div>
-                            }
-                            @if (item.Equipment.IsAirConditioning)
-                            {
-                                <div class="equipment-item">
-                                    <p><i class="fas fa-fan"></i>Klimatyzacja</p>
-                                </div>
-                            }
-                            @if (item.Equipment.IsParking)
-                            {
-                                <div class="equipment-item">
-                                    <p><i class="fas fa-parking"></i> Parking</p>
-                                </div>
-                            }
-                            @if (item.Equipment.IsKitchen)
-                            {
-                                <div class="equipment-item">
-                                    <p><i class="fas fa-utensils"></i> Kuchnia</p>
-                                </div>
-                            }
-                            @if (item.Equipment.IsTelevision)
-                            {
-                                <div class="equipment-item">
-                                    <p><i class="fas fa-tv"></i>Telewizja</p>
-                                </div>
-                            }
-                            @if (item.Equipment.IsWashingMachine)
-                            {
-                                <div class="equipment-item">
-                                    <p><i class="fas fa-tshirt"></i>Pralka</p>
-                                </div>
-                            }
-                        </div>
-                    </div>
-                </section>
-            </a>
+                    </section>
+                </a>
 
 
-        }
+            }
+        </div>
+    <div>
+        Strona @(ViewBag.OnePageOfRooms.PageCount < ViewBag.OnePageOfRooms.PageNumber ? 0 : ViewBag.OnePageOfRooms.PageNumber) z @ViewBag.OnePageOfRooms.PageCount
+        @Html.PagedListPager((IPagedList)ViewBag.OnePageOfRooms, page => Url.Action("SearchRoom", new { page , searchCity = Model.searchCity}))
+    </div>
+
     </div>
 </div>
 
@@ -178,24 +189,5 @@
             marker.bindPopup(popupText);
         }
     });
-
-</script>
-
-<script>
-
-    window.onscroll = function () { myFunction() };
-
-    var navbar = document.getElementById("map");
-
-    var fixed = navbar.offsetTop;
-
-    function myFunction() {
-        if (window.pageYOffset >= fixed) {
-            navbar.classList.add("fixed")
-        } else {
-            navbar.classList.remove("fixed");
-        }
-    }
-
 
 </script>
