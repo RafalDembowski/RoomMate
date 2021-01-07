@@ -30,7 +30,7 @@ namespace RoomMate.Controllers
             userProfileToDisplayView.rooms = getAllActiveRooms();
             userProfileToDisplayView.roomImages = unitOfWork.RoomImagesRepository.GetAll().ToList();
 
-            int pageSize = 4;
+            int pageSize = 2;
             int pageNumber = (page ?? 1);
             ViewBag.OnePageOfRooms = userProfileToDisplayView.rooms.ToPagedList(pageNumber, pageSize);
 

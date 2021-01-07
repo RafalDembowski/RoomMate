@@ -14,23 +14,29 @@
 
         @using (Html.BeginForm("SearchRoom", "Room", FormMethod.Get))
         {
-            <div class="form home-page">
-
-                <div class="row">
-                    @Html.EditorFor(model => model.searchCity, new { htmlAttributes = new { @class = "input-header", placeholder = "Gdzie chcesz wyjechać?" } })
-                </div>
-                <div class="calendar-flex">
-                    <div class="row row-flex">
-                    </div>
-                    <div class="row row-flex">
-                    </div>
-                </div>
-                <div class="row">
-                </div>
-                <div class="row">
-                    <button class="btn-header">Wyszukaj</button>
-                </div>
+    <div class="form home-page">
+        <div class="desktop-txt">
+            <h1>Znajdź nocleg</h1>
+        </div>
+        <div class="row">
+            @Html.EditorFor(model => model.searchCity, new { htmlAttributes = new { @class = "input-header", placeholder = "Gdzie chcesz wyjechać?" } })
+        </div>
+        <div class="calendar-flex">
+            <div class="row row-flex">
+                @Html.EditorFor(model => model.searchCity, new { htmlAttributes = new { @class = "input-header SelectedDate", placeholder = "Zameldowanie" } })
             </div>
+            <div class="row row-flex">
+                @Html.EditorFor(model => model.searchCity, new { htmlAttributes = new { @class = "input-header SelectedDate", placeholder = "Wymeldowanie" } })
+            </div>
+        </div>
+        <div class="row">
+            @Html.EditorFor(model => model.searchCity, new { htmlAttributes = new { @class = "input-header", placeholder = "Ile osób?" } })
+        </div>
+        <div class="row">
+            <button class="btn-header">Wyszukaj</button>
+        </div>
+    </div>
+
         }
         </div>
 </div>

@@ -17,98 +17,104 @@
         crossorigin=""></script>
 <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
 
-@Html.HiddenFor(model => model.searchCity)
-
 <div class="container-search-rooms">
 
     <div class="map-fixed">
         <div id="map" class="map"></div>
     </div>
-
     <div class="gallery-images-searching" id="rooms-div">
         <div>
-            @foreach (var item in ViewBag.OnePageOfRooms)
+            @using (Html.BeginForm("SearchRoom", "Room", FormMethod.Get))
             {
-                <a href="@Url.Action("DisplayRoom", "Room", new { id= @item.RoomID })">
-                    <section class="room-offert-searching">
-                        <div class="hidden-lat-lon">
-                            <input type="hidden" id="@item.RoomID" value="@item.Address.Lat" />
-                            <input type="hidden" id="@item.RoomID" value="@item.Address.Lon" />
-                        </div>
-                        <div class="gallery-images-searching">
-                            @{ var roomImage = Model.roomImages.Where(x => x.Room.RoomID == @item.RoomID).FirstOrDefault();}
-                            @if (roomImage != null)
-                            {
-                                <img src="@Url.Content(roomImage.Path)">
-                            }
-                            else
-                            {
-                                <img src="~/Content/Image/no-image.png">
-                            }
-                        </div>
-                        <div class="margin-div">
-                            <div class="room-dsc-searching">
+            <div class="filter-div">
+                @Html.HiddenFor(model => model.searchCity)
+                @Html.DropDownListFor(model => model.currentFilter, new SelectList(Model.sortSelectList, "Value", "Text"), new { @class = "input-header" })
+                <button>Sortuj</button>
+            </div>
+            }
+            <div>
+                @foreach (var item in ViewBag.OnePageOfRooms)
+                {
+                    <a href="@Url.Action("DisplayRoom", "Room", new { id= @item.RoomID })">
+                        <section class="room-offert-searching">
+                            <div class="hidden-lat-lon">
+                                <input type="hidden" id="@item.RoomID" value="@item.Address.Lat" />
+                                <input type="hidden" id="@item.RoomID" value="@item.Address.Lon" />
+                            </div>
+                            <div class="gallery-images-searching">
+                                @{ var roomImage = Model.roomImages.Where(x => x.Room.RoomID == @item.RoomID).FirstOrDefault();}
+                                @if (roomImage != null)
+                                {
+                                    <img src="@Url.Content(roomImage.Path)">
+                                }
+                                else
+                                {
+                                    <img src="~/Content/Image/no-image.png">
+                                }
+                            </div>
+                            <div class="margin-div">
+                                <div class="room-dsc-searching">
 
-                                <input type="hidden" class="id-room" value="@item.RoomID" />
+                                    <input type="hidden" class="id-room" value="@item.RoomID" />
 
-                                <div>
-                                    <h3 class="name-room" id="name-room-searching">@item.Name</h3>
-                                    <p>@item.Address.City</p>
+                                    <div>
+                                        <h3 class="name-room" id="name-room-searching">@item.Name</h3>
+                                        <p>@item.Address.City</p>
+                                    </div>
+
+                                    <h3 class="price-for-room" id="price-room-searching">@item.Price zł/dzień</h3>
+
                                 </div>
 
-                                <h3 class="price-for-room" id="price-room-searching">@item.Price zł/dzień</h3>
-
+                                <div class="equipment-container-room-searching">
+                                    @if (@item.Equipment.IsWifi)
+                                    {
+                                        <div class="equipment-item">
+                                            <p><i class="fas fa-wifi"></i>WIFI</p>
+                                        </div>
+                                    }
+                                    @if (@item.Equipment.IsAirConditioning)
+                                    {
+                                        <div class="equipment-item">
+                                            <p><i class="fas fa-fan"></i>Klimatyzacja</p>
+                                        </div>
+                                    }
+                                    @if (@item.Equipment.IsParking)
+                                    {
+                                        <div class="equipment-item">
+                                            <p><i class="fas fa-parking"></i> Parking</p>
+                                        </div>
+                                    }
+                                    @if (@item.Equipment.IsKitchen)
+                                    {
+                                        <div class="equipment-item">
+                                            <p><i class="fas fa-utensils"></i> Kuchnia</p>
+                                        </div>
+                                    }
+                                    @if (@item.Equipment.IsTelevision)
+                                    {
+                                        <div class="equipment-item">
+                                            <p><i class="fas fa-tv"></i>Telewizja</p>
+                                        </div>
+                                    }
+                                    @if (@item.Equipment.IsWashingMachine)
+                                    {
+                                        <div class="equipment-item">
+                                            <p><i class="fas fa-tshirt"></i>Pralka</p>
+                                        </div>
+                                    }
+                                </div>
                             </div>
-
-                            <div class="equipment-container-room-searching">
-                                @if (@item.Equipment.IsWifi)
-                                {
-                                    <div class="equipment-item">
-                                        <p><i class="fas fa-wifi"></i>WIFI</p>
-                                    </div>
-                                }
-                                @if (@item.Equipment.IsAirConditioning)
-                                {
-                                    <div class="equipment-item">
-                                        <p><i class="fas fa-fan"></i>Klimatyzacja</p>
-                                    </div>
-                                }
-                                @if (@item.Equipment.IsParking)
-                                {
-                                    <div class="equipment-item">
-                                        <p><i class="fas fa-parking"></i> Parking</p>
-                                    </div>
-                                }
-                                @if (@item.Equipment.IsKitchen)
-                                {
-                                    <div class="equipment-item">
-                                        <p><i class="fas fa-utensils"></i> Kuchnia</p>
-                                    </div>
-                                }
-                                @if (@item.Equipment.IsTelevision)
-                                {
-                                    <div class="equipment-item">
-                                        <p><i class="fas fa-tv"></i>Telewizja</p>
-                                    </div>
-                                }
-                                @if (@item.Equipment.IsWashingMachine)
-                                {
-                                    <div class="equipment-item">
-                                        <p><i class="fas fa-tshirt"></i>Pralka</p>
-                                    </div>
-                                }
-                            </div>
-                        </div>
-                    </section>
-                </a>
+                        </section>
+                    </a>
 
 
-            }
+                }
+            </div>
         </div>
-    <div>
-        Strona @(ViewBag.OnePageOfRooms.PageCount < ViewBag.OnePageOfRooms.PageNumber ? 0 : ViewBag.OnePageOfRooms.PageNumber) z @ViewBag.OnePageOfRooms.PageCount
-        @Html.PagedListPager((IPagedList)ViewBag.OnePageOfRooms, page => Url.Action("SearchRoom", new { page , searchCity = Model.searchCity}))
-    </div>
+        <div>
+            @Html.PagedListPager((IPagedList)ViewBag.OnePageOfRooms, page => Url.Action("SearchRoom", new { page, searchCity = Model.searchCity, currentFilter = Model.currentFilter}))
+        </div>
 
     </div>
 </div>
@@ -178,7 +184,7 @@
             var lon = splitMarkersArray[i][0];
             var lat = splitMarkersArray[i][1];
 
-            var link = "'https://localhost:44354/Room/DisplayRoom/" + idRooms[i] + "'";
+            var link = "'https://localhost:44375/Room/DisplayRoom/" + idRooms[i] + "'";
 
             console.log(link);
             var popupText = "<b>" + nameRooms[i] + "</b><br/>" + priceForRooms[i] + "<br/><a href=" + link + ">Zobacz pokój</a>";

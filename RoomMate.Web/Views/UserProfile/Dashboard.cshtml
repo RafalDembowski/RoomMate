@@ -53,8 +53,8 @@
                 </p>
             </div>
             <ul>
-                <li class="active">
-                    <i class="fas fa-home"></i><a class="active" href="#">Menu</a>
+                <li class="active-menu">
+                    <i class="fas fa-home"></i><a class="active-menu" href="#">Menu</a>
                 </li>
                 <li>
                     <i class="fas fa-plus"></i><a href="@Url.Action("AddRoom", "UserProfile")">Nowy nocleg</a>
@@ -226,7 +226,6 @@
                             </div>
                         }
                         <div>
-                            Strona @(ViewBag.OnePageOfRooms.PageCount < ViewBag.OnePageOfRooms.PageNumber ? 0 : ViewBag.OnePageOfRooms.PageNumber) z @ViewBag.OnePageOfRooms.PageCount
                             @Html.PagedListPager((IPagedList)ViewBag.OnePageOfRooms, page => Url.Action("Dashboard", new { page }))
                         </div>
                     }

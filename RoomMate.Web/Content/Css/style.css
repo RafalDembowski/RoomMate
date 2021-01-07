@@ -123,7 +123,36 @@ img {
     color: #FFF;
     padding: 10px 25px 9px 24px;
 }
+     /*pagination*/
+     .pagination {
+      display: inline-block;
+      padding: 0;
+    }
 
+    .pagination li {
+      color: black;
+      float: left;
+      padding: 8px 16px;
+      transition: background-color .3s;
+      display: block
+    }
+
+    .pagination li a {
+        text-decoration: none;
+        color: black;
+    }
+
+    .pagination li.active {
+      background-color: #4961AF;
+    }
+
+    .pagination li.active a {
+      color: white;
+    }
+
+    .pagination li:hover:not(.active) {
+        background-color: #ddd;
+    }
 @media (min-width: 0px) {
     /*section header*/
     .header-container, .header-container-simple {
@@ -428,7 +457,6 @@ img {
     }
     /*section room searching*/
     .filter-div {
-        margin-top: 15px;
         display: flex;
         justify-content: space-between;
     }
@@ -644,6 +672,10 @@ img {
         background-color: white;
         padding: 30px 35px 65px 35px;
         z-index: 999;
+    }
+    .home-page{
+    box-shadow: 0 6px 40px 12px rgba(69,65,78,.06);
+    background-color: white;
     }
 
     .form-simple {
@@ -866,14 +898,6 @@ img {
 
 @media (min-width: 1200px) {
 
-    .calendar-flex {
-        display: block;
-    }
-
-    .row-flex {
-        width: 100%;
-    }
-
     .room-img img {
         width: 100%;
         height: 256px;
@@ -1014,12 +1038,12 @@ img {
             margin-left: 10px;
         }
 
-    .active {
+    .active-menu {
         background-color: #4961AF;
         color: white !important;
     }
 
-    .home-page .active {
+    .home-page .active-menu {
         border-left: 5px solid #4961AF;
         background-color: transparent;
     }
@@ -1352,11 +1376,13 @@ img {
     #add-file, #roomImg {
         display: none;
     }
+
     .add-img-photo-style {
         width: 120px;
         height: 90px;
         margin: 10px 0 0 0;
     }
+
     #add-img-photo {
     }
 
@@ -1550,8 +1576,9 @@ img {
         margin-top: 25px;
         margin-right: -15px;
     }
+
     .editRoom, #cancelUpdateRoom {
         display: none;
     }
-
 }
+

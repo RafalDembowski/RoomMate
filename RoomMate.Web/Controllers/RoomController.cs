@@ -51,26 +51,45 @@ namespace RoomMate.Controllers
 
         }
         [HttpGet]
-        public ActionResult SearchRoom(string searchCity, int? page)
+        public ActionResult SearchRoom(string searchCity, int? page, string currentFilter)
         {
             if (searchCity != null || !String.IsNullOrEmpty(searchCity))
             {
 
                 roomViewModel.rooms = unitOfWork.RoomsRepository.Get(
                                                                  filter: r => r.Address.City == searchCity && r.IsActive == true,
-                                                                 orderBy: null,
+                                                                 orderBy: null ,
                                                                  includeProperties: "Address,Equipment"
                                                                  ).ToList();
 
                 roomViewModel.roomImages = getFirstImageForRooms(roomViewModel.rooms);
-
-                int pageSize = 4;
-                int pageNumber = (page ?? 1);
+                roomViewModel.sortSelectList = setSortList();
                 roomViewModel.searchCity = searchCity;
-                ViewBag.OnePageOfRooms = roomViewModel.rooms.ToPagedList(pageNumber, pageSize);
-
+                roomViewModel.currentFilter = currentFilter;
+               
                 if (roomViewModel.rooms != null && roomViewModel.roomImages != null && roomViewModel.rooms.Any() && roomViewModel.roomImages.Any()) 
                 {
+                    //sort rooms
+                    if(!String.IsNullOrEmpty(currentFilter) && currentFilter != null)
+                    {
+                        System.Diagnostics.Debug.WriteLine("jestem tutaj");
+                        switch (currentFilter)
+                        {
+                            case "priceAscending":
+                                roomViewModel.rooms = roomViewModel.rooms.OrderBy(r => r.Price).ToList();
+                                break;
+                            case "priceDescending":
+                                roomViewModel.rooms = roomViewModel.rooms.OrderByDescending(r => r.Price).ToList();
+                                break;
+                            case "date":
+                                break;
+                        }
+                    }
+                    //set pagination
+                    int pageSize = 4;
+                    int pageNumber = (page ?? 1);
+                    ViewBag.OnePageOfRooms = roomViewModel.rooms.ToPagedList(pageNumber, pageSize);
+
                     return View(roomViewModel);
                 }
                 else
@@ -98,6 +117,18 @@ namespace RoomMate.Controllers
                 roomImages.Add(images);
             }
             return roomImages;
+        }
+
+        public List<SelectListItem> setSortList()
+        {
+            List<SelectListItem> sortListItem = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "Sortuj według: ceny rosnąco" , Value = "priceAscending"},
+                new SelectListItem { Text = "Sortuj według: ceny malejąco", Value = "priceDescending"},
+            };
+            sortListItem.Insert(0, new SelectListItem { Text = "Sortuj według: najnowszy", Value = "date" });
+
+            return sortListItem;
         }
     }
 }
