@@ -8,6 +8,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using PagedList;
+using RoomMate.Entities.Users;
 
 namespace RoomMate.Controllers
 {
@@ -27,17 +28,9 @@ namespace RoomMate.Controllers
 
             if (!String.IsNullOrEmpty(id) && codeActivationCanBeGuid == true && !id.Equals("00000000-0000-0000-0000-000000000000"))
             {
-                roomViewModel.room = unitOfWork.RoomsRepository.Get(filter: r => r.RoomID == new Guid(id),
-                                                              orderBy: null,
-                                                              includeProperties: "Address,Equipment")
-                                                              .FirstOrDefault();
+                getRoomAndRoomImagesToView(id);
 
-                roomViewModel.roomImages = unitOfWork.RoomImagesRepository.Get(filter: i => i.Room.RoomID == new Guid(id),
-                                                                            orderBy: null,
-                                                                            includeProperties: "")
-                                                                            .ToList();
-
-                if(roomViewModel.room != null && roomViewModel.roomImages != null)
+                if (roomViewModel.room != null && roomViewModel.roomImages != null)
                 {
                     return View(roomViewModel);
                 }
@@ -50,22 +43,72 @@ namespace RoomMate.Controllers
             return RedirectToAction("Index", "Home");
 
         }
+        [HttpPost]
+        public ActionResult DisplayRoom(string id, RoomViewModel _roomViewModel)
+        {
+            getRoomAndRoomImagesToView(id);
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    bool dateIsAvailable = unitOfWork.BookingRepository.checkRoomAvailability(_roomViewModel.booking.InDate, _roomViewModel.booking.OutDate, _roomViewModel.room.RoomID);
+                    System.Diagnostics.Debug.WriteLine(dateIsAvailable);
+                    if (!dateIsAvailable)
+                    {
+                        //set booking 
+                        return RedirectToAction("BookingRoom", "Room");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("isBooking", "Brak miejsc w tym terminie");
+                        return View(roomViewModel);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("Error: " + e.Message);
+                ViewBag.Error = "Wystąpił błąd, proszę powtórzyć jeszcze raz.";
+                return View(roomViewModel);
+            }
+            return View(roomViewModel);
+        }
+
+        public ActionResult BookingRoom()
+        {
+            return View();
+        }
         [HttpGet]
-        public ActionResult SearchRoom(string searchCity, int? page, string currentFilter)
+        public ActionResult SearchRoom(string searchCity, int? page, string currentFilter, string numberOfGuest)
         {
             if (searchCity != null || !String.IsNullOrEmpty(searchCity))
             {
+                if(!String.IsNullOrEmpty(numberOfGuest) && numberOfGuest != null)
+                {
+                    int numberOfGuestInt = int.Parse(numberOfGuest);
 
-                roomViewModel.rooms = unitOfWork.RoomsRepository.Get(
-                                                                 filter: r => r.Address.City == searchCity && r.IsActive == true,
-                                                                 orderBy: null ,
-                                                                 includeProperties: "Address,Equipment"
-                                                                 ).ToList();
+                    roomViewModel.rooms = unitOfWork.RoomsRepository.Get(
+                                                 filter: r => r.Address.City == searchCity && r.IsActive == true && r.NumberOfGuests == numberOfGuestInt,
+                                                 orderBy: null,
+                                                 includeProperties: "Address,Equipment"
+                                                 ).ToList();
+                }
+                else
+                {
+                    roomViewModel.rooms = unitOfWork.RoomsRepository.Get(
+                                                 filter: r => r.Address.City == searchCity && r.IsActive == true,
+                                                 orderBy: null,
+                                                 includeProperties: "Address,Equipment"
+                                                 ).ToList();
+                }
 
                 roomViewModel.roomImages = getFirstImageForRooms(roomViewModel.rooms);
                 roomViewModel.sortSelectList = setSortList();
+
                 roomViewModel.searchCity = searchCity;
                 roomViewModel.currentFilter = currentFilter;
+                roomViewModel.numberOfGuest = numberOfGuest;
                
                 if (roomViewModel.rooms != null && roomViewModel.roomImages != null && roomViewModel.rooms.Any() && roomViewModel.roomImages.Any()) 
                 {
@@ -129,6 +172,51 @@ namespace RoomMate.Controllers
             sortListItem.Insert(0, new SelectListItem { Text = "Sortuj według: najnowszy", Value = "date" });
 
             return sortListItem;
+        }
+        public List<SelectListItem> setGuestSelectList(Guid roomID)
+        {
+            //get current room
+            var room = unitOfWork.RoomsRepository.GetById(roomID);
+            //set selectListItem
+            List<SelectListItem> guestList = new List<SelectListItem>();
+            guestList.Add(new SelectListItem() { Text = "Wybierz liczbę gości:", Value = "0" });
+
+            for (int i = 1 ; i <= room.NumberOfGuests; i++)
+            {
+                guestList.Add(new SelectListItem() { Text = "Liczba gości: " + i, Value = i.ToString() }); 
+
+            }
+
+            return guestList;
+        }
+        public void getRoomAndRoomImagesToView(string id)
+        {
+            roomViewModel.room = unitOfWork.RoomsRepository.Get(filter: r => r.RoomID == new Guid(id),
+                                              orderBy: null,
+                                              includeProperties: "Address,Equipment")
+                                              .FirstOrDefault();
+
+            roomViewModel.roomImages = unitOfWork.RoomImagesRepository.Get(filter: i => i.Room.RoomID == new Guid(id),
+                                                                        orderBy: null,
+                                                                        includeProperties: "")
+                                                                        .ToList();
+
+            roomViewModel.guestSelectList = setGuestSelectList(roomViewModel.room.RoomID);
+        }
+        public User getActiveUser()
+        {
+            User user = new User();
+            if (Session["UserID"] != null)
+            {
+                string userID = Session["UserID"].ToString();
+                var users = unitOfWork.UsersRepository.Get(
+                                          filter: U => U.UserID == new Guid(userID),
+                                          orderBy: null,
+                                          includeProperties: "UserImage"
+                                          );
+                user = users.ToList().FirstOrDefault();
+            }
+            return user;
         }
     }
 }

@@ -91,6 +91,7 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BookingsViewModels\BookingViewModel.cs" />
     <Compile Include="Bookings\Booking.cs" />
     <Compile Include="HomeControllerViewModels\HomeViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

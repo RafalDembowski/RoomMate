@@ -1,4 +1,5 @@
-﻿using RoomMate.Data.Context;
+﻿using Microsoft.Ajax.Utilities;
+using RoomMate.Data.Context;
 using RoomMate.Data.UnitOfWorks;
 using RoomMate.Entities.HomeControllerViewModels;
 using RoomMate.Entities.Rooms;
@@ -32,7 +33,8 @@ namespace RoomMate.Controllers
                                    .Concat(homeViewModel.secondCityRandomRooms)
                                    .Concat(homeViewModel.randomRooms).ToList();
             homeViewModel.randomRoomsImages = getFirstImageForRandomRooms(listWithAllRooms);
-
+            //take amount of guest orderby ascending
+            homeViewModel.selectGuestList = setSelectListWithGuests();
             return View(homeViewModel);
         }
         public List<Room> shuffleRooms(List<Room> rooms)
@@ -90,6 +92,31 @@ namespace RoomMate.Controllers
             var shuffledRooms = shuffleRooms(rooms);
 
             return shuffledRooms;
+        }
+        public List<Room> getRoomDistinctByNumberOfGuestes()
+        {
+            var roomsDistinctByGuestNumber = unitOfWork.RoomsRepository.Get(filter: r => r.IsActive == true,
+                                                       orderBy: r => r.OrderBy(o => o.NumberOfGuests),
+                                                       includeProperties: ""
+                                                       ).DistinctBy(r => r.NumberOfGuests).ToList();
+
+
+            return roomsDistinctByGuestNumber;
+        }
+        public List<SelectListItem> setSelectListWithGuests()
+        {
+            //get amount of guest and sort ascending
+            var roomsDistinctByGuestNumber = getRoomDistinctByNumberOfGuestes();
+
+            List<SelectListItem> guestList = new List<SelectListItem>();
+            guestList.Add(new SelectListItem() { Text = "Wybierz liczbę gości:" , Value = "0"});
+
+            foreach (var room in roomsDistinctByGuestNumber)
+            {
+                guestList.Add(new SelectListItem() { Text = "Liczba gości: " + room.NumberOfGuests , Value = room.NumberOfGuests.ToString() }); 
+            }
+
+            return guestList;
         }
 
 

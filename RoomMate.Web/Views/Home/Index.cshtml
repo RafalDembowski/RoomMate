@@ -30,7 +30,7 @@
             </div>
         </div>
         <div class="row">
-            @Html.EditorFor(model => model.searchCity, new { htmlAttributes = new { @class = "input-header", placeholder = "Ile osób?" } })
+                @Html.DropDownListFor(model => model.numberOfGuest , new SelectList(Model.selectGuestList , "Value", "Text"), new { @class = "input-header" })
         </div>
         <div class="row">
             <button class="btn-header">Wyszukaj</button>

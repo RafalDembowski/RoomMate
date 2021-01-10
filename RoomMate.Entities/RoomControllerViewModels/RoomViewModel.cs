@@ -1,4 +1,4 @@
-﻿using RoomMate.Entities.Bookings;
+﻿using RoomMate.Entities.BookingsViewModels;
 using RoomMate.Entities.Rooms;
 using System;
 using System.Collections.Generic;
@@ -12,9 +12,11 @@ namespace RoomMate.Entities.RoomControllerViewModels
     {
         //for display room and booking 
         public Room room { get; set; }
-        public Booking booking { get; set; }
+        public BookingViewModel booking { get; set; }
+        public List<SelectListItem> guestSelectList { get; set; }
         //for search rooms 
         public string searchCity { get; set; }
+        public string numberOfGuest { get; set; }
         public List<RoomImage> roomImages { get; set; }
         public List<Room> rooms { get; set; }
         public List<SelectListItem> sortSelectList { get; set; }

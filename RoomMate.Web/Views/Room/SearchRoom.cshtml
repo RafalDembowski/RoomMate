@@ -28,6 +28,7 @@
             {
             <div class="filter-div">
                 @Html.HiddenFor(model => model.searchCity)
+                @Html.HiddenFor(model => model.numberOfGuest)
                 @Html.DropDownListFor(model => model.currentFilter, new SelectList(Model.sortSelectList, "Value", "Text"), new { @class = "input-header" })
                 <button>Sortuj</button>
             </div>
@@ -113,7 +114,7 @@
             </div>
         </div>
         <div>
-            @Html.PagedListPager((IPagedList)ViewBag.OnePageOfRooms, page => Url.Action("SearchRoom", new { page, searchCity = Model.searchCity, currentFilter = Model.currentFilter}))
+            @Html.PagedListPager((IPagedList)ViewBag.OnePageOfRooms, page => Url.Action("SearchRoom", new { page, searchCity = Model.searchCity, currentFilter = Model.currentFilter, numberOfGuest = Model.numberOfGuest}))
         </div>
 
     </div>

@@ -12,11 +12,11 @@ namespace RoomMate.Entities.Bookings
         [Key]
         [Column(Order = 1)]
         public Guid BookingID { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Podanie daty jest wymagane.")]
         public DateTime InDate { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Podanie daty jest wymagane.")]
         public DateTime OutDate { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Podanie ilości gości jest wymagane.")]
         public int NumberOfGuests { get; set; }
         public float? TotalPrice { get; set; }
         [Required]

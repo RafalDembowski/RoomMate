@@ -195,6 +195,7 @@
     <Content Include="Views\Room\DisplayRoom.cshtml" />
     <Content Include="Views\Room\SearchRoom.cshtml" />
     <Content Include="Views\Shared\_RoomMateLayout.cshtml" />
+    <Content Include="Views\Room\BookingRoom.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\Image\" />

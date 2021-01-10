@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace RoomMate.Entities.HomeControllerViewModels
 {
@@ -14,5 +15,7 @@ namespace RoomMate.Entities.HomeControllerViewModels
         public List<RoomImage> randomRoomsImages { get; set; }
         /*to search room*/
         public string searchCity { get; set; }
+        public string numberOfGuest { get; set; }
+        public List<SelectListItem> selectGuestList { get; set; }
     }
 }

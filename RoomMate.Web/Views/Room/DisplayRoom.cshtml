@@ -84,61 +84,65 @@
                     </div>
                 </div>
             </div>
-
-            <div class="line"></div>
-
-            <div class="room-dsc">
-
-                <h4>Reviews</h4>
-                <div class="reviews-container">
-                    <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i></div>
-                    <div><h4>42 Reviews</h4></div>
-                </div>
-
-                <div class="comment-container">
-
-                    <div class="line"></div>
-
-
-                    <div class="reviews-container">
-
-                        <div class="avatar-container">
-                            <img src="avatar.png" class="avatar">
-                            <div>
-                                <p id="avatar-name">Artur</p>
-                                <p id="avatar-Data">December</p>
-                            </div>
-                        </div>
-                        <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i></div>
-                    </div>
-                    <p id="comment">The place is at a superb location in very nice and clean building, Nansi gave me perfect directions to the apartment so it was really easy to find. The building is very Parisian, nice & clean, the apartment is very tiny but very nice and stylish. Would reccomend it.</p>
-                </div>
-
-            </div>
+        </div>
+        <div>
             @if (Session["UserID"] != null)
             {
+                using (Html.BeginForm("DisplayRoom", "Room", new { id = Url.RequestContext.RouteData.Values["id"] }, FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-error-room" })
 
-                <div class="second-column-dsc">
-                    <div class="row-room-booking">
+                    @Html.HiddenFor(model => model.room.Name)
+                    @Html.HiddenFor(model => model.room.Price)
+                    @Html.HiddenFor(model => model.room.Description)
+                    @Html.HiddenFor(model => model.room.IsActive)
+                    @Html.HiddenFor(model => model.room.NumberOfGuests)
 
+                    <div class="second-column-dsc">
+                        @Html.ValidationMessage("isBooking", new { @class = "text-error" })
+                        <div class="row-room-booking">
+                            @Html.ValidationMessageFor(model => model.booking.NumberOfGuests, "", new { @class = "text-error" })
+                            @Html.DropDownListFor(model => model.booking.NumberOfGuests, Model.guestSelectList, " ", new { @class = "input-header" })
+                        </div>
+                        <div class="row-room-booking">
+                            @Html.ValidationMessageFor(model => model.booking.InDate, "", new { @class = "text-error" })
+                            @Html.TextBoxFor(model => model.booking.InDate, new { @class = "input-header SelectedDate", placeholder = "Zameldowanie" })
+                        </div>
+                        <div class="row-room-booking">
+                            @Html.ValidationMessageFor(model => model.booking.OutDate, "", new { @class = "text-error" })
+                            @Html.TextBoxFor(model => model.booking.OutDate, new { @class = "input-header SelectedDate", placeholder = "Wymeldowanie" })
+                        </div>
+                        <div class="row-room-booking">
+                            <button class="btn-header room-booking-btn">Zarezerwuj</button>
+                        </div>
                     </div>
-                    <div class="row-room-booking">
-
-                    </div>
-                    <div class="row-room-booking">
-
-                    </div>
-                    <div class="row-room-booking">
-                        <button class="btn-header room-booking-btn">Zarezerwuj</button>
-                    </div>
-                </div>
+                }
             }
             else
             {
                 <div class="second-column-dsc">
-
+                    <p>Zaloguj się żeby zarezerwować pokój!</p>
+                    <div class="row-room-booking">
+                        @Html.DropDownListFor(model => model.booking.NumberOfGuests, Model.guestSelectList, " ", new { @class = "input-header", disabled = "disabled", @readonly = "readonly" })
+                    </div>
+                    <div class="row-room-booking">
+                        @Html.TextBoxFor(model => model.booking.InDate, new { @class = "input-header SelectedDate", placeholder = "Zameldowanie", disabled = "disabled", @readonly = "readonly" })
+                    </div>
+                    <div class="row-room-booking">
+                        @Html.TextBoxFor(model => model.booking.OutDate, new { @class = "input-header SelectedDate", placeholder = "Wymeldowanie", disabled = "disabled", @readonly = "readonly" })
+                    </div>
+                    <div class="row-room-booking">
+                        <button class="btn-header room-booking-btn" disabled>Zarezerwuj</button>
+                    </div>
                 </div>
             }
         </div>
     </div>
 </section>
+
+<script type="text/javascript">
+    $(function () {
+        $(".SelectedDate").flatpickr();
+    });
+</script>
