@@ -23,10 +23,10 @@
         </div>
         <div class="calendar-flex">
             <div class="row row-flex">
-                @Html.EditorFor(model => model.searchCity, new { htmlAttributes = new { @class = "input-header SelectedDate", placeholder = "Zameldowanie" } })
+                @Html.TextBoxFor(model => model.inDate, new { @class = "input-header SelectedDate", placeholder = "Zameldowanie" })
             </div>
             <div class="row row-flex">
-                @Html.EditorFor(model => model.searchCity, new { htmlAttributes = new { @class = "input-header SelectedDate", placeholder = "Wymeldowanie" } })
+                @Html.TextBoxFor(model => model.outDate, new { @class = "input-header SelectedDate", placeholder = "Wymeldowanie" })
             </div>
         </div>
         <div class="row">
@@ -122,3 +122,9 @@
         }
         </div>
 </section>
+
+<script type="text/javascript">
+    $(function () {
+        $(".SelectedDate").flatpickr();
+    });
+</script>

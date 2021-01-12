@@ -1,0 +1,30 @@
+﻿@model RoomMate.Entities.Bookings.Booking
+
+@{
+    ViewBag.Title = "BookingDetail";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+<h2>Udało Ci się zarejestrować nocleg!</h2>
+
+<div class="form form-simple">
+    <div class="row">
+        <div class="desktop-txt">
+            <h1>Podsumowanie rezerwacji:</h1>
+        </div>
+        <div>
+            <p>Nazwa lokalu: @Model.Room.Name</p>
+            <p>Adres:</p>
+            <p>Miasto: @Model.Room.Address.City</p>
+            <p>Ulica: @Model.Room.Address.Street</p>
+            <p>Mieszkanie: @Model.Room.Address.Flat</p>
+            <p>Kod pocztowy: @Model.Room.Address.PostCode</p>
+        </div>
+        <div>
+            <p>Zameldowanie: @Model.InDate.ToString("dd MM yyyy")</p>
+            <p>Wymeldowanie: @Model.OutDate.ToString("dd MM yyyy")</p>
+            <p>Ilość gości:  @Model.NumberOfGuests</p>
+            <p>Do zapłaty:   @Model.TotalPrice</p>
+        </div>
+    </div>
+</div>

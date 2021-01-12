@@ -114,7 +114,7 @@
             </div>
         </div>
         <div>
-            @Html.PagedListPager((IPagedList)ViewBag.OnePageOfRooms, page => Url.Action("SearchRoom", new { page, searchCity = Model.searchCity, currentFilter = Model.currentFilter, numberOfGuest = Model.numberOfGuest}))
+            @Html.PagedListPager((IPagedList)ViewBag.OnePageOfRooms, page => Url.Action("SearchRoom", new { page, searchCity = Model.searchCity, currentFilter = Model.currentFilter, numberOfGuest = Model.numberOfGuest, InDate = Model.inDate, OutDate = Model.outDate} ))
         </div>
 
     </div>

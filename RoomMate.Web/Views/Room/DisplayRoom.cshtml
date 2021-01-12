@@ -5,141 +5,146 @@
     Layout = "~/Views/Shared/_RoomMateLayout.cshtml";
 }
 
-<section class="room-offert">
+    <section class="room-offert">
+        @if (ViewBag.Error != null)
+        {
+            <div>
+                <p class="text-error-room">@ViewBag.Error</p>
+            </div>
+        }
+        <div class="gallery-images">
 
-    <div class="gallery-images">
+            <div class="current-image">
+                <img src="@Url.Content(Model.roomImages.First().Path)">
+            </div>
+            <div class="row-gallery">
+                @foreach (var item in Model.roomImages.Skip(1))
+                {
 
-        <div class="current-image">
-            <img src="@Url.Content(Model.roomImages.First().Path)">
+                    <div class="column">
+                        <img src="@Url.Content(item.Path)" onclick="openModal();currentSlide(1)" class="hover-shadow">
+                    </div>
+                }
+            </div>
+
         </div>
-        <div class="row-gallery">
-            @foreach (var item in Model.roomImages.Skip(1))
-            {
 
-                <div class="column">
-                    <img src="@Url.Content(item.Path)" onclick="openModal();currentSlide(1)" class="hover-shadow">
-                </div>
-            }
-        </div>
+        <div class="desktop-dsc">
+            <div class="first-column-dsc">
 
-    </div>
+                <div class="container-booking">
+                    <div class="room-name">
+                        <h1>@Html.DisplayFor(model => model.room.Name)</h1>
+                        <h1 id="price">@Html.DisplayFor(model => model.room.Price) zł/dzień</h1>
+                    </div>
 
-    <div class="desktop-dsc">
-        <div class="first-column-dsc">
+                    <div class="room-dsc">
+                        <h4>Opis</h4>
+                        <p id="booking-dsc">
+                            @Html.DisplayFor(model => model.room.Description)
+                        </p>
+                    </div>
 
-            <div class="container-booking">
-                <div class="room-name">
-                    <h1>@Html.DisplayFor(model => model.room.Name)</h1>
-                    <h1 id="price">@Html.DisplayFor(model => model.room.Price) zł/dzień</h1>
-                </div>
+                    <div class="line"></div>
 
-                <div class="room-dsc">
-                    <h4>Opis</h4>
-                    <p id="booking-dsc">
-                        @Html.DisplayFor(model => model.room.Description)
-                    </p>
-                </div>
-
-                <div class="line"></div>
-
-                <div class="room-dsc">
-                    <h4>Wyposażenie</h4>
-                    <div class="equipment-container">
-                        @if (Model.room.Equipment.IsWifi)
-                        {
-                            <div class="equipment-item">
-                                <p><i class="fas fa-wifi"></i>WIFI</p>
-                            </div>
-                        }
-                        @if (Model.room.Equipment.IsAirConditioning)
-                        {
-                            <div class="equipment-item">
-                                <p><i class="fas fa-fan"></i>Klimatyzacja</p>
-                            </div>
-                        }
-                        @if (Model.room.Equipment.IsParking)
-                        {
-                            <div class="equipment-item">
-                                <p><i class="fas fa-parking"></i>Parking</p>
-                            </div>
-                        }
-                        @if (Model.room.Equipment.IsKitchen)
-                        {
-                            <div class="equipment-item">
-                                <p><i class="fas fa-utensils"></i>Kuchnia</p>
-                            </div>
-                        }
-                        @if (Model.room.Equipment.IsTelevision)
-                        {
-                            <div class="equipment-item">
-                                <p><i class="fas fa-tv"></i>Telewizja</p>
-                            </div>
-                        }
-                        @if (Model.room.Equipment.IsWashingMachine)
-                        {
-                            <div class="equipment-item">
-                                <p><i class="fas fa-tshirt"></i>Pralka</p>
-                            </div>
-                        }
+                    <div class="room-dsc">
+                        <h4>Wyposażenie</h4>
+                        <div class="equipment-container">
+                            @if (Model.room.Equipment.IsWifi)
+                            {
+                                <div class="equipment-item">
+                                    <p><i class="fas fa-wifi"></i>WIFI</p>
+                                </div>
+                            }
+                            @if (Model.room.Equipment.IsAirConditioning)
+                            {
+                                <div class="equipment-item">
+                                    <p><i class="fas fa-fan"></i>Klimatyzacja</p>
+                                </div>
+                            }
+                            @if (Model.room.Equipment.IsParking)
+                            {
+                                <div class="equipment-item">
+                                    <p><i class="fas fa-parking"></i>Parking</p>
+                                </div>
+                            }
+                            @if (Model.room.Equipment.IsKitchen)
+                            {
+                                <div class="equipment-item">
+                                    <p><i class="fas fa-utensils"></i>Kuchnia</p>
+                                </div>
+                            }
+                            @if (Model.room.Equipment.IsTelevision)
+                            {
+                                <div class="equipment-item">
+                                    <p><i class="fas fa-tv"></i>Telewizja</p>
+                                </div>
+                            }
+                            @if (Model.room.Equipment.IsWashingMachine)
+                            {
+                                <div class="equipment-item">
+                                    <p><i class="fas fa-tshirt"></i>Pralka</p>
+                                </div>
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div>
-            @if (Session["UserID"] != null)
-            {
-                using (Html.BeginForm("DisplayRoom", "Room", new { id = Url.RequestContext.RouteData.Values["id"] }, FormMethod.Post))
+            <div>
+                @if (Session["UserID"] != null)
                 {
-                    @Html.AntiForgeryToken()
-                    @Html.ValidationSummary(true, "", new { @class = "text-error-room" })
+                    using (Html.BeginForm("DisplayRoom", "Room", new { id = Url.RequestContext.RouteData.Values["id"] }, FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-error-room" })
 
-                    @Html.HiddenFor(model => model.room.Name)
-                    @Html.HiddenFor(model => model.room.Price)
-                    @Html.HiddenFor(model => model.room.Description)
-                    @Html.HiddenFor(model => model.room.IsActive)
-                    @Html.HiddenFor(model => model.room.NumberOfGuests)
+                        @Html.HiddenFor(model => model.room.Name)
+                        @Html.HiddenFor(model => model.room.Price)
+                        @Html.HiddenFor(model => model.room.Description)
+                        @Html.HiddenFor(model => model.room.IsActive)
+                        @Html.HiddenFor(model => model.room.NumberOfGuests)
 
+                        <div class="second-column-dsc">
+                            @Html.ValidationMessage("isBooking", new { @class = "text-error" })
+                            <div class="row-room-booking">
+                                @Html.ValidationMessageFor(model => model.booking.NumberOfGuests, "", new { @class = "text-error" })
+                                @Html.DropDownListFor(model => model.booking.NumberOfGuests, Model.guestSelectList, " ", new { @class = "input-header" })
+                            </div>
+                            <div class="row-room-booking">
+                                @Html.ValidationMessageFor(model => model.booking.InDate, "", new { @class = "text-error" })
+                                @Html.TextBoxFor(model => model.booking.InDate, new { @class = "input-header SelectedDate", placeholder = "Zameldowanie" })
+                            </div>
+                            <div class="row-room-booking">
+                                @Html.ValidationMessageFor(model => model.booking.OutDate, "", new { @class = "text-error" })
+                                @Html.TextBoxFor(model => model.booking.OutDate, new { @class = "input-header SelectedDate", placeholder = "Wymeldowanie" })
+                            </div>
+                            <div class="row-room-booking">
+                                <button class="btn-header room-booking-btn">Zarezerwuj</button>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
                     <div class="second-column-dsc">
-                        @Html.ValidationMessage("isBooking", new { @class = "text-error" })
+                        <p>Zaloguj się żeby zarezerwować pokój!</p>
                         <div class="row-room-booking">
-                            @Html.ValidationMessageFor(model => model.booking.NumberOfGuests, "", new { @class = "text-error" })
-                            @Html.DropDownListFor(model => model.booking.NumberOfGuests, Model.guestSelectList, " ", new { @class = "input-header" })
+                            @Html.DropDownListFor(model => model.booking.NumberOfGuests, Model.guestSelectList, " ", new { @class = "input-header", disabled = "disabled", @readonly = "readonly" })
                         </div>
                         <div class="row-room-booking">
-                            @Html.ValidationMessageFor(model => model.booking.InDate, "", new { @class = "text-error" })
-                            @Html.TextBoxFor(model => model.booking.InDate, new { @class = "input-header SelectedDate", placeholder = "Zameldowanie" })
+                            @Html.TextBoxFor(model => model.booking.InDate, new { @class = "input-header SelectedDate", placeholder = "Zameldowanie", disabled = "disabled", @readonly = "readonly" })
                         </div>
                         <div class="row-room-booking">
-                            @Html.ValidationMessageFor(model => model.booking.OutDate, "", new { @class = "text-error" })
-                            @Html.TextBoxFor(model => model.booking.OutDate, new { @class = "input-header SelectedDate", placeholder = "Wymeldowanie" })
+                            @Html.TextBoxFor(model => model.booking.OutDate, new { @class = "input-header SelectedDate", placeholder = "Wymeldowanie", disabled = "disabled", @readonly = "readonly" })
                         </div>
                         <div class="row-room-booking">
-                            <button class="btn-header room-booking-btn">Zarezerwuj</button>
+                            <button class="btn-header room-booking-btn" disabled>Zarezerwuj</button>
                         </div>
                     </div>
                 }
-            }
-            else
-            {
-                <div class="second-column-dsc">
-                    <p>Zaloguj się żeby zarezerwować pokój!</p>
-                    <div class="row-room-booking">
-                        @Html.DropDownListFor(model => model.booking.NumberOfGuests, Model.guestSelectList, " ", new { @class = "input-header", disabled = "disabled", @readonly = "readonly" })
-                    </div>
-                    <div class="row-room-booking">
-                        @Html.TextBoxFor(model => model.booking.InDate, new { @class = "input-header SelectedDate", placeholder = "Zameldowanie", disabled = "disabled", @readonly = "readonly" })
-                    </div>
-                    <div class="row-room-booking">
-                        @Html.TextBoxFor(model => model.booking.OutDate, new { @class = "input-header SelectedDate", placeholder = "Wymeldowanie", disabled = "disabled", @readonly = "readonly" })
-                    </div>
-                    <div class="row-room-booking">
-                        <button class="btn-header room-booking-btn" disabled>Zarezerwuj</button>
-                    </div>
-                </div>
-            }
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 
 <script type="text/javascript">
     $(function () {

@@ -17,6 +17,8 @@ namespace RoomMate.Entities.RoomControllerViewModels
         //for search rooms 
         public string searchCity { get; set; }
         public string numberOfGuest { get; set; }
+        public DateTime? inDate { get; set; }
+        public DateTime? outDate { get; set; }
         public List<RoomImage> roomImages { get; set; }
         public List<Room> rooms { get; set; }
         public List<SelectListItem> sortSelectList { get; set; }

@@ -133,6 +133,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\BookingController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RoomController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -195,7 +196,7 @@
     <Content Include="Views\Room\DisplayRoom.cshtml" />
     <Content Include="Views\Room\SearchRoom.cshtml" />
     <Content Include="Views\Shared\_RoomMateLayout.cshtml" />
-    <Content Include="Views\Room\BookingRoom.cshtml" />
+    <Content Include="Views\Booking\BookingDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\Image\" />
