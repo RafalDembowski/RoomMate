@@ -32,10 +32,25 @@ namespace RoomMate.Data.Repository
                         .FirstOrDefault(u => u.Email.ToLower()
                         .Equals(email.ToLower()));
 
-            if (user!=null)
+            if (user != null)
             {
                 return user; 
             }
+            return null;
+        }
+        public User GetActiveUser(Guid userID)
+        {
+            User user = _context
+                       .Users
+                       .Where(u => u.UserID == userID)
+                       .Include(i => i.UserImage)
+                       .ToList()
+                       .FirstOrDefault();
+
+            if (user != null)
+            {
+                return user;
+            }           
             return null;
         }
     }

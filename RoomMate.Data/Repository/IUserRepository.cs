@@ -12,5 +12,6 @@ namespace RoomMate.Data.Repository
     {
         bool IsUserWithEmailExist(string email);
         User GetUserByEmail(string email);
+        User GetActiveUser(Guid id);
     }
 }

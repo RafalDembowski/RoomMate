@@ -26,15 +26,21 @@ namespace RoomMate.Controllers
         }
         public ActionResult Dashboard(int? page)
         {
-            userProfileToDisplayView.user = getActiveUser();
-            userProfileToDisplayView.rooms = getAllActiveRooms();
-            userProfileToDisplayView.roomImages = unitOfWork.RoomImagesRepository.GetAll().ToList();
+            if (Session["UserID"] != null)
+            {
+                string userID = Session["UserID"].ToString();
+                userProfileToDisplayView.user = unitOfWork.UsersRepository.GetActiveUser(new Guid(userID));
+                //get all active rooms and include images
+                userProfileToDisplayView.rooms = getAllActiveRooms();
+                userProfileToDisplayView.roomImages = unitOfWork.RoomImagesRepository.GetAll().ToList();
+                //set pagination 
+                int pageSize = 2;
+                int pageNumber = (page ?? 1);
+                ViewBag.OnePageOfRooms = userProfileToDisplayView.rooms.ToPagedList(pageNumber, pageSize);
 
-            int pageSize = 2;
-            int pageNumber = (page ?? 1);
-            ViewBag.OnePageOfRooms = userProfileToDisplayView.rooms.ToPagedList(pageNumber, pageSize);
-
-            return View(userProfileToDisplayView);
+                return View(userProfileToDisplayView);
+            }
+            return RedirectToAction("Login", "User");
         }
         [HttpPost]
         public ActionResult Dashboard(UserProfileToDisplayViewModel userProfileToDisplayView)
@@ -83,96 +89,111 @@ namespace RoomMate.Controllers
         }
         public ActionResult AddRoom()
         {
-            userProfileToeditViewModel.user = getActiveUser();
-            return View(userProfileToeditViewModel);
+            if (Session["UserID"] != null)
+            {
+                string userID = Session["UserID"].ToString();
+                userProfileToDisplayView.user = unitOfWork.UsersRepository.GetActiveUser(new Guid(userID));
+                return View(userProfileToeditViewModel);
+            }
+            return RedirectToAction("Login", "User");
         }
         [HttpPost]
         public ActionResult AddRoom(UserProfileToEditViewModel _userProfileToeditViewModel)
         {
-            userProfileToeditViewModel.user = getActiveUser();
-
-            try
+            if (Session["UserID"] != null)
             {
-            
-                if (ModelState.IsValid)
+                string userID = Session["UserID"].ToString();
+                userProfileToDisplayView.user = unitOfWork.UsersRepository.GetActiveUser(new Guid(userID));
+
+                try
                 {
-                    //create room object
-                    Room room = new Room();
-                    room.RoomID = Guid.NewGuid();
-                    room.Name = _userProfileToeditViewModel.roomToEdit.Name;
-                    room.Price = _userProfileToeditViewModel.roomToEdit.Price;
-                    room.Description = _userProfileToeditViewModel.roomToEdit.Description;
-                    room.IsActive = true;
-                    room.NumberOfGuests = _userProfileToeditViewModel.roomToEdit.NumberOfGuests;
-                    room.User = userProfileToeditViewModel.user;
 
-                    //create room images objetcs
-                    addNewRoomImagesToDataBase(_userProfileToeditViewModel.images, room.RoomID, room.User.UserID, room);
-                    
-                    //create equipment object
-                    Equipment equipment = new Equipment();
-                    equipment.EquipmentID = Guid.NewGuid();
-                    equipment.IsWifi = _userProfileToeditViewModel.equipmentToEdit.IsWifi;
-                    equipment.IsAirConditioning = _userProfileToeditViewModel.equipmentToEdit.IsAirConditioning;
-                    equipment.IsParking = _userProfileToeditViewModel.equipmentToEdit.IsParking;
-                    equipment.IsTelevision = _userProfileToeditViewModel.equipmentToEdit.IsTelevision;
-                    equipment.IsKitchen = _userProfileToeditViewModel.equipmentToEdit.IsKitchen;
-                    equipment.IsWashingMachine = _userProfileToeditViewModel.equipmentToEdit.IsWashingMachine;
+                    if (ModelState.IsValid)
+                    {
+                        //create room object
+                        Room room = new Room();
+                        room.RoomID = Guid.NewGuid();
+                        room.Name = _userProfileToeditViewModel.roomToEdit.Name;
+                        room.Price = _userProfileToeditViewModel.roomToEdit.Price;
+                        room.Description = _userProfileToeditViewModel.roomToEdit.Description;
+                        room.IsActive = true;
+                        room.NumberOfGuests = _userProfileToeditViewModel.roomToEdit.NumberOfGuests;
+                        room.User = userProfileToeditViewModel.user;
 
-                    unitOfWork.EquipmentRepository.Insert(equipment);
+                        //create room images objetcs
+                        addNewRoomImagesToDataBase(_userProfileToeditViewModel.images, room.RoomID, room.User.UserID, room);
 
-                    //create address object
-                    Address address = new Address();
-                    address.AddressID = Guid.NewGuid();
-                    address.City = _userProfileToeditViewModel.addressToEdit.City;
-                    address.Street = _userProfileToeditViewModel.addressToEdit.Street;
-                    address.Flat = _userProfileToeditViewModel.addressToEdit.Flat;
-                    address.PostCode = _userProfileToeditViewModel.addressToEdit.PostCode;
-                    address.Lon = _userProfileToeditViewModel.addressToEdit.Lon;
-                    address.Lat = _userProfileToeditViewModel.addressToEdit.Lat;
-                   
-                    unitOfWork.AddressesRepository.Insert(address);
+                        //create equipment object
+                        Equipment equipment = new Equipment();
+                        equipment.EquipmentID = Guid.NewGuid();
+                        equipment.IsWifi = _userProfileToeditViewModel.equipmentToEdit.IsWifi;
+                        equipment.IsAirConditioning = _userProfileToeditViewModel.equipmentToEdit.IsAirConditioning;
+                        equipment.IsParking = _userProfileToeditViewModel.equipmentToEdit.IsParking;
+                        equipment.IsTelevision = _userProfileToeditViewModel.equipmentToEdit.IsTelevision;
+                        equipment.IsKitchen = _userProfileToeditViewModel.equipmentToEdit.IsKitchen;
+                        equipment.IsWashingMachine = _userProfileToeditViewModel.equipmentToEdit.IsWashingMachine;
 
-                    
-                    room.Address = address;
-                    room.Equipment = equipment;
-                    unitOfWork.RoomsRepository.Insert(room);
+                        unitOfWork.EquipmentRepository.Insert(equipment);
 
-                    //save to db
-                    unitOfWork.Complete();
+                        //create address object
+                        Address address = new Address();
+                        address.AddressID = Guid.NewGuid();
+                        address.City = _userProfileToeditViewModel.addressToEdit.City;
+                        address.Street = _userProfileToeditViewModel.addressToEdit.Street;
+                        address.Flat = _userProfileToeditViewModel.addressToEdit.Flat;
+                        address.PostCode = _userProfileToeditViewModel.addressToEdit.PostCode;
+                        address.Lon = _userProfileToeditViewModel.addressToEdit.Lon;
+                        address.Lat = _userProfileToeditViewModel.addressToEdit.Lat;
 
-                    return RedirectToAction("DisplayRoom", new { id = room.RoomID });
+                        unitOfWork.AddressesRepository.Insert(address);
+
+
+                        room.Address = address;
+                        room.Equipment = equipment;
+                        unitOfWork.RoomsRepository.Insert(room);
+
+                        //save to db
+                        unitOfWork.Complete();
+
+                        return RedirectToAction("DisplayRoom", new { id = room.RoomID });
+                    }
+                    return View();
+
                 }
-                return View();
-            
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine("Error: " + e.Message);
+                    ViewBag.Error = "Wystąpił błąd, proszę powtórzyć jeszcze raz.";
+                    return View();
+                }
             }
-            catch(Exception e)
-            {
-                System.Diagnostics.Debug.WriteLine("Error: " + e.Message);
-                ViewBag.Error = "Wystąpił błąd, proszę powtórzyć jeszcze raz.";
-                return View();
-            }
-            
+            return RedirectToAction("Login", "User");
         }
         public ActionResult DisplayRoom(string id)
         {
             bool codeActivationCanBeGuid = Guid.TryParse(id, out var newGuid);
             if (!String.IsNullOrEmpty(id) && codeActivationCanBeGuid == true)
             {
-                userProfileToDisplayView.user = getActiveUser();
-                userProfileToDisplayView.room = getActiveRoomByID(id);
-                userProfileToDisplayView.room.RoomImages = getRoomImageByRoomID(id);
-
-                if (userProfileToDisplayView.room != null)
+                if (Session["UserID"] != null)
                 {
-                    return View(userProfileToDisplayView);
+                    string userID = Session["UserID"].ToString();
+                    userProfileToDisplayView.user = unitOfWork.UsersRepository.GetActiveUser(new Guid(userID));
+
+                    userProfileToDisplayView.room = getActiveRoomByID(id);
+                    userProfileToDisplayView.room.RoomImages = getRoomImageByRoomID(id);
+
+                    if (userProfileToDisplayView.room != null)
+                    {
+                        return View(userProfileToDisplayView);
+                    }
+                    return RedirectToAction("Dashboard");
                 }
-                return RedirectToAction("Dashboard");
+                else
+                {
+                    return RedirectToAction("Dashboard");
+                }
             }
-            else
-            {
-                return RedirectToAction("Dashboard");
-            }
+            return RedirectToAction("Login", "User");
         }
         //Update room 
         [HttpPost]
@@ -182,17 +203,23 @@ namespace RoomMate.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    userProfileToDisplayView.user = getActiveUser();
-                    unitOfWork.RoomsRepository.Update(userProfileToDisplayView.room);
-                    unitOfWork.AddressesRepository.Update(userProfileToDisplayView.room.Address);
-                    unitOfWork.EquipmentRepository.Update(userProfileToDisplayView.room.Equipment);
-                    //delete old images
-                    deleteOldRoomImagesFromDataBase(userProfileToDisplayView.room.RoomID);
-                    //add new images 
-                    addNewRoomImagesToDataBase(userProfileToDisplayView.images, userProfileToDisplayView.room.RoomID, userProfileToDisplayView.user.UserID, userProfileToDisplayView.room);
-                    unitOfWork.Complete();
+                    if (Session["UserID"] != null)
+                    {
+                        string userID = Session["UserID"].ToString();
+                        userProfileToDisplayView.user = unitOfWork.UsersRepository.GetActiveUser(new Guid(userID));
 
-                    return RedirectToAction("DisplayRoom", new { id = userProfileToDisplayView.room.RoomID });
+                        unitOfWork.RoomsRepository.Update(userProfileToDisplayView.room);
+                        unitOfWork.AddressesRepository.Update(userProfileToDisplayView.room.Address);
+                        unitOfWork.EquipmentRepository.Update(userProfileToDisplayView.room.Equipment);
+                        //delete old images
+                        deleteOldRoomImagesFromDataBase(userProfileToDisplayView.room.RoomID);
+                        //add new images 
+                        addNewRoomImagesToDataBase(userProfileToDisplayView.images, userProfileToDisplayView.room.RoomID, userProfileToDisplayView.user.UserID, userProfileToDisplayView.room);
+                        unitOfWork.Complete();
+
+                        return RedirectToAction("DisplayRoom", new { id = userProfileToDisplayView.room.RoomID });
+                    }
+                    return RedirectToAction("Login", "User");
                 }
                 return RedirectToAction("DisplayRoom", new { id = userProfileToDisplayView.room.RoomID });
             }
@@ -205,23 +232,14 @@ namespace RoomMate.Controllers
         }
         public ActionResult Customers()
         {
-            userProfileToeditViewModel.user = getActiveUser();
-            return View(userProfileToeditViewModel);
-        }
-        public User getActiveUser()
-        {
-            User user = new User();
+
             if (Session["UserID"] != null)
             {
                 string userID = Session["UserID"].ToString();
-                var users = unitOfWork.UsersRepository.Get(
-                                          filter: U => U.UserID == new Guid(userID),
-                                          orderBy: null,
-                                          includeProperties: "UserImage"
-                                          );
-                user = users.ToList().FirstOrDefault();
+                userProfileToDisplayView.user = unitOfWork.UsersRepository.GetActiveUser(new Guid(userID));
+                return View(userProfileToeditViewModel);
             }
-            return user;
+            return RedirectToAction("Login", "User");
         }
         public List<Room> getAllActiveRooms()
         {
