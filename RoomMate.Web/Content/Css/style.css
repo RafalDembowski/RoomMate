@@ -285,7 +285,6 @@ img {
         text-decoration: none;
         color: black;
         width: 22%;
-        height
     }
 
     .room-img img {
@@ -520,17 +519,25 @@ img {
 
 @media (min-width: 500px) {
 
-    .nav-searching i {
+    .searching i {
         position: absolute;
         padding: 13px;
         pointer-events: none;
-        color: #FDE9DF;
+        color: #E5E5E5;
     }
 
-    .nav-searching input {
+    .searching input {
         text-align: center;
-        width: 350px;
         padding-right: 10px;
+    }
+    .nav-searching
+    {
+        width: 350px;
+    }
+    .searching select {
+        text-align-last: center;
+        height: 41px;
+        width: 103%;
     }
 }
 
@@ -574,10 +581,6 @@ img {
         background: url(/Content/IMAGE/mobile-img.png) no-repeat center;
         background-size: cover;
         height: 85vh;
-    }
-
-    .flex-rooms a {
-        width: 40%;
     }
 
     .header-white {
@@ -691,11 +694,10 @@ img {
     .input-header, .input-profile {
         background-color: transparent;
         border-radius: 6px;
-        border: solid #E5E5E5;
+        border: 2px solid #E5E5E5;
         width: 97%;
         height: 35px;
         font-size: 17px;
-        font-weight: bolder;
         color: #707070;
     }
 
@@ -898,11 +900,6 @@ img {
 
 @media (min-width: 1200px) {
 
-    .room-img img {
-        width: 100%;
-        height: 256px;
-    }
-
     .city-img, .city-img-second {
         background-size: 100%;
     }
@@ -916,7 +913,9 @@ img {
         padding: 0;
         height: 95vh;
     }
-
+    .big-margin{
+        margin: 0 10% 0 10%;
+    }
     .img-tablet-desktop {
         background-image: url(../IMAGE/tablet-desktop.png);
         background-size: 61% 99%;
@@ -924,7 +923,6 @@ img {
     }
 
     .input-header, .input-profile {
-        border: solid #E5E5E5 2px;
         height: 35px;
         width: 94%;
         padding-left: 15px;
@@ -1417,96 +1415,6 @@ img {
             left: 48px;
             margin-left: -10px;
         }
-    /*od tego miejsca
-    .profile-user-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100%;
-        width: 100%;
-    }
-
-    .profile-user-content {
-        -webkit-box-shadow: 0px -3px 5px -1px rgba(222,222,222,1);
-        -moz-box-shadow: 0px -3px 5px -1px rgba(222,222,222,1);
-        box-shadow: 0px -3px 5px -1px rgba(222,222,222,1);
-        height: 75%;
-        background-color: white;
-        width: 85%;
-        padding: 20px;
-        overflow: auto;
-    }
-
-    #scroolbar-style::-webkit-scrollbar-track {
-        background-color: white;
-    }
-
-    #scroolbar-style::-webkit-scrollbar {
-        width: 15px;
-        background-color: white;
-    }
-
-    #scroolbar-style::-webkit-scrollbar-thumb {
-        background-color: #4961AF;
-    }
-
-    .profile-user-content h3 {
-        color: black;
-        font-weight: bold;
-    }
-
-    .profile-user-content h4 {
-        font-weight: bold;
-        font-size: 19px;
-        margin: 10px 0 10px 0;
-    }
-
-    .attached-photos {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        margin: 0px -5px;
-    }
-
-    .photo {
-        background-color: #f2f2f2;
-        width: 193px;
-        height: 150px;
-        margin: 5px 5px;
-    }
-
-    #description {
-        width: 65%;
-        text-align: justify;
-    }
-
-    .details .row {
-        margin-bottom: 10px;
-        display: flex;
-    }
-
-    .profile-user-content label {
-        font-weight: bold;
-    }
-
-    .details p {
-        margin-left: 10px;
-        color: #4961AF;
-        font-weight: bold;
-    }
-
-    .equipment {
-        display: flex;
-        flex-direction: column;
-        flex-flow: wrap;
-        margin-bottom: 10px;
-    }
-
-        .equipment p {
-            margin-left: 10px;
-        }
-    do tego chyba nie bedzie potrzebne*/
-    /*user information*/
     .user-information {
         display: flex;
         flex-direction: row;
@@ -1581,4 +1489,17 @@ img {
         display: none;
     }
 }
-
+@media (min-width: 1700px) {
+    .big-margin{
+        margin: 0 15% 0 15%;
+    }
+}
+@media (min-width: 2100px) {
+    .header-container-simple{
+        max-width: 1850px;
+    }
+    .all{
+        display: flex;
+        justify-content: center;
+    }
+}

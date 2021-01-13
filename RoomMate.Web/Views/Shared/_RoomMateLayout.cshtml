@@ -29,7 +29,7 @@
 
                 @using (Html.BeginForm("SearchRoom", "Room", FormMethod.Get))
                 {
-                    <div class="nav-searching">
+                    <div class="searching nav-searching">
                         <i class="fas fa-search"></i>
                         @Html.EditorFor(m => m.searchCity, new { htmlAttributes = new { @class = "input-header", placeholder = "Gdzie chcesz wyjechać?" } })
                     </div>
