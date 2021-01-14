@@ -31,7 +31,7 @@ namespace RoomMate.Controllers
                 string userID = Session["UserID"].ToString();
                 userProfileToDisplayView.user = unitOfWork.UsersRepository.GetActiveUser(new Guid(userID));
                 //get all active rooms and include images
-                userProfileToDisplayView.rooms = getAllActiveRooms();
+                userProfileToDisplayView.rooms = unitOfWork.RoomsRepository.GetAllActiveRooms(new Guid(userID));
                 userProfileToDisplayView.roomImages = unitOfWork.RoomImagesRepository.GetAll().ToList();
                 //set pagination 
                 int pageSize = 2;
@@ -92,7 +92,8 @@ namespace RoomMate.Controllers
             if (Session["UserID"] != null)
             {
                 string userID = Session["UserID"].ToString();
-                userProfileToDisplayView.user = unitOfWork.UsersRepository.GetActiveUser(new Guid(userID));
+                userProfileToeditViewModel.user = unitOfWork.UsersRepository.GetActiveUser(new Guid(userID));
+
                 return View(userProfileToeditViewModel);
             }
             return RedirectToAction("Login", "User");
@@ -103,7 +104,7 @@ namespace RoomMate.Controllers
             if (Session["UserID"] != null)
             {
                 string userID = Session["UserID"].ToString();
-                userProfileToDisplayView.user = unitOfWork.UsersRepository.GetActiveUser(new Guid(userID));
+                userProfileToeditViewModel.user = unitOfWork.UsersRepository.GetActiveUser(new Guid(userID));
 
                 try
                 {
@@ -178,8 +179,7 @@ namespace RoomMate.Controllers
                 {
                     string userID = Session["UserID"].ToString();
                     userProfileToDisplayView.user = unitOfWork.UsersRepository.GetActiveUser(new Guid(userID));
-
-                    userProfileToDisplayView.room = getActiveRoomByID(id);
+                    userProfileToDisplayView.room = unitOfWork.RoomsRepository.GetActiveRoomByID(new Guid(userID), new Guid(id));
                     userProfileToDisplayView.room.RoomImages = getRoomImageByRoomID(id);
 
                     if (userProfileToDisplayView.room != null)
@@ -236,26 +236,10 @@ namespace RoomMate.Controllers
             if (Session["UserID"] != null)
             {
                 string userID = Session["UserID"].ToString();
-                userProfileToDisplayView.user = unitOfWork.UsersRepository.GetActiveUser(new Guid(userID));
+                userProfileToeditViewModel.user = unitOfWork.UsersRepository.GetActiveUser(new Guid(userID));
                 return View(userProfileToeditViewModel);
             }
             return RedirectToAction("Login", "User");
-        }
-        public List<Room> getAllActiveRooms()
-        {
-            var rooms = unitOfWork.RoomsRepository.Get(
-                                          filter: r => r.User.UserID == userProfileToDisplayView.user.UserID && r.IsActive == true,
-                                          orderBy: null,
-                                          includeProperties: "Address,Equipment"
-                                          );
-            return rooms.ToList();
-        }
-        public Room getActiveRoomByID(string id)
-        {
-            Room room = new Room();
-            var roomResult = getAllActiveRooms();
-            room = roomResult.Where(r => r.RoomID == new Guid(id)).FirstOrDefault();
-            return room;
         }
         public List<RoomImage> getRoomImageByRoomID(string id)
         {

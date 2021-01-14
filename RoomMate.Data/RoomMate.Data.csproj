@@ -92,7 +92,9 @@
     <Compile Include="Repository\IBookingRepository.cs" />
     <Compile Include="Repository\IGenericRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\IRoomRepository.cs" />
     <Compile Include="Repository\IUserRepository.cs" />
+    <Compile Include="Repository\RoomRepository.cs" />
     <Compile Include="Repository\UserRepository.cs" />
     <Compile Include="UnitOfWorks\IUnitOfWork.cs" />
     <Compile Include="UnitOfWorks\UnitOfWork.cs" />
