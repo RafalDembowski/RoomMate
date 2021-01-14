@@ -180,7 +180,7 @@ namespace RoomMate.Controllers
                     string userID = Session["UserID"].ToString();
                     userProfileToDisplayView.user = unitOfWork.UsersRepository.GetActiveUser(new Guid(userID));
                     userProfileToDisplayView.room = unitOfWork.RoomsRepository.GetActiveRoomByID(new Guid(userID), new Guid(id));
-                    userProfileToDisplayView.room.RoomImages = getRoomImageByRoomID(id);
+                    userProfileToDisplayView.room.RoomImages = unitOfWork.RoomImagesRepository.GetRoomImageByRoomIDIncludeRoom(new Guid(id));
 
                     if (userProfileToDisplayView.room != null)
                     {
@@ -241,15 +241,6 @@ namespace RoomMate.Controllers
             }
             return RedirectToAction("Login", "User");
         }
-        public List<RoomImage> getRoomImageByRoomID(string id)
-        {
-            var images = unitOfWork.RoomImagesRepository.Get(
-                                             filter: i => i.Room.RoomID == new Guid(id),
-                                             orderBy: null,
-                                             includeProperties: "Room"
-                                             );
-            return images.ToList();
-        }
         public bool updateUserImageNameAndPath(UserImage newUserImage, UserImage oldUserImage)
         {
             if(newUserImage != null)
@@ -263,7 +254,7 @@ namespace RoomMate.Controllers
         }
         public void deleteOldRoomImagesFromDataBase(Guid id)
         {
-            var oldRoomImages = getRoomImageByRoomID(id.ToString());
+            var oldRoomImages = unitOfWork.RoomImagesRepository.GetRoomImageByRoomIDIncludeRoom(id);
             if (oldRoomImages.Any() && oldRoomImages != null)
             {
                 foreach (var oldImage in oldRoomImages)

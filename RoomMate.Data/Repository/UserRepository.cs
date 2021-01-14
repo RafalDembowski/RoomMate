@@ -44,7 +44,6 @@ namespace RoomMate.Data.Repository
                        .Users
                        .Where(u => u.UserID == userID)
                        .Include(i => i.UserImage)
-                       .ToList()
                        .FirstOrDefault();
 
             if (user != null)

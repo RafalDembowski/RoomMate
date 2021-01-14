@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace RoomMate.Data.Repository
 {
-    public interface IRoomRepository : IGenericRepository<Room>
+    public interface IRoomImageRepository : IGenericRepository<RoomImage>
     {
-        List<Room> GetAllActiveRooms(Guid userID);
-        Room GetActiveRoomByID(Guid userID , Guid roomID);
+        List<RoomImage> GetRoomImageByRoomIDIncludeRoom(Guid roomID);
     }
 }

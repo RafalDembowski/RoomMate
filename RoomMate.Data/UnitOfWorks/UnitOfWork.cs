@@ -16,7 +16,7 @@ namespace RoomMate.Data.UnitOfWorks
         public IRoomRepository RoomsRepository { get; }
         public IGenericRepository<Equipment> EquipmentRepository { get;  }
         public IGenericRepository<Address> AddressesRepository { get;  }
-        public IGenericRepository<RoomImage> RoomImagesRepository { get;  }
+        public IRoomImageRepository RoomImagesRepository { get;  }
         public IGenericRepository<UserImage> UserImageRepository { get; }
         public IBookingRepository BookingRepository { get; }
         public UnitOfWork(RoomMateDbContext context)
@@ -26,7 +26,7 @@ namespace RoomMate.Data.UnitOfWorks
             RoomsRepository = new RoomRepository(_context);
             EquipmentRepository = new GenericRepository<Equipment>(_context);
             AddressesRepository = new GenericRepository<Address>(_context);
-            RoomImagesRepository = new GenericRepository<RoomImage>(_context);
+            RoomImagesRepository = new RoomImageRepository(_context);
             UserImageRepository = new GenericRepository<UserImage>(_context);
             BookingRepository = new BookingRepository(_context);
         }
