@@ -1,5 +1,6 @@
 ﻿using RoomMate.Data.Context;
 using RoomMate.Entities.Rooms;
+using RoomMate.Entities.Users;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -20,6 +21,21 @@ namespace RoomMate.Data.Repository
                              .ToList();
 
             return roomImages;
+        }
+        public void DeleteRoomImagesByRoomID(Guid roomID)
+        {
+            List<RoomImage> roomImages = _context
+                                        .RoomImages
+                                        .Where(i => i.Room.RoomID == roomID)
+                                        .ToList();
+            if(roomImages.Any() && roomImages != null)
+            {
+                foreach(var image in roomImages)
+                {
+                    _context.RoomImages
+                            .Remove(image);
+                }
+            }
         }
     }
 }

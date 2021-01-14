@@ -1,4 +1,5 @@
 ﻿using RoomMate.Entities.Rooms;
+using RoomMate.Entities.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +11,6 @@ namespace RoomMate.Data.Repository
     public interface IRoomImageRepository : IGenericRepository<RoomImage>
     {
         List<RoomImage> GetRoomImageByRoomIDIncludeRoom(Guid roomID);
+        void DeleteRoomImagesByRoomID(Guid roomID);
     }
 }

@@ -212,7 +212,7 @@ namespace RoomMate.Controllers
                         unitOfWork.AddressesRepository.Update(userProfileToDisplayView.room.Address);
                         unitOfWork.EquipmentRepository.Update(userProfileToDisplayView.room.Equipment);
                         //delete old images
-                        deleteOldRoomImagesFromDataBase(userProfileToDisplayView.room.RoomID);
+                        unitOfWork.RoomImagesRepository.DeleteRoomImagesByRoomID(userProfileToDisplayView.room.RoomID);
                         //add new images 
                         addNewRoomImagesToDataBase(userProfileToDisplayView.images, userProfileToDisplayView.room.RoomID, userProfileToDisplayView.user.UserID, userProfileToDisplayView.room);
                         unitOfWork.Complete();
