@@ -119,7 +119,7 @@ namespace RoomMate.Controllers
                                                  ).ToList();
                 }
                 //get only first image to display in page
-                roomViewModel.roomImages = getFirstImageForRooms(roomViewModel.rooms);
+                roomViewModel.roomImages = unitOfWork.RoomImagesRepository.GetFirstImageForRooms(roomViewModel.rooms);
 
                 if (roomViewModel.rooms != null && roomViewModel.roomImages != null && roomViewModel.rooms.Any() && roomViewModel.roomImages.Any()) 
                 {

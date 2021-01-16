@@ -12,5 +12,6 @@ namespace RoomMate.Data.Repository
     {
         List<RoomImage> GetRoomImageByRoomIDIncludeRoom(Guid roomID);
         void DeleteRoomImagesByRoomID(Guid roomID);
+        List<RoomImage> GetFirstImageForRooms(List<Room> rooms);
     }
 }

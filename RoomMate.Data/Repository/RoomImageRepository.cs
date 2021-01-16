@@ -37,5 +37,20 @@ namespace RoomMate.Data.Repository
                 }
             }
         }
+        public List<RoomImage> GetFirstImageForRooms(List<Room> rooms)
+        {
+            List<RoomImage> roomImages = roomImages = new List<RoomImage>();
+            foreach(var room in rooms)
+            {
+                var image = _context
+                            .RoomImages
+                            .Where(i => i.Room.RoomID == room.RoomID)
+                            .Include(r => r.Room)
+                            .FirstOrDefault();
+                roomImages.Add(image);
+                            
+            }
+            return roomImages;
+        }
     }
 }
