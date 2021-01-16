@@ -20,7 +20,7 @@ namespace RoomMate.Data.Repository
                               .Include(e => e.Equipment)
                               .ToList();
 
-            return rooms.ToList();
+            return rooms;
         }
         public Room GetActiveRoomByID(Guid userID, Guid roomID)
         {
@@ -38,6 +38,32 @@ namespace RoomMate.Data.Repository
 
             return null;
 
+        }
+
+        public List<Room> GetRandomRooms(int amountRooms)
+        {
+            List<Room> rooms = _context
+                               .Room
+                               .Where(r => r.IsActive == true)
+                               .Include(r => r.Address)
+                               .Include(e => e.Equipment)
+                               .OrderBy(x => Guid.NewGuid())
+                               .Take(amountRooms)
+                               .ToList();
+            return rooms;
+        }
+        public List<Room> GetRandomRoomsByCity(string city, int amountRooms)
+        {
+            List<Room> rooms = _context
+                   .Room
+                   .Where(r => r.IsActive == true && r.Address.City.Equals(city))
+                   .Include(r => r.Address)
+                   .Include(e => e.Equipment)
+                   .OrderBy(x => Guid.NewGuid())
+                   .Take(amountRooms)
+                   .ToList();
+
+            return rooms;
         }
     }
 }

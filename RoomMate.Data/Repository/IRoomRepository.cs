@@ -11,5 +11,7 @@ namespace RoomMate.Data.Repository
     {
         List<Room> GetAllActiveRooms(Guid userID);
         Room GetActiveRoomByID(Guid userID , Guid roomID);
+        List<Room> GetRandomRooms(int amountRooms);
+        List<Room> GetRandomRoomsByCity(string city, int amountRooms);
     }
 }

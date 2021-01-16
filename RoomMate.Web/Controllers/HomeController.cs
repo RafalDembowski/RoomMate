@@ -24,52 +24,18 @@ namespace RoomMate.Controllers
         {
             //take random cities
             string[] randomCities = getRandomCity();
-            //take list of random rooms 
-            homeViewModel.firstCityRandomRooms = getRandomRoomByCity(randomCities[0]);
-            homeViewModel.secondCityRandomRooms = getRandomRoomByCity(randomCities[1]);
-            homeViewModel.randomRooms = getRandomRooms();
+            //take list of random rooms
+            homeViewModel.firstCityRandomRooms = unitOfWork.RoomsRepository.GetRandomRoomsByCity(randomCities[0], 4);
+            homeViewModel.secondCityRandomRooms = unitOfWork.RoomsRepository.GetRandomRoomsByCity(randomCities[1], 4);
+            homeViewModel.randomRooms = unitOfWork.RoomsRepository.GetRandomRooms(4);
             //take images for room
             var listWithAllRooms = homeViewModel.firstCityRandomRooms
                                    .Concat(homeViewModel.secondCityRandomRooms)
                                    .Concat(homeViewModel.randomRooms).ToList();
-            homeViewModel.randomRoomsImages = getFirstImageForRandomRooms(listWithAllRooms);
+            homeViewModel.randomRoomsImages = unitOfWork.RoomImagesRepository.GetFirstImageForRooms(listWithAllRooms);
             //take amount of guest orderby ascending
             homeViewModel.selectGuestList = setSelectListWithGuests();
             return View(homeViewModel);
-        }
-        public List<Room> shuffleRooms(List<Room> rooms)
-        {
-            var shuffledRooms = rooms
-                    .OrderBy(a => Guid.NewGuid())
-                    .Take(4)
-                    .ToList();
-            return shuffledRooms;
-        }
-        public List<Room> getRandomRooms()
-        {
-            var rooms = unitOfWork.RoomsRepository.Get(filter: r => r.IsActive == true,
-                                                       orderBy: null,
-                                                       includeProperties: "Address,Equipment"
-                                                       ).ToList();
-
-            var shuffledRooms = shuffleRooms(rooms);
-
-            return shuffledRooms;
-        }
-        public List<RoomImage> getFirstImageForRandomRooms(List<Room> shuffledRooms)
-        {
-            List<RoomImage> roomImages = new List<RoomImage>();
-
-            foreach(var room in shuffledRooms)
-            {
-                var images = unitOfWork.RoomImagesRepository.Get(
-                                        filter: i => i.Room.RoomID == room.RoomID,
-                                        orderBy: null,
-                                        includeProperties: ""
-                                        ).FirstOrDefault();
-                roomImages.Add(images);
-            }
-            return roomImages;
         }
         public string[] getRandomCity()
         {
@@ -80,18 +46,6 @@ namespace RoomMate.Controllers
             var addressesDistinct = shuffledAddresses.Select(a => a.City).Distinct().ToArray();
 
             return addressesDistinct;
-        }
-        public List<Room> getRandomRoomByCity(string city)
-        {
-            var rooms = unitOfWork.RoomsRepository.Get(filter: r => r.IsActive == true 
-                                           && r.Address.City.Equals(city),
-                                           orderBy: null,
-                                           includeProperties: "Address,Equipment"
-                                           ).ToList();
-
-            var shuffledRooms = shuffleRooms(rooms);
-
-            return shuffledRooms;
         }
         public List<Room> getRoomDistinctByNumberOfGuestes()
         {
