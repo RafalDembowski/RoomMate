@@ -99,7 +99,7 @@ namespace RoomMate.Controllers
                 {
                     Session["UserID"] = user.FirstOrDefault().UserID;
 
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Dashboard" , "UserProfile");
                 }
                 else
                 {

@@ -49,10 +49,16 @@ namespace RoomMate.Controllers
             {
                 UserSaveImageClient userSaveImageClient = new UserSaveImageClient();
                 var userImage = userSaveImageClient.saveUserImageToDiskAndReturnCreatedObject(userProfileToDisplayView.images, userProfileToDisplayView.user.UserID);
-                bool updateImageSuccesful = updateUserImageNameAndPath(userImage, userProfileToDisplayView.user.UserImage);
-
-                if (!updateImageSuccesful && userImage != null)
+                //update image or insert new image
+                if (userImage != null && userProfileToDisplayView.user.UserImage.UserImageID != Guid.Empty)
                 {
+                    userProfileToDisplayView.user.UserImage.ImageName = userImage.ImageName;
+                    userProfileToDisplayView.user.UserImage.ImagePath = userImage.ImagePath;
+                    unitOfWork.UserImageRepository.Update(userProfileToDisplayView.user.UserImage);
+                }
+                else
+                {
+                    userImage.UserImageID = userProfileToDisplayView.user.UserID;
                     unitOfWork.UserImageRepository.Insert(userImage);
                     userProfileToDisplayView.user.UserImage = userImage;
                 }
@@ -240,28 +246,6 @@ namespace RoomMate.Controllers
                 return View(userProfileToeditViewModel);
             }
             return RedirectToAction("Login", "User");
-        }
-        public bool updateUserImageNameAndPath(UserImage newUserImage, UserImage oldUserImage)
-        {
-            if(newUserImage != null)
-            {
-                oldUserImage.ImageName = newUserImage.ImageName;
-                oldUserImage.ImagePath = newUserImage.ImagePath;
-                unitOfWork.UserImageRepository.Update(oldUserImage);
-                return true;
-            }
-            return false;
-        }
-        public void deleteOldRoomImagesFromDataBase(Guid id)
-        {
-            var oldRoomImages = unitOfWork.RoomImagesRepository.GetRoomImageByRoomIDIncludeRoom(id);
-            if (oldRoomImages.Any() && oldRoomImages != null)
-            {
-                foreach (var oldImage in oldRoomImages)
-                {
-                    unitOfWork.RoomImagesRepository.Delete(oldImage.ImageRoomID);
-                }
-            }
         }
         public void addNewRoomImagesToDataBase(IEnumerable<HttpPostedFileBase> images, Guid roomID, Guid userID, Room room  )
         {
