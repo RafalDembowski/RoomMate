@@ -29,7 +29,7 @@ namespace RoomMate.Controllers
 
             if (!String.IsNullOrEmpty(id) && codeActivationCanBeGuid == true && !id.Equals("00000000-0000-0000-0000-000000000000"))
             {
-                getRoomAndRoomImagesToView(id);
+                prepareRoomsAndRoomImagesAndGuestSelectList(id);
 
                 if (roomViewModel.room != null && roomViewModel.roomImages != null)
                 {
@@ -44,44 +44,50 @@ namespace RoomMate.Controllers
         [HttpPost]
         public ActionResult DisplayRoom(string id, RoomViewModel _roomViewModel)
         {
-            System.Diagnostics.Debug.WriteLine("ilość gości: " + _roomViewModel.booking.NumberOfGuests);
-            getRoomAndRoomImagesToView(id);
-
-            try
+            prepareRoomsAndRoomImagesAndGuestSelectList(id);
+            if (Session["UserID"] != null)
             {
-                if (ModelState.IsValid)
+                //get active user
+                string userID = Session["UserID"].ToString();
+                User activeUser = unitOfWork.UsersRepository.GetActiveUser(new Guid(userID));
+                try
                 {
-                    bool dateIsAvailable = unitOfWork.BookingRepository.checkRoomAvailability(_roomViewModel.booking.InDate, _roomViewModel.booking.OutDate, _roomViewModel.room.RoomID);
-                    if (!dateIsAvailable)
-                    { 
-                        //create booking
-                        Booking booking = new Booking();
-                        booking.BookingID = Guid.NewGuid();
-                        booking.InDate = _roomViewModel.booking.InDate;
-                        booking.OutDate = _roomViewModel.booking.OutDate;
-                        booking.NumberOfGuests = _roomViewModel.booking.NumberOfGuests;
-                        booking.Room = roomViewModel.room;
-                        booking.TotalPrice = _roomViewModel.booking.countTotalCostForBooking(booking.InDate, booking.OutDate, booking.Room.Price, booking.NumberOfGuests);
-                        booking.User = getActiveUser();
-
-                        unitOfWork.BookingRepository.Insert(booking);
-                        unitOfWork.Complete();
-
-                        return RedirectToAction("BookingDetail", "Booking", new { id = booking.BookingID });
-                    }
-                    else
+                    if (ModelState.IsValid)
                     {
-                        ModelState.AddModelError("isBooking", "Brak miejsc w tym terminie");
-                        return View(roomViewModel);
+                        bool dateIsAvailable = unitOfWork.BookingRepository.checkRoomAvailability(_roomViewModel.booking.InDate, _roomViewModel.booking.OutDate, _roomViewModel.room.RoomID);
+                        if (!dateIsAvailable)
+                        {
+                            //create booking
+                            Booking booking = new Booking();
+                            booking.BookingID = Guid.NewGuid();
+                            booking.InDate = _roomViewModel.booking.InDate;
+                            booking.OutDate = _roomViewModel.booking.OutDate;
+                            booking.NumberOfGuests = _roomViewModel.booking.NumberOfGuests;
+                            booking.Room = roomViewModel.room;
+                            booking.TotalPrice = _roomViewModel.booking.countTotalCostForBooking(booking.InDate, booking.OutDate, booking.Room.Price, booking.NumberOfGuests);
+                            booking.User = activeUser;
+
+                            unitOfWork.BookingRepository.Insert(booking);
+                            unitOfWork.Complete();
+
+                            return RedirectToAction("BookingDetail", "Booking", new { id = booking.BookingID });
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("isBooking", "Brak miejsc w tym terminie");
+                            return View(roomViewModel);
+                        }
                     }
                 }
-            }
-            catch (Exception e)
-            {
-                System.Diagnostics.Debug.WriteLine("Error: " + e.Message);
-                ViewBag.Error = "Wystąpił błąd, proszę powtórzyć jeszcze raz.";
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine("Error: " + e.Message);
+                    ViewBag.Error = "Wystąpił błąd, proszę powtórzyć jeszcze raz.";
+                    return View(roomViewModel);
+                }
                 return View(roomViewModel);
             }
+            ViewBag.Error = "Twoja sesja wygasła, spróbuj jeszcze raz.";
             return View(roomViewModel);
         }
 
@@ -179,23 +185,6 @@ namespace RoomMate.Controllers
                 return RedirectToAction("Index", "Home");
             }
         }
-
-        public List<RoomImage> getFirstImageForRooms(List<Room> rooms)
-        {
-            List<RoomImage> roomImages = new List<RoomImage>();
-
-            foreach (var room in rooms)
-            {
-                var images = unitOfWork.RoomImagesRepository.Get(
-                                        filter: i => i.Room.RoomID == room.RoomID,
-                                        orderBy: null,
-                                        includeProperties: ""
-                                        ).FirstOrDefault();
-                roomImages.Add(images);
-            }
-            return roomImages;
-        }
-
         public List<SelectListItem> setSortList()
         {
             List<SelectListItem> sortListItem = new List<SelectListItem>
@@ -223,7 +212,7 @@ namespace RoomMate.Controllers
 
             return guestList;
         }
-        public void getRoomAndRoomImagesToView(string id)
+        public void prepareRoomsAndRoomImagesAndGuestSelectList(string id)
         {
             roomViewModel.room = unitOfWork.RoomsRepository.Get(filter: r => r.RoomID == new Guid(id),
                                               orderBy: null,
@@ -236,21 +225,6 @@ namespace RoomMate.Controllers
                                                                         .ToList();
 
             roomViewModel.guestSelectList = setGuestSelectList(roomViewModel.room.RoomID);
-        }
-        public User getActiveUser()
-        {
-            User user = new User();
-            if (Session["UserID"] != null)
-            {
-                string userID = Session["UserID"].ToString();
-                var users = unitOfWork.UsersRepository.Get(
-                                          filter: U => U.UserID == new Guid(userID),
-                                          orderBy: null,
-                                          includeProperties: "UserImage"
-                                          );
-                user = users.ToList().FirstOrDefault();
-            }
-            return user;
         }
     }
 }
