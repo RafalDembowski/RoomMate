@@ -87,8 +87,10 @@
       <DependentUpon>202012261301122_changedPrecisionDecimalLonAndLat.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Repository\AddressRepository.cs" />
     <Compile Include="Repository\BookingRepository.cs" />
     <Compile Include="Repository\GenericRepository.cs" />
+    <Compile Include="Repository\IAddressRepository.cs" />
     <Compile Include="Repository\IBookingRepository.cs" />
     <Compile Include="Repository\IGenericRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
