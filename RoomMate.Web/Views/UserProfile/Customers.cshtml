@@ -1,4 +1,7 @@
-﻿@model RoomMate.Entities.UserProfileViewModels.UserProfileToEditViewModel
+﻿@model RoomMate.Entities.UserProfileViewModels.UserProfileToDisplayViewModel
+@using PagedList.Mvc;
+@using PagedList
+
 @{
     ViewBag.Title = "Zrealizowane zakwaterowania";
     Layout = "~/Views/Shared/_UserProfileLayout.cshtml";
@@ -12,11 +15,11 @@
             <div class="vertical-user-photo">
                 @if (Model.user.UserImage != null)
                 {
-                    <img src="@Url.Content(Model.user.UserImage.ImagePath)"/>
+                    <img src="@Url.Content(Model.user.UserImage.ImagePath)" />
                 }
                 else
                 {
-                    <img src="/../Content/Image/profile_none.png"/>
+                    <img src="/../Content/Image/profile_none.png" />
                 }
                 <p>
                     @Html.DisplayFor(model => model.user.FirsName)
@@ -36,23 +39,59 @@
             </ul>
         </div>
 
-        <div class="profile-user-container">
+        <div class="profile-container">
 
+            <h2>Rezerwacje</h2>
 
-            <div class="profile-container">
-
-                <h2>Rezerwacje</h2>
-
-                <div class="profile-container-div profile-container-accommodation">
-                    <div class="profile-heading">
-                        <h3>Twoje zrealizowane rezerwacje:</h3>
-                    </div>
+            <div class="profile-container-div profile-container-accommodation">
+                <div class="profile-heading">
+                    <h3>Twoje zrealizowane rezerwacje:</h3>
+                </div>
+                @if (Model.bookings.Count == 0)
+                {
                     <div class="profile-container-accommodation-row">
                         <p>Nie masz zrealizowanej żadnej rezerwacji.</p>
                     </div>
+                }
+                else
+                {
+                    foreach (var booking in ViewBag.OnaPageOfBookings)
+                    {
+                        <div class="profile-container-accommodation-row">
+                            <div style="min-width: 600px;">
+                                <div>
+                                    <div class="profile-container-accommodation-img">
+                                        @{ var roomImage = Model.roomImages.Where(x => x.Room.RoomID == @booking.Room.RoomID).FirstOrDefault();}
+                                        <img src="@Url.Content(roomImage.Path)">
+                                    </div>
+                                </div>
 
+                                <div class="profile-container-accommodation-description">
+                                    <p class="bold-txt">
+                                        @booking.Room.Name
+                                    </p>
+                                    <p>
+                                        @booking.Room.Address.City
+                                        @booking.Room.Address.PostCode
+                                        @booking.Room.Address.Street
+                                        @booking.Room.Address.Flat
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="profile-container-customer-icon">
+                                <i class="far fa-user"></i><p>
+                                    @booking.User.FirsName
+                                    @booking.User.LastName
+                                </p>
+                                <i class="far fa-calendar-alt"></i><p>Od @booking.InDate.ToString("dd MM yyyy")</p>
+                                <i class="far fa-calendar-alt"></i><p>Do @booking.OutDate.ToString("dd MM yyyy")</p>
+                            </div>
+                        </div>
+                    }
+                }
+                <div>
+                    @Html.PagedListPager((IPagedList)ViewBag.OnaPageOfBookings, page => Url.Action("Customers", new { page }))
                 </div>
-
             </div>
 
         </div>

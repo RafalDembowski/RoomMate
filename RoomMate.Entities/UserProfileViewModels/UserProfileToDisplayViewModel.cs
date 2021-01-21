@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using RoomMate.Entities.Bookings;
 
 namespace RoomMate.Entities.UserProfileViewModels
 {
@@ -14,5 +15,6 @@ namespace RoomMate.Entities.UserProfileViewModels
         public List<Room> rooms { get; set; }
         public List<RoomImage> roomImages { get; set; }
         public IEnumerable<HttpPostedFileBase> images { get; set; }
+        public List<Booking> bookings { get; set; }
     }
 }

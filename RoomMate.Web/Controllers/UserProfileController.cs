@@ -32,9 +32,13 @@ namespace RoomMate.Controllers
                 userProfileToDisplayView.user = unitOfWork.UsersRepository.GetActiveUser(new Guid(userID));
                 //get all active rooms and include images
                 userProfileToDisplayView.rooms = unitOfWork.RoomsRepository.GetAllActiveRooms(new Guid(userID));
-                userProfileToDisplayView.roomImages = unitOfWork.RoomImagesRepository.GetAll().ToList();
+                userProfileToDisplayView.roomImages = unitOfWork.RoomImagesRepository.GetFirstImageForRooms(userProfileToDisplayView.rooms);
+                //set count of completed bookings
+                userProfileToDisplayView.bookings = unitOfWork.BookingRepository.Get(filter: b => b.Room.User.UserID == userProfileToDisplayView.user.UserID,
+                                                                                    orderBy: null,
+                                                                                    includeProperties: "Room,User").ToList();
                 //set pagination 
-                int pageSize = 2;
+                int pageSize = 5;
                 int pageNumber = (page ?? 1);
                 ViewBag.OnePageOfRooms = userProfileToDisplayView.rooms.ToPagedList(pageNumber, pageSize);
 
@@ -237,14 +241,25 @@ namespace RoomMate.Controllers
                 return RedirectToAction("DisplayRoom", new { id = userProfileToDisplayView.room.RoomID });
             }
         }
-        public ActionResult Customers()
+        public ActionResult Customers(int? page)
         {
 
             if (Session["UserID"] != null)
             {
                 string userID = Session["UserID"].ToString();
-                userProfileToeditViewModel.user = unitOfWork.UsersRepository.GetActiveUser(new Guid(userID));
-                return View(userProfileToeditViewModel);
+                userProfileToDisplayView.user = unitOfWork.UsersRepository.GetActiveUser(new Guid(userID));
+                //get all booking 
+                userProfileToDisplayView.bookings = unitOfWork.BookingRepository.Get(filter: b => b.Room.User.UserID == userProfileToDisplayView.user.UserID,
+                                                                                     orderBy: null,
+                                                                                     includeProperties: "Room,User").ToList();
+                //get room images
+                userProfileToDisplayView.roomImages = unitOfWork.RoomImagesRepository.GetAll().ToList();
+                //set pagination
+                int pageSize = 5;
+                int pageNumber = (page ?? 1);
+                ViewBag.OnaPageOfBookings = userProfileToDisplayView.bookings.ToPagedList(pageNumber, pageSize);
+
+                return View(userProfileToDisplayView);
             }
             return RedirectToAction("Login", "User");
         }

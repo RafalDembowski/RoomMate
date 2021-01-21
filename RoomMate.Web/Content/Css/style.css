@@ -471,12 +471,14 @@ img {
 
     .filter-div button {
         height: 36px;
+        width: 100px;
         color: #707070;
-        font-weight: bold;
-        flex: 0 31%;
         background-color: transparent;
         border: #E5E5E5 solid 2px;
         border-radius: 7px;
+    }
+    .filter-div select{
+        width: 300px;
     }
 
     .room-dsc-searching {
@@ -798,12 +800,6 @@ img {
 
     #sortItem_SortByprice {
         width: 290px;
-    }
-
-    .filter-div button {
-        width: 290px;
-        font-size: 17px;
-        flex: none;
     }
 
     .img-tablet-desktop {

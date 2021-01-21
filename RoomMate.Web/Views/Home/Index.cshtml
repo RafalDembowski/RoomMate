@@ -23,116 +23,118 @@
                                 <i class="fas fa-search"></i>
                                 @Html.EditorFor(model => model.searchCity, new { htmlAttributes = new { @class = "input-header", placeholder = "Gdzie chcesz wyjechać?" } })
                             </div>
+                        </div>
+                        <div class="row">
+                            <div class="searching">
+                                <i class="far fa-calendar-alt"></i>
+                                @Html.TextBoxFor(model => model.inDate, new { @class = "input-header SelectedDate", placeholder = "Zameldowanie" })
                             </div>
-                                <div class="row">
-                                    <div class="searching">
-                                        <i class="far fa-calendar-alt"></i>
-                                        @Html.TextBoxFor(model => model.inDate, new { @class = "input-header SelectedDate", placeholder = "Zameldowanie" })
-                                    </div>
-                                    </div>
-                                <div class="row">
-                                    <div class="searching">
-                                        <i class="far fa-calendar-alt"></i>
-                                        @Html.TextBoxFor(model => model.outDate, new { @class = "input-header SelectedDate", placeholder = "Wymeldowanie" })
-                                     </div>
-                                    </div>
-                                <div class="row">
-                                    <div class="searching">
-                                        <i class="fas fa-user"></i>
-                                        @Html.DropDownListFor(model => model.numberOfGuest, new SelectList(Model.selectGuestList, "Value", "Text"), new { @class = "input-header" })
-                                    </div>
-                                    </div>
-                                    <div class="row">
-                                        <button class="btn-header">Wyszukaj</button>
-                                    </div>
-                                </div>
+                        </div>
+                        <div class="row">
+                            <div class="searching">
+                                <i class="far fa-calendar-alt"></i>
+                                @Html.TextBoxFor(model => model.outDate, new { @class = "input-header SelectedDate", placeholder = "Wymeldowanie" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="searching">
+                                <i class="fas fa-user"></i>
+                                @Html.DropDownListFor(model => model.numberOfGuest, new SelectList(Model.selectGuestList, "Value", "Text"), new { @class = "input-header" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <button class="btn-header">Wyszukaj</button>
+                        </div>
+                    </div>
 
                 }
             </div>
         </div>
-
-        <section class="room-offers">
-            <h3>Znajdź pokoje na całym świecie!</h3>
-            <div class="flex-rooms">
-                @foreach (var room in Model.randomRooms)
-                {
-                    <a href="@Url.Action("DisplayRoom", "Room", new { id = room.RoomID })">
-                        <div class="room">
-                            <div class="room-img">
-                                @{ var roomImage = Model.randomRoomsImages.Where(x => x.Room.RoomID == room.RoomID).FirstOrDefault();}
-                                @if (roomImage != null)
-                                {
-                                    <img src="@Url.Content(roomImage.Path)">
-                                }
-                                else
-                                {
-                                    <img src="~/Content/Image/no-image.png">
-                                }
-                            </div>
-                            <div class="room-dsc">
-                                <h4>@Html.DisplayFor(m => room.Name)</h4>
-                                <p> @Html.DisplayFor(m => room.Address.City)</p>
-                            </div>
-                        </div>
-                    </a>
-                }
-                @if (Model.firstCityRandomRooms.Count >= 4)
-                {
-                    <!--first city-->
-                    <div class="city">
-                        <div class="city-img">
-                        </div>
-                        <div class="city-dsc">
-                            <p>- Zarezerwuj nocleg już dziś!</p>
-                            <h4>@Model.firstCityRandomRooms.First().Address.City stoi otworem!</h4>
-                        </div>
-                    </div>
-                    foreach (var room in Model.firstCityRandomRooms)
+        @if (Model.randomRooms != null && Model.randomRooms.Any())
+        {
+            <section class="room-offers">
+                <h3>Znajdź pokoje na całym świecie!</h3>
+                <div class="flex-rooms">
+                    @foreach (var room in Model.randomRooms)
                     {
                         <a href="@Url.Action("DisplayRoom", "Room", new { id = room.RoomID })">
                             <div class="room">
                                 <div class="room-img">
-                                    @{ var roomImage = Model.randomRoomsImages.Where(x => x.Room.RoomID == room.RoomID).FirstOrDefault(); }
-                                    <img src="@Url.Content(roomImage.Path)">
+                                    @{ var roomImage = Model.randomRoomsImages.Where(x => x.Room.RoomID == room.RoomID).FirstOrDefault();}
+                                    @if (roomImage != null)
+                                    {
+                                        <img src="@Url.Content(roomImage.Path)">
+                                    }
+                                    else
+                                    {
+                                        <img src="~/Content/Image/no-image.png">
+                                    }
                                 </div>
                                 <div class="room-dsc">
-                                    <h4>@Html.DisplayFor(modelItem => room.Name)</h4>
-                                    <p> @Html.DisplayFor(modelItem => room.Address.City)<p>
+                                    <h4>@Html.DisplayFor(m => room.Name)</h4>
+                                    <p> @Html.DisplayFor(m => room.Address.City)</p>
                                 </div>
                             </div>
                         </a>
                     }
-                }
-                @if (Model.secondCityRandomRooms.Count >= 4)
-                {
-                    <!--second city-->
-                    <div class="city">
-                        <div class="city-img-second">
-                        </div>
-                        <div class="city-dsc">
-                            <p>- Zarezerwuj nocleg już dziś!</p>
-                            <h4>@Model.secondCityRandomRooms.First().Address.City stoi otworem!</h4>
-                        </div>
-                    </div>
-                    foreach (var room in Model.secondCityRandomRooms)
+                    @if (Model.firstCityRandomRooms.Count >= 4)
                     {
-                        <a href="@Url.Action("DisplayRoom", "Room", new { id = room.RoomID })">
-                            <div class="room">
-                                <div class="room-img">
-                                    @{var roomImage = Model.randomRoomsImages.Where(x => x.Room.RoomID == room.RoomID).FirstOrDefault(); }
-                                    <img src="@Url.Content(roomImage.Path)">
-                                </div>
-                                <div class="room-dsc">
-                                    <h4>@Html.DisplayFor(modelItem => room.Name)</h4>
-                                    <p> @Html.DisplayFor(modelItem => room.Address.City)<p>
-                                </div>
+                        <!--first city-->
+                        <div class="city">
+                            <div class="city-img">
                             </div>
-                        </a>
+                            <div class="city-dsc">
+                                <p>- Zarezerwuj nocleg już dziś!</p>
+                                <h4>@Model.firstCityRandomRooms.First().Address.City stoi otworem!</h4>
+                            </div>
+                        </div>
+                        foreach (var room in Model.firstCityRandomRooms)
+                        {
+                            <a href="@Url.Action("DisplayRoom", "Room", new { id = room.RoomID })">
+                                <div class="room">
+                                    <div class="room-img">
+                                        @{ var roomImage = Model.randomRoomsImages.Where(x => x.Room.RoomID == room.RoomID).FirstOrDefault(); }
+                                        <img src="@Url.Content(roomImage.Path)">
+                                    </div>
+                                    <div class="room-dsc">
+                                        <h4>@Html.DisplayFor(modelItem => room.Name)</h4>
+                                        <p> @Html.DisplayFor(modelItem => room.Address.City)<p>
+                                    </div>
+                                </div>
+                            </a>
+                        }
                     }
-                }
-            </div>
-        </section>
-    </div>
+                    @if (Model.secondCityRandomRooms.Count >= 4)
+                    {
+                        <!--second city-->
+                        <div class="city">
+                            <div class="city-img-second">
+                            </div>
+                            <div class="city-dsc">
+                                <p>- Zarezerwuj nocleg już dziś!</p>
+                                <h4>@Model.secondCityRandomRooms.First().Address.City stoi otworem!</h4>
+                            </div>
+                        </div>
+                        foreach (var room in Model.secondCityRandomRooms)
+                        {
+                            <a href="@Url.Action("DisplayRoom", "Room", new { id = room.RoomID })">
+                                <div class="room">
+                                    <div class="room-img">
+                                        @{var roomImage = Model.randomRoomsImages.Where(x => x.Room.RoomID == room.RoomID).FirstOrDefault(); }
+                                        <img src="@Url.Content(roomImage.Path)">
+                                    </div>
+                                    <div class="room-dsc">
+                                        <h4>@Html.DisplayFor(modelItem => room.Name)</h4>
+                                        <p> @Html.DisplayFor(modelItem => room.Address.City)<p>
+                                    </div>
+                                </div>
+                            </a>
+                        }
+                    }
+                </div>
+            </section>
+        }
+        </div>
 <script type="text/javascript">
     $(function () {
         $(".SelectedDate").flatpickr();
