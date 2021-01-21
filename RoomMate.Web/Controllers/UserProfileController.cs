@@ -221,6 +221,7 @@ namespace RoomMate.Controllers
                         unitOfWork.RoomImagesRepository.DeleteRoomImagesByRoomID(userProfileToDisplayView.room.RoomID);
                         //add new images 
                         addNewRoomImagesToDataBase(userProfileToDisplayView.images, userProfileToDisplayView.room.RoomID, userProfileToDisplayView.user.UserID, userProfileToDisplayView.room);
+                        
                         unitOfWork.Complete();
 
                         return RedirectToAction("DisplayRoom", new { id = userProfileToDisplayView.room.RoomID });

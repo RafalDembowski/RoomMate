@@ -20,14 +20,13 @@ namespace RoomMate.Controllers
             unitOfWork = new UnitOfWork(new RoomMateDbContext());
         }
         [HttpGet]
-        public ActionResult Index()
-        {
-            return View();
-        }
-        [HttpGet]
         public ActionResult Registration()
         {
-            return View();
+            if (Session["UserID"] == null)
+            {
+                return View();
+            }
+            return RedirectToAction("Index", "Home");
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -79,7 +78,11 @@ namespace RoomMate.Controllers
         [HttpGet]
         public ActionResult Login()
         {
-            return View();
+            if (Session["UserID"] == null)
+            {
+                return View();
+            }
+            return RedirectToAction("Index", "Home");
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -142,7 +145,11 @@ namespace RoomMate.Controllers
         }
         public ActionResult RemindPassword()
         {
-            return View();
+            if (Session["UserID"] == null)
+            {
+                return View();
+            }
+            return RedirectToAction("Index", "Home");
         }
         [HttpPost]
         public ActionResult RemindPassword(User userFromTheForm)

@@ -34,6 +34,11 @@ namespace RoomMate.Common.SaveImageClients
                         file.SaveAs(HttpContext.Current.Server.MapPath(pathToImage));
                         createRoomImageObjectAndAddToList(pathToImage, room);
                     }
+                    else
+                    {
+                        string pathToImage = "~/Content/IMAGE/no-image.PNG";
+                        createRoomImageObjectAndAddToList(pathToImage, room);
+                    }
                 }
             }
             catch(Exception e)
