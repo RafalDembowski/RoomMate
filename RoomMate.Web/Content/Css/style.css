@@ -132,32 +132,89 @@ img {
     display: inline-block;
     padding: 0;
 }
-
-
-    .pagination li {
-      color: black;
-      float: left;
-      padding: 8px 16px;
-      transition: background-color .3s;
-      display: block
-    }
-
-    .pagination li a {
-        text-decoration: none;
-        color: black;
-    }
-
-    .pagination li.active {
-      background-color: #4961AF;
-    }
-
-    .pagination li.active a {
-      color: white;
-    }
-
-    .pagination li:hover:not(.active) {
-        background-color: #ddd;
-    }
+.pagination li {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    transition: background-color .3s;
+    display: block
+}
+.pagination li a {
+     text-decoration: none;
+     color: black;
+}
+.pagination li.active {
+     background-color: #4961AF;
+}
+.pagination li.active a {
+     color: white;
+}
+.pagination li:hover:not(.active) {
+     background-color: #ddd;
+}
+/*Navbar*/
+.navbarResponsive {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        z-index: 9999;
+        top: 0;
+        left: 0;
+        background-color: white;
+        overflow-x: hidden;
+        transition: 0.5s;
+        -webkit-transition: 0.5s;
+}
+#close {
+    cursor: pointer;
+    transition: all 0.6s;
+    -webkit-transition: all 0.6s;
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+    font-weight: bolder;
+    color: black !important;
+}
+ #close:hover {
+     color: grey;
+}
+.ul-rwd {
+    display: flex;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-flex-flow: column;
+    flex-flow: column;
+    padding: 0;
+    padding-top: 50px;
+    z-index: 1000;
+}
+.ul-rwd li{
+    padding: 44px 0px 44px 0px;
+    text-decoration: none;
+    font-size: 25px;
+    display: block;
+}
+.ul-rwd a{
+    color: black !important;
+}
+.ul-rwd li:hover {
+    color: #f6f626;
+}
+#hamburger {
+    font-size: 25px;
+    transition: all 0.4s;
+    -webkit-transition: all 0.4s;
+    cursor: pointer
+}
+.navbar{
+    display:none;
+}
 @media (min-width: 0px) {
     /*section header*/
     .header-container, .header-container-simple {
@@ -212,10 +269,6 @@ img {
 
     .nav-user-userProfile {
         min-width: 120px;
-    }
-
-    .nav-user-user {
-        min-width: 230px;
     }
 
     .nav-user a {
@@ -279,7 +332,7 @@ img {
             font-size: 40px;
             font-weight: bold;
             letter-spacing: -1.5px;
-            padding-bottom: 5vh;
+            padding-bottom: 15vh;
         }
 
     .room, .city {
@@ -294,13 +347,16 @@ img {
 
     .room-img img {
         border-radius: 7px;
+        max-height: 225px;
     }
 
     .room-dsc h4, .city-dsc h4, .choose-city-dsc h4 {
         font-weight: bold;
     }
 
-
+    .city-dsc {
+        display:none;
+    }
     .city-dsc p {
         margin-bottom: -5px;
     }
@@ -522,11 +578,15 @@ img {
     .form-simple p {
         margin-bottom: 15px;
     }
+    .searching i {
+        display:none;
+    }
+
 }
 
 @media (min-width: 500px) {
-
     .searching i {
+        display: block;
         position: absolute;
         padding: 13px;
         pointer-events: none;
@@ -566,19 +626,16 @@ img {
 }
 
 @media (min-width: 768px) {
-
-    .text-error {
-        color: #ff1a1a;
-    }
-
-    .row-login {
-        justify-content: space-between;
-        flex-direction: inherit;
-    }
-
-        .row-login p {
-            padding-top: 13px;
-        }
+.text-error {
+    color: #ff1a1a;
+}
+.row-login {
+   justify-content: space-between;
+   flex-direction: inherit;
+}
+.row-login p {
+   padding-top: 13px;
+}
 
     .form-simple a {
         padding-top: 0px;
@@ -619,7 +676,7 @@ img {
     }
 
     .room-offers h3 {
-        padding-top: 13vh;
+        padding-top: 15vh;
         padding-bottom: 0vh;
     }
 
@@ -672,7 +729,9 @@ img {
         height: 320px;
         width: 100%;
     }
-
+    .city-dsc {
+        display: block;
+    }
     .txt-header-simple h3 {
         font-size: 30px;
     }
@@ -896,6 +955,16 @@ img {
     .margin-div {
         margin-left: 5px;
         width: 100%;
+    }
+    /*Navbar-rwd*/
+    #hamburger {
+        display: none;
+    }
+    .navbar{
+        display:block;
+    }
+    .nav-user-user {
+        min-width: 230px;
     }
 }
 
