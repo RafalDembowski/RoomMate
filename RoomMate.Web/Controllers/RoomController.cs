@@ -127,6 +127,7 @@ namespace RoomMate.Controllers
                 //get only first image to display in page
                 roomViewModel.roomImages = unitOfWork.RoomImagesRepository.GetFirstImageForRooms(roomViewModel.rooms);
 
+                //check if there are rooms that meet this condition
                 if (roomViewModel.rooms != null && roomViewModel.roomImages != null && roomViewModel.rooms.Any() && roomViewModel.roomImages.Any()) 
                 {
                     //get rooms that are available on the given date
@@ -169,7 +170,7 @@ namespace RoomMate.Controllers
                     }
 
                     //set pagination
-                    int pageSize = 2;
+                    int pageSize = 4;
                     int pageNumber = (page ?? 1);
                     ViewBag.OnePageOfRooms = roomViewModel.rooms.ToPagedList(pageNumber, pageSize);
 
@@ -177,12 +178,14 @@ namespace RoomMate.Controllers
                 }
                 else
                 {
-                    return RedirectToAction("Index", "Home");
+                    ViewBag.NoRooms = true;
+                    return View();
                 }
             }
             else
             {
-                return RedirectToAction("Index", "Home");
+                ViewBag.NoRooms = true;
+                return View();
             }
         }
         public List<SelectListItem> setSortList()

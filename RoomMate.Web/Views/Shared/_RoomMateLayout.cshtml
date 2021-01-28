@@ -25,7 +25,10 @@
     <div class="all">
         <section class="header-container-simple">
             <div class="header header-white">
-                <p class="logo">ROOM<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MATE</p>
+
+                <a href="@Url.Action("Index", "Home")" class="none-decoration">
+                    <p class="logo">ROOM<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MATE</p>
+                </a>
 
                 @using (Html.BeginForm("SearchRoom", "Room", FormMethod.Get))
                 {
@@ -36,17 +39,35 @@
                 }
 
                 <div class="nav-user nav-user-user">
-                    <i class="far fa-user"></i>
-                    @if (Session["UserID"] != null)
-                    {
-                        <a href="@Url.Action("Dashboard", "UserProfile")">Profil</a>
-                        <a href="@Url.Action("Logout","User")">Wyloguj się</a>
-                    }
-                    else
-                    {
-                        <a href="@Url.Action("Registration", "User")">Zarejestruj się</a>
-                        <a href="@Url.Action("Login", "User")">Zaloguj się</a>
-                    }
+                    <div class="navbar">
+                        <i class="far fa-user"></i>
+                        @if (Session["UserID"] != null)
+                        {
+                            <a href="@Url.Action("Dashboard", "UserProfile")">Profil</a>
+                            <a href="@Url.Action("Logout","User")">Wyloguj się</a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Registration", "User")">Zarejestruj się</a>
+                            <a href="@Url.Action("Login", "User")">Zaloguj się</a>
+                        }
+                    </div>
+                    <div id="rwdNavbar" class="navbarResponsive">
+                        <i onclick="closeNavbar()" id="close" class="fas fa-times"></i>
+                        <ul class="ul-rwd">
+                            @if (Session["UserID"] != null)
+                            {
+                                <li><a href="@Url.Action("Dashboard", "UserProfile")">Profil</a></li>
+                                <li><a href="@Url.Action("Logout","User")">Wyloguj się</a></li>
+                            }
+                            else
+                            {
+                                <li><a href="@Url.Action("Registration", "User")">Zarejestruj się</a></li>
+                                <li><a href="@Url.Action("Login", "User")">Zaloguj się</a></li>
+                            }
+                        </ul>
+                    </div>
+                    <i id="hamburger" onclick="openNavbar()" class="fas fa-bars"></i>
                 </div>
             </div>
             @RenderBody()
@@ -54,3 +75,12 @@
     </div>
 </body>
 </html>
+
+<script>
+    function openNavbar() {
+        document.getElementById('rwdNavbar').style.width = "100%";
+    }
+    function closeNavbar() {
+        document.getElementById('rwdNavbar').style.width = "0";
+    }
+</script>
