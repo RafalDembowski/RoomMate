@@ -27,6 +27,7 @@ namespace RoomMate.Controllers
             //take list of random rooms
             homeViewModel.firstCityRandomRooms = unitOfWork.RoomsRepository.GetRandomRoomsByCity(randomCities[0], 4);
             homeViewModel.secondCityRandomRooms = unitOfWork.RoomsRepository.GetRandomRoomsByCity(randomCities[1], 4);
+            //if amount in all random rooms are lower than 4 random again city
             homeViewModel.randomRooms = unitOfWork.RoomsRepository.GetRandomRooms(4);
             //take images for room
             var listWithAllRooms = homeViewModel.firstCityRandomRooms

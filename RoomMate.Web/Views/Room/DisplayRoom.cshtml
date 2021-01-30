@@ -12,22 +12,20 @@
                     <p class="text-error-room">@ViewBag.Error</p>
                 </div>
             }
-            <div class="gallery-images">
-
-                <div class="current-image">
+            <div class="flex-container-gallery">
+                <div class="gallery-images-left">
                     <img src="@Url.Content(Model.roomImages.First().Path)">
                 </div>
-                <div class="row-gallery">
-                    @foreach (var item in Model.roomImages.Skip(1))
-                    {
-
-                        <div class="column">
-                            <img src="@Url.Content(item.Path)" onclick="openModal();currentSlide(1)" class="hover-shadow">
-                        </div>
-                    }
+                <div class="gallery-images-right">
+                    <div class="flex-container-gallery wrap">
+                        @foreach (var item in Model.roomImages.Skip(1))
+                        {
+                            <div class="column-galery" style="background-image: url(@Url.Content(item.Path));">
+                            </div>
+                        }
+                    </div>
+                    </div>
                 </div>
-
-            </div>
 
             <div class="desktop-dsc">
                 <div class="first-column-dsc">
@@ -151,3 +149,5 @@
         $(".SelectedDate").flatpickr();
     });
 </script>
+
+<script src="~/Content/Scripts/SliderGallery.js"></script>

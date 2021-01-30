@@ -63,7 +63,7 @@
 
     };
 
-    function validateImages(input) {
+    function validateFormatImages(input) {
         const file = input.files[0];
         const fileType = file['type'];
         const validImageTypes = ['image/jpeg', 'image/png'];
@@ -75,7 +75,7 @@
     }
     $('#add-file').on('change', function () {
 
-        if (validateImages(this)) {
+        if (validateFormatImages(this)) {
             var image = $(".add-room-img").children("img");
             image.remove();
             imagesPreview(this, 'div.add-room-img');
