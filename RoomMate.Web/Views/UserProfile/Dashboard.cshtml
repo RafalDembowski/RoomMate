@@ -112,9 +112,6 @@
                                         <div class="row">
                                             <label>Nazwisko:</label>  <p>@Html.DisplayFor(model => model.user.LastName)</p>
                                         </div>
-                                        <div class="row">
-                                            <label>Email:</label>  <p>@Html.DisplayFor(model => model.user.Email)</p>
-                                        </div>
 
                                     </div>
 
@@ -134,12 +131,6 @@
                                         <div class="row">
                                             <label>Nazwisko:</label>  <p>@Html.EditorFor(model => model.user.LastName, new { htmlAttributes = new { @class = "edit-user-input" } })</p>
                                         </div>
-
-                                        <div class="row">
-                                            <label>Email:</label>  <p>@Html.EditorFor(model => model.user.Email, new { htmlAttributes = new { @class = "edit-user-input" } })</p>
-                                        </div>
-
-
 
                                         <div style="display:block;">
                                             <button class="profile-save-btn">Zapisz</button>

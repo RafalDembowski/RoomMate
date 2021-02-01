@@ -308,6 +308,458 @@ img {
     display:none;
 }
 @media (min-width: 0px) {
+    /*user profile*/
+    .main-container {
+        height: 100%;
+        width: 100%;
+        background-color: #F1F2F7;
+        display: flex;
+    }
+
+    .vertical-nav {
+        height: 100%;
+        background-color: white;
+        width: 168px;
+    }
+
+        .vertical-nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+            .vertical-nav ul li {
+                padding: 10px 4px 10px 4px;
+                font-weight: bold;
+            }
+
+        .vertical-nav li a {
+            padding-left: 10px;
+            text-decoration: none;
+            color: black;
+        }
+
+        .vertical-nav i {
+            margin-left: 10px;
+        }
+
+    .active-menu {
+        background-color: #4961AF;
+        color: white !important;
+    }
+
+    .home-page .active-menu {
+        border-left: 5px solid #4961AF;
+        background-color: transparent;
+    }
+
+    .vertical-user-photo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-flow: column;
+    }
+
+        .vertical-user-photo img {
+            margin: 25px 0 0 0;
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+        }
+
+        .vertical-user-photo p {
+            margin: 10px 0 25px 0;
+            font-weight: bold;
+            text-align: center;
+        }
+
+    .profile-container {
+        padding: 35px;
+        background-color: #F1F2F7;
+    }
+
+    .profile-user-container {
+        width: 100%;
+        height: 108vh;
+        background-color: #F1F2F7;
+    }
+
+    .profile-container-div {
+        margin-top: 15px;
+        box-shadow: 0 1px 15px 1px rgba(69,65,78,.06);
+        background-color: white;
+    }
+
+    .profile-user {
+        width: 450px;
+        min-height: 220px;
+        padding: 15px;
+    }
+
+    .profile-user-container i {
+        font-size: 20px;
+    }
+
+    .profile-heading {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1.5px solid #BFBFBF;
+        padding-bottom: 10px;
+    }
+
+        .profile-heading h3 {
+            font-size: 20px;
+        }
+
+    .profile-body {
+        margin-top: 25px;
+        display: flex;
+        flex-flow: row;
+    }
+
+    .profile-body-img img {
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+    }
+
+    .profile-body-txt {
+        margin: 0 0 0 20px;
+    }
+
+        .profile-body-txt > div {
+            display: flex;
+            justify-content: space-between;
+        }
+
+    .row label {
+        color: black;
+    }
+
+    .profile-information {
+        width: 250px;
+        height: 220px;
+        padding: 15px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-flow: column;
+        text-align: center;
+    }
+
+    .profile-information-img {
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        background-color: #4961AF;
+        color: white;
+        opacity: 0.65;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .profile-information h2 {
+        margin-top: 15px;
+        font-size: 30px;
+        font-weight: bold;
+    }
+
+    .profile-information p {
+        margin-top: 15px;
+        color: #707070;
+        width: 100%;
+    }
+
+    .profile-container-flex {
+        display: flex;
+        justify-content: space-between;
+        max-width: 1100px;
+    }
+
+    .profile-container-accommodation {
+        margin-top: 35px;
+        padding: 15px;
+    }
+
+    .profile-container-accommodation-row {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+
+    .profile-container-accomodation-row:not(:last-child) {
+        border-bottom: solid 1px #BFBFBF;
+    }
+
+    .profile-container-accommodation-img {
+        height: 80px;
+        width: 120px;
+        margin: 0;
+        float: left;
+    }
+
+        .profile-container-accommodation-img img {
+            height: 80px;
+        }
+
+    .profile-container-accommodation-description {
+        display: flex;
+        float: left;
+        margin: 0;
+    }
+
+        .profile-container-accommodation-description p {
+            margin-left: 25px;
+        }
+
+    .profile-container-accommodation-icon {
+        display: flex;
+        justify-content: space-between;
+        min-width: 70px;
+    }
+
+    .profile-container-customer-icon {
+        min-width: 300px;
+        display: flex;
+    }
+
+        .profile-container-customer-icon a, .profile-container-accommodation-icon a, .profile-heading a {
+            color: black;
+        }
+
+        .profile-container-customer-icon p {
+            margin-left: 10px;
+            margin-right: 25px;
+        }
+
+    .add-room-container {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .profile-add-room, .profile-add-room-map {
+        width: 45.5%;
+        padding: 15px;
+    }
+
+    .profile-add-room {
+        height: auto;
+    }
+
+    .add-room-img, .add-room-img-displayRoom {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 15px 0 15px 0;
+    }
+
+        .add-room-img > div, .add-room-img-displayRoom > div {
+            flex: 1 0 21%;
+        }
+
+        .add-room-img img, .add-room-img-displayRoom img {
+            height: 90px;
+            width: 120px;
+            margin-top: 10px;
+        }
+
+        .add-room-img img, .add-room-img-displayRoom img {
+            margin-left: 10px;
+        }
+
+    .add-room-txt-container {
+        padding-right: 25px;
+        text-justify: trim;
+    }
+
+        .add-room-txt-container p {
+            text-align: justify;
+        }
+
+        .add-room-txt-container > div {
+            margin: 20px 0 10px 0;
+        }
+
+    .add-rom-row {
+        display: flex;
+        margin-top: 15px;
+    }
+
+        .add-rom-row label {
+            color: #707070;
+            margin-right: 10px
+        }
+
+    .profile-add-room-map {
+        height: 330px;
+    }
+
+    .address-txt-map {
+        margin-top: 15px;
+        display: flex;
+        flex-flow: column;
+    }
+
+        .address-txt-map button {
+            margin-top: 140px;
+        }
+
+    .address-map {
+        width: 250px;
+        height: 250px;
+        margin-top: 15px;
+    }
+
+        .address-map .map {
+            width: 250px;
+            height: 250px;
+        }
+
+    .add-room-flex {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .toClick {
+        cursor: pointer;
+    }
+
+    #editUserInformation {
+        display: none;
+    }
+
+    #cancelEditUser {
+        display: none;
+    }
+
+    .edit-user-input {
+        background-color: transparent;
+        border-radius: 6px;
+        border: solid #E5E5E5 1px;
+        font-size: 16px;
+        text-align: right;
+        width: 98%;
+    }
+
+    .add-room-input, .add-room-input-h3, .add-room-txtarea {
+        background-color: transparent;
+        border: none;
+        border-bottom: solid #E5E5E5 1px;
+    }
+
+    .add-room-input-h3 {
+        font-size: 20px
+    }
+
+    .add-room-txtarea {
+        width: 95%;
+        min-height: 150px;
+    }
+
+    .profile-save-btn {
+        font-size: 18px;
+        border: #4961AF solid 1px;
+        background-color: transparent;
+        color: #4961AF;
+        cursor: pointer;
+        float: right;
+        padding: 5px 15px 5px 15px;
+        width: 170px;
+        text-align: center;
+        margin-top: 15px;
+    }
+
+        .profile-save-btn:hover:not([disabled]) {
+            transition: 0.5s;
+            background-color: #4961AF;
+            color: #FDE9DF;
+        }
+
+    .max-height-div {
+        overflow: hidden;
+    }
+
+    #add-file, #roomImg {
+        display: none;
+    }
+
+    .add-img-photo-style {
+        width: 120px;
+        height: 90px;
+        margin: 10px 0 0 0;
+    }
+
+    #add-img-photo {
+    }
+
+    .ol-popup {
+        font-size: 12px;
+        position: absolute;
+        background-color: white;
+        -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+        filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+        padding: 15px;
+        border-radius: 10px;
+        border: 1px solid #cccccc;
+        bottom: 12px;
+        left: -50px;
+        min-width: 100px;
+        display: none;
+    }
+
+        .ol-popup:after, .ol-popup:before {
+            top: 100%;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .ol-popup:after {
+            border-top-color: white;
+            border-width: 10px;
+            left: 48px;
+            margin-left: -10px;
+        }
+
+    .user-information {
+        display: flex;
+        flex-direction: row;
+        height: 100%;
+    }
+
+    .user-information-container {
+        height: 80%;
+        width: 40%;
+        margin: 25px;
+    }
+
+        .user-information-container:not(:nth-child(2n)) {
+            width: 20%;
+        }
+
+        .user-information-container h4 {
+            margin: 0;
+        }
+
+    #userImage {
+        width: 100%;
+        height: 200px;
+    }
+
+    .input-profile {
+        margin: 10px 0 10px 0;
+        border: solid #E5E5E5 1px;
+        font-weight: normal;
+    }
+
+    .change-image {
+        width: 100%;
+        padding: 0;
+        text-align: center;
+    }
+
     /*section header*/
     .header-container, .header-container-simple {
         background-image: url('/Content/IMAGE/mobile-img.png');
@@ -324,6 +776,9 @@ img {
             letter-spacing: -1.5px;
             font-weight: bold;
             margin-bottom: 24px;
+        }
+        .header-container-simple h1{
+            display: none;
         }
 
         .header-container h3, .header-container-simple h3 {
@@ -688,8 +1143,13 @@ img {
         margin-bottom: 12px;
     }
 }
-
+@media (min-width: 360px) {
+    .header-container-simple h1 {
+        display: block
+    }
+}
 @media (min-width: 500px) {
+
     .filter-div select {
         width: 300px;
     }
@@ -1235,460 +1695,7 @@ img {
         max-height: 256px;
         width: auto;
     }
-    /*user profile*/
-    .main-container {
-        height: 100%;
-        width: 100%;
-        background-color: #F1F2F7;
-        display: flex;
-    }
-
-    .vertical-nav {
-        height: 100%;
-        background-color: white;
-        width: 168px;
-    }
-
-        .vertical-nav ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-            .vertical-nav ul li {
-                padding: 10px 4px 10px 4px;
-                font-weight: bold;
-            }
-
-        .vertical-nav li a {
-            padding-left: 10px;
-            text-decoration: none;
-            color: black;
-        }
-
-        .vertical-nav i {
-            margin-left: 10px;
-        }
-
-    .active-menu {
-        background-color: #4961AF;
-        color: white !important;
-    }
-
-    .home-page .active-menu {
-        border-left: 5px solid #4961AF;
-        background-color: transparent;
-    }
-
-    .vertical-user-photo {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-flow: column;
-    }
-
-        .vertical-user-photo img {
-            margin: 25px 0 0 0;
-            border-radius: 50%;
-            width: 80px;
-            height: 80px;
-        }
-
-        .vertical-user-photo p {
-            margin: 10px 0 25px 0;
-            font-weight: bold;
-            text-align: center;
-        }
-
-    .profile-container {
-        padding: 35px;
-        background-color: #F1F2F7;
-    }
-
-    .profile-user-container {
-        width: 100%;
-        height: 100%;
-        background-color: #F1F2F7;
-    }
-
-    .profile-container-div {
-        margin-top: 15px;
-        box-shadow: 0 1px 15px 1px rgba(69,65,78,.06);
-        background-color: white;
-    }
-
-    .profile-user {
-        width: 450px;
-        min-height: 220px;
-        padding: 15px;
-    }
-
-    .profile-user-container i {
-        font-size: 20px;
-    }
-
-    .profile-heading {
-        display: flex;
-        justify-content: space-between;
-        border-bottom: 1.5px solid #BFBFBF;
-        padding-bottom: 10px;
-    }
-
-        .profile-heading h3 {
-            font-size: 20px;
-        }
-
-    .profile-body {
-        margin-top: 25px;
-        display: flex;
-        flex-flow: row;
-    }
-
-    .profile-body-img img {
-        border-radius: 50%;
-        width: 120px;
-        height: 120px;
-    }
-
-    .profile-body-txt {
-        margin: 0 0 0 20px;
-    }
-
-        .profile-body-txt > div {
-            display: flex;
-            justify-content: space-between;
-        }
-
-    .row label {
-        color: black;
-    }
-
-    .profile-information {
-        width: 250px;
-        height: 220px;
-        padding: 15px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-flow: column;
-        text-align: center;
-    }
-
-    .profile-information-img {
-        border-radius: 50%;
-        width: 60px;
-        height: 60px;
-        background-color: #4961AF;
-        color: white;
-        opacity: 0.65;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .profile-information h2 {
-        margin-top: 15px;
-        font-size: 30px;
-        font-weight: bold;
-    }
-
-    .profile-information p {
-        margin-top: 15px;
-        color: #707070;
-        width: 100%;
-    }
-
-    .profile-container-flex {
-        display: flex;
-        justify-content: space-between;
-        max-width: 1100px;
-    }
-
-    .profile-container-accommodation {
-        margin-top: 35px;
-        padding: 15px;
-    }
-
-    .profile-container-accommodation-row {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 20px;
-    }
-
-    .profile-container-accomodation-row:not(:last-child) {
-        border-bottom: solid 1px #BFBFBF;
-    }
-
-    .profile-container-accommodation-img {
-        height: 80px;
-        width: 120px;
-        margin: 0;
-        float: left;
-    }
-
-        .profile-container-accommodation-img img {
-            height: 80px;
-        }
-
-    .profile-container-accommodation-description {
-        display: flex;
-        float: left;
-        margin: 0;
-    }
-
-        .profile-container-accommodation-description p {
-            margin-left: 25px;
-        }
-
-    .profile-container-accommodation-icon {
-        display: flex;
-        justify-content: space-between;
-        min-width: 70px;
-    }
-
-    .profile-container-customer-icon {
-        min-width: 300px;
-        display: flex;
-    }
-
-        .profile-container-customer-icon a, .profile-container-accommodation-icon a, .profile-heading a {
-            color: black;
-        }
-
-        .profile-container-customer-icon p {
-            margin-left: 10px;
-            margin-right: 25px;
-        }
-
-    .add-room-container {
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .profile-add-room, .profile-add-room-map {
-        width: 45.5%;
-        padding: 15px;
-    }
-
-    .profile-add-room {
-        height: auto;
-    }
-
-    .add-room-img, .add-room-img-displayRoom {
-        display: flex;
-        flex-wrap: wrap;
-        margin: 15px 0 15px 0;
-    }
-
-        .add-room-img > div, .add-room-img-displayRoom > div {
-            flex: 1 0 21%;
-        }
-
-        .add-room-img img, .add-room-img-displayRoom img {
-            height: 90px;
-            width: 120px;
-            margin-top: 10px;
-        }
-
-        .add-room-img img , .add-room-img-displayRoom img {
-                margin-left: 10px;
-            }
-
-    .add-room-txt-container {
-        padding-right: 25px;
-        text-justify: trim;
-    }
-
-        .add-room-txt-container p {
-            text-align: justify;
-        }
-
-        .add-room-txt-container > div {
-            margin: 20px 0 10px 0;
-        }
-
-    .add-rom-row {
-        display: flex;
-        margin-top: 15px;
-    }
-
-        .add-rom-row label {
-            color: #707070;
-            margin-right: 10px
-        }
-
-    .profile-add-room-map {
-        height: 330px;
-    }
-
-    .address-txt-map {
-        margin-top: 15px;
-        display: flex;
-        flex-flow: column;
-    }
-
-        .address-txt-map button {
-            margin-top: 140px;
-        }
-
-    .address-map {
-        width: 250px;
-        height: 250px;
-        margin-top: 15px;
-    }
-
-        .address-map .map {
-            width: 250px;
-            height: 250px;
-        }
-
-    .add-room-flex {
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .toClick {
-        cursor: pointer;
-    }
-
-    #editUserInformation {
-        display: none;
-    }
-
-    #cancelEditUser {
-        display: none;
-    }
-
-    .edit-user-input {
-        background-color: transparent;
-        border-radius: 6px;
-        border: solid #E5E5E5 1px;
-        font-size: 16px;
-        text-align: right;
-        width: 98%;
-    }
-
-    .add-room-input, .add-room-input-h3, .add-room-txtarea {
-        background-color: transparent;
-        border: none;
-        border-bottom: solid #E5E5E5 1px;
-    }
-
-    .add-room-input-h3 {
-        font-size: 20px
-    }
-
-    .add-room-txtarea {
-        width: 95%;
-        min-height: 150px;
-    }
-
-    .profile-save-btn {
-        font-size: 18px;
-        border: #4961AF solid 1px;
-        background-color: transparent;
-        color: #4961AF;
-        cursor: pointer;
-        float: right;
-        padding: 5px 15px 5px 15px;
-        width: 170px;
-        text-align: center;
-        margin-top: 15px;
-    }
-
-        .profile-save-btn:hover:not([disabled]) {
-            transition: 0.5s;
-            background-color: #4961AF;
-            color: #FDE9DF;
-        }
-
-    .max-height-div {
-        overflow: hidden;
-    }
-
-    #add-file, #roomImg {
-        display: none;
-    }
-
-    .add-img-photo-style {
-        width: 120px;
-        height: 90px;
-        margin: 10px 0 0 0;
-    }
-
-    #add-img-photo {
-    }
-
-    .ol-popup {
-        font-size: 12px;
-        position: absolute;
-        background-color: white;
-        -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
-        filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
-        padding: 15px;
-        border-radius: 10px;
-        border: 1px solid #cccccc;
-        bottom: 12px;
-        left: -50px;
-        min-width: 100px;
-        display: none;
-    }
-
-        .ol-popup:after, .ol-popup:before {
-            top: 100%;
-            border: solid transparent;
-            content: " ";
-            height: 0;
-            width: 0;
-            position: absolute;
-            pointer-events: none;
-        }
-
-        .ol-popup:after {
-            border-top-color: white;
-            border-width: 10px;
-            left: 48px;
-            margin-left: -10px;
-        }
-
-    .user-information {
-        display: flex;
-        flex-direction: row;
-        height: 100%;
-    }
-
-    .user-information-container {
-        height: 80%;
-        width: 40%;
-        margin: 25px;
-    }
-
-        .user-information-container:not(:nth-child(2n)) {
-            width: 20%;
-        }
-
-        .user-information-container h4 {
-            margin: 0;
-        }
-
-    #userImage {
-        width: 100%;
-        height: 200px;
-    }
-
-    .input-profile {
-        margin: 10px 0 10px 0;
-        border: solid #E5E5E5 1px;
-        font-weight: normal;
-    }
-
-    .change-image {
-        width: 100%;
-        padding: 0;
-        text-align: center;
-    }
-
     /*validation style*/
-
     .text-error {
         padding-bottom: 10px;
     }
@@ -1743,6 +1750,7 @@ img {
 }
 @media (min-width: 2100px) {
     .header-container-simple{
+        width: 100%;
         max-width: 1850px;
     }
     .all{
