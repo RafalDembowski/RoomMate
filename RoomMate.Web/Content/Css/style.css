@@ -1,20 +1,57 @@
 ﻿/*image gallery*/
+.Slider {
+    display: none;
+}
+/* Next & previous buttons */
+.prev,
+.next {
+    cursor: pointer;
+    position: absolute;
+    top: 60%;
+    width: auto;
+    padding: 16px;
+    margin-top: -50px;
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+    border-radius: 0 3px 3px 0;
+    user-select: none;
+    -webkit-user-select: none;
+}
+.prev:hover,
+.next:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+.cursor {
+    cursor: pointer;
+}
+.Thumbnail {
+    opacity: 0.6;
+}
+.active,
+.Thumbnail:hover {
+  opacity: 1;
+}
+.next {
+    right: 0;
+    border-radius: 3px 0 0 3px;
+}
+
 .flex-container-gallery {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: flex-start;
     align-content: stretch;
     align-items: flex-start;
 }
 
 .gallery-images-left {
-    order: 0;
-    flex: 1 1 auto;
-    align-self: auto;
+    position: relative;
 }
 .gallery-images-left img{
     border-radius: 7px;
-    max-height: 506px;
+    min-height: 250px;
+    max-height: 250px;
 }
 
 .gallery-images-right {
@@ -25,7 +62,8 @@
 
 .wrap {
     flex-wrap: wrap;
-    width: 500px;
+    width: 100%;
+    flex-direction: row;
 }
 .column-galery {
     order: 0;
@@ -34,10 +72,11 @@
     background-position: 50% 50%;
     background-repeat: no-repeat;
     background-size: cover;
-    width: 220px;
-    height: 160px;
+    width: 54px;
+    height: 53px;
     border-radius: 7px;
-    margin: 2px;
+    margin-left: 2px;
+    margin-bottom: 2px;
 }
 /**/
 * {
@@ -354,7 +393,9 @@ img {
             word-break: break-word;
             padding-left: 15px;
         }
-
+    .row-room-booking{
+        padding: 0 !important;
+    }
     .input-header, .input-profile {
         width: 100%;
         height: 48px;
@@ -472,6 +513,7 @@ img {
         max-height: 224px;
     }
     .room-name {
+        margin-top: 7px;
         margin-bottom: 7px;
         display: flex;
         justify-content: space-between;
@@ -479,8 +521,9 @@ img {
 
         .room-name h1 {
             font-weight: bold;
-            font-size: 27px;
+            font-size: 24px;
             letter-spacing: -1.5px;
+            color: black !important;
         }
 
     #price {
@@ -501,7 +544,6 @@ img {
     }
 
     .equipment-container {
-        height: 60px;
         display: flex;
         flex-direction: column;
         flex-flow: wrap;
@@ -519,8 +561,7 @@ img {
     }
 
     .equipment-item {
-        flex: 1 25%;
-        /*margin-right: 30px;*/
+        margin-right: 30px;
         color: black;
     }
 
@@ -632,6 +673,20 @@ img {
     .filter-div select {
         background-color: transparent !important;
     }
+    input:disabled, button:disabled, select:disabled {
+        background-color: #BFBFBF;
+        color: #707070;
+        cursor: default !important;
+    }
+    .form-booking{
+        margin-top: 15px;
+    }
+    .room-booking-btn{
+        margin-bottom: 25px;
+    }
+    .row-room-booking {
+        margin-bottom: 12px;
+    }
 }
 
 @media (min-width: 500px) {
@@ -650,8 +705,10 @@ img {
         text-align: center;
         padding-right: 10px;
     }
-    .nav-searching
-    {
+    .row-room-booking input{
+        padding-right: 0px !important;
+    }
+    .nav-searching {
         width: 350px;
     }
     .searching select {
@@ -659,10 +716,21 @@ img {
         height: 41px;
         width: 103%;
     }
+    .row-room-booking select{
+        width: 100%;
+
+    }
     .filter-div button {
         height: 36px;
         border: #E5E5E5 solid 2px;
         border-radius: 7px;
+    }
+    .gallery-images-left img {
+        min-height: 486px;
+        max-height: 486px;
+    }
+    .form-booking{
+        margin-bottom: 75px;
     }
 }
 
@@ -670,7 +738,6 @@ img {
     .logo {
         font-size: 24px;
     }
-
     .btn-header, .input-profile {
         height: 32px;
         font-size: 17px;
@@ -830,7 +897,7 @@ img {
         color: #707070;
     }
 
-    #room_NumberOfGuests, #booking_NumberOfGuests {
+    #room_NumberOfGuests{
         width: 100%;
     }
 
@@ -915,10 +982,28 @@ img {
     .not-found-room h1 {
         color: black !important;
     }
+    .room-booking-btn{
+        width: 102.5%;
+        float: none;
+    }
+    .row-room-booking input{
+        width: 102%;
+    }
+    .form-booking > div {
+        margin-bottom: 5px;
+    }
+    .row-room-booking select{
+        width: 103%;
+    }
 }
 
 @media (min-width: 992px) {
-
+    .row-room-booking input {
+        width: 100%;
+    }
+    .flex-container-gallery{
+        flex-direction: row;
+    }
     .flex-rooms a {
         width: 22%;
     }
@@ -926,7 +1011,6 @@ img {
     #sortItem_SortByprice {
         width: 290px;
     }
-
     .img-tablet-desktop {
         background-image: url(../IMAGE/tablet-desktop.png);
         background-repeat: no-repeat;
@@ -934,30 +1018,40 @@ img {
         background-position: right;
     }
     /*booking*/
+    .wrap {
+        flex-wrap: wrap;
+        width: 500px;
+        margin-top: 20px;
+    }
+    .desktop-dsc {
+        display: flex;
+    }
+    .room-dsc {
+        margin-bottom: 25px;
+    }
     .first-column-dsc {
         width: 100%;
     }
-
-    .room-name {
-        justify-content: normal;
+   .room-name h1 {
+        margin: 0;
     }
-
-        .room-name h1 {
-            margin: 0;
-        }
-
     .container-booking {
-        width: 80%;
+        width: 90%;
     }
-
     .header-container h1, .header-container-simple h1 {
         color: black;
     }
-
     #price {
         margin-left: 35px;
     }
-
+    .form-booking {
+        box-shadow: 0 6px 40px 12px rgba(69,65,78,.06);
+        background-color: white;
+        max-height: 200px;
+        width:36%;
+        padding: 15px;
+        margin: 0;
+    }
     .equipment-container {
         width: 500px;
     }
@@ -1038,6 +1132,13 @@ img {
     #map {
         width: 97%;
     }
+    .column-galery {
+        width: 248px;
+        height: 160px;
+    }
+    .row-room-booking select {
+        width:101%;
+    }
 }
 
 @media (min-width: 1200px) {
@@ -1092,7 +1193,6 @@ img {
     .form-login {
         padding-bottom: 35px;
     }
-
     .row {
         margin-bottom: 15px;
     }
@@ -1108,42 +1208,32 @@ img {
     .gallery-images {
         display: flex;
     }
-
     .current-image {
         padding-top: 5px;
         flex: 5;
     }
-
     .row-gallery {
         padding-top: 5px;
         display: flex;
         flex-flow: wrap;
         flex: 5;
     }
-
-        .row-gallery > div {
-            flex: 1 47%;
-            padding-left: 5px;
-        }
-
-    .desktop-dsc {
-        display: flex;
+    .row-gallery > div {
+         flex: 1 47%;
+         padding-left: 5px;
     }
-
     .second-column-dsc {
         width: 300px;
-        margin-top: 5px;
-        margin-left: 15px;
-        height: 350px;
     }
 
     .room-booking-input, .room-booking-btn {
         width: 100%;
         height: 40px;
     }
-
-    .row-room-booking {
-        margin-bottom: 12px;
+    .form-booking {
+        padding: 25px;
+        max-height: 256px;
+        width: auto;
     }
     /*user profile*/
     .main-container {
@@ -1399,7 +1489,7 @@ img {
             margin-top: 10px;
         }
 
-            .add-room-img img:not(:first-child), .add-room-img-displayRoom img:not(:first-child) {
+        .add-room-img img , .add-room-img-displayRoom img {
                 margin-left: 10px;
             }
 
@@ -1610,13 +1700,6 @@ img {
     .row-selectDate {
         display: flex;
     }
-
-    input:disabled, button:disabled, select:disabled {
-        background-color: #BFBFBF;
-        color: #707070;
-        cursor: default !important;
-    }
-
     .email a {
         text-decoration: none;
         color: black;
@@ -1637,6 +1720,9 @@ img {
         overflow-y: auto;
         max-height: 90vh;
     }
+    .row-room-booking input {
+        width: 94%;
+    }
 }
 
 @media (min-width: 1400px) {
@@ -1645,6 +1731,9 @@ img {
     }
     .equipment-container-room-searching {
         height: 60px;
+    }
+    .row-room-booking input {
+        padding-left: 15px;
     }
 }
 @media (min-width: 1700px) {

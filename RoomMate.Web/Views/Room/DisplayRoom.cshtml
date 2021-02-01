@@ -14,15 +14,39 @@
             }
             <div class="flex-container-gallery">
                 <div class="gallery-images-left">
-                    <img src="@Url.Content(Model.roomImages.First().Path)">
+                    @{
+                        int imageAmount = 1;
+                        foreach (var image in Model.roomImages)
+                        {
+                            <div class="Slider">
+                                <div class="numberOfImage">@imageAmount / @Model.roomImages.Count()</div>
+                                <img src="@Url.Content(image.Path)">
+                            </div>
+
+                            imageAmount++;
+                        }
+                    }
+                    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+                    <a class="next" onclick="plusSlides(1)">&#10095;</a>
                 </div>
                 <div class="gallery-images-right">
                     <div class="flex-container-gallery wrap">
-                        @foreach (var item in Model.roomImages.Skip(1))
-                        {
-                            <div class="column-galery" style="background-image: url(@Url.Content(item.Path));">
-                            </div>
+                        @{
+                            if (Model.roomImages.Count() != 1)
+                            {
+                                imageAmount = 1;
+                                foreach (var image in Model.roomImages)
+                                {
+                                    if(imageAmount <= 6)
+                                    {
+                                        <div class="column-galery Thumbnail cursor" style="background-image: url(@Url.Content(image.Path));" onclick="currentSlide(@imageAmount)">
+                                        </div>
+                                        imageAmount++;
+                                    }                      
+                                }
+                            }
                         }
+
                     </div>
                     </div>
                 </div>
@@ -88,7 +112,7 @@
                         </div>
                     </div>
                 </div>
-                <div>
+                <div class="form-booking">
                     @if (Session["UserID"] != null)
                     {
                         using (Html.BeginForm("DisplayRoom", "Room", new { id = Url.RequestContext.RouteData.Values["id"] }, FormMethod.Post))
@@ -104,15 +128,18 @@
 
                             <div class="second-column-dsc">
                                 @Html.ValidationMessage("isBooking", new { @class = "text-error" })
-                                <div class="row-room-booking">
+                                <div class="row-room-booking searching">
+                                    <i class="fas fa-user"></i>
                                     @Html.ValidationMessageFor(model => model.booking.NumberOfGuests, "", new { @class = "text-error" })
-                                    @Html.DropDownListFor(model => model.booking.NumberOfGuests, Model.guestSelectList, " ", new { @class = "input-header" })
-                                </div>
-                                <div class="row-room-booking">
+                                    @Html.DropDownListFor(model => model.booking.NumberOfGuests, new SelectList(Model.guestSelectList, "Value", "Text"), new { @class = "input-header" })
+                                </div> 
+                                <div class="row-room-booking searching" style="padding: 0px;">
+                                    <i class="far fa-calendar-alt"></i>
                                     @Html.ValidationMessageFor(model => model.booking.InDate, "", new { @class = "text-error" })
                                     @Html.TextBoxFor(model => model.booking.InDate, new { @class = "input-header SelectedDate", placeholder = "Zameldowanie" })
                                 </div>
-                                <div class="row-room-booking">
+                                <div class="row-room-booking searching" style="padding: 0px;">
+                                    <i class="far fa-calendar-alt"></i>
                                     @Html.ValidationMessageFor(model => model.booking.OutDate, "", new { @class = "text-error" })
                                     @Html.TextBoxFor(model => model.booking.OutDate, new { @class = "input-header SelectedDate", placeholder = "Wymeldowanie" })
                                 </div>
@@ -126,13 +153,16 @@
                     {
                         <div class="second-column-dsc">
                             <p>Zaloguj się żeby zarezerwować pokój!</p>
-                            <div class="row-room-booking">
-                                @Html.DropDownListFor(model => model.booking.NumberOfGuests, Model.guestSelectList, " ", new { @class = "input-header", disabled = "disabled", @readonly = "readonly" })
+                            <div class="row-room-booking searching" style="padding: 0px;">
+                                <i class="fas fa-user"></i>
+                                @Html.DropDownListFor(model => model.booking.NumberOfGuests, new SelectList(Model.guestSelectList, "Value", "Text"), new { @class = "input-header", disabled = "disabled", @readonly = "readonly" })
                             </div>
-                            <div class="row-room-booking">
+                                <div class="row-room-booking searching" style="padding: 0px;">
+                                    <i class="far fa-calendar-alt"></i>
                                 @Html.TextBoxFor(model => model.booking.InDate, new { @class = "input-header SelectedDate", placeholder = "Zameldowanie", disabled = "disabled", @readonly = "readonly" })
                             </div>
-                            <div class="row-room-booking">
+                                <div class="row-room-booking searching" style="padding: 0px;">
+                                    <i class="far fa-calendar-alt"></i>
                                 @Html.TextBoxFor(model => model.booking.OutDate, new { @class = "input-header SelectedDate", placeholder = "Wymeldowanie", disabled = "disabled", @readonly = "readonly" })
                             </div>
                             <div class="row-room-booking">
@@ -148,6 +178,11 @@
     $(function () {
         $(".SelectedDate").flatpickr();
     });
+
+    document.getElementsByClassName("logo")[0].style.color = "black";
+    document.getElementsByClassName("header-container-simple")[0].style.backgroundImage = "none";
+    document.getElementById("hamburger").style.color = "black";
+
 </script>
 
 <script src="~/Content/Scripts/SliderGallery.js"></script>
