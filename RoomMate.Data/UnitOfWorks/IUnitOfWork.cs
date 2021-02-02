@@ -9,7 +9,6 @@ namespace RoomMate.Data.UnitOfWorks
 {
     interface IUnitOfWork : IDisposable
     {
-        IUserRepository UsersRepository { get; }
         int Complete();
     }
 }
